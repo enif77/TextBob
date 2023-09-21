@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480"
         x:Class="TextBob.MainWindow"
-        Title="Text Bob v1.0.2"
+        Title="Text Bob v1.0.3"
         Icon="/Assets/TextBob_icon-256x256.png"
         Width="640"
         Height="480">
