@@ -4,8 +4,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480"
         x:Class="TextBob.MainWindow"
-        Title="Text Bob v1.0.3"
-        Icon="/Assets/TextBob_icon-256x256.png"
+        Title="Text Bob v1.0.4"
+        Icon="/Assets/TextBob_icon-32x32.png"
         Width="640"
         Height="480">
 
@@ -20,7 +20,7 @@
         HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch"
         ColumnDefinitions="*" 
-        RowDefinitions="*">
+        RowDefinitions="*, Auto">
 
         <TextBox Name="mainTextBox"
             Grid.Row="0" Grid.Column="0"
@@ -29,6 +29,21 @@
             AcceptsReturn="True"
             AcceptsTab="True"
             Classes="main-text-box"
-            Text=""/>
+            Text=""
+            GotFocus="MainTextBoxGotFocus"
+            KeyUp="MainTextBoxKeyUp"
+            PointerMoved="MainTextBoxPointerMoved"/>
+
+        <StackPanel
+            Grid.Row="1" Grid.Column="0"
+            Orientation="Horizontal"
+            HorizontalAlignment="Right">
+
+            <TextBlock Name="infoTextBlock" Margin="5" Padding="5">Hello!</TextBlock>
+            <Button
+                Margin="5"
+                Padding="5"
+                Click="ClearButtonClicked">Clear</Button>
+        </StackPanel>
     </Grid>
 </Window>
