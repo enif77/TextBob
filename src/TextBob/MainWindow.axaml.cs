@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -11,50 +12,68 @@ public partial class MainWindow : Window
         InitializeComponent();
     }
 
+    
+    private void MainWindow_OnLoaded(object? sender, RoutedEventArgs e)
+    {
+        MainTextBox.Focus();
+        UpdateInfoText();
+    }
+    
 
     private void ClearButtonClicked(object sender, RoutedEventArgs e)
     {
-        mainTextBox.Clear();
-        mainTextBox.Focus();
+        MainTextBox.Clear();
+        MainTextBox.Focus();
 
         UpdateInfoText();
     }
 
 
-    private void MainTextBoxGotFocus(object sender, GotFocusEventArgs e)
+    private void MainTextBoxOn_GotFocus(object sender, GotFocusEventArgs e)
     {
         UpdateInfoText();
     }
 
 
-    private void MainTextBoxKeyUp(object sender, KeyEventArgs e)
+    private void MainTextBox_OnKeyUp(object sender, KeyEventArgs e)
     {
         UpdateInfoText();
     }
 
-
-    private void MainTextBoxPointerMoved(object sender, PointerEventArgs e)
+    
+    private void MainTextBox_OnPointerReleased(object? sender, PointerReleasedEventArgs e)
     {
         UpdateInfoText();
     }
 
-
+    
     private void UpdateInfoText()
     {
-        if (mainTextBox.Text == null)
+        if (MainTextBox.Text == null)
         {
             return;
         }
 
-        // https://stackoverflow.com/questions/15577464/how-to-count-of-sub-string-occurrences-within-a-string-not-char-occurrences
-        var pos = 0;
-        var linesCount = 0;
-        while ((pos < mainTextBox.CaretIndex) && (pos = mainTextBox.Text.IndexOf(mainTextBox.NewLine, pos)) != -1)
+        var linesCount = 1;
+        for (var i = 0; i < MainTextBox.CaretIndex; i++)
         {
-            linesCount++;
-            pos += mainTextBox.NewLine.Length;
+            if (MainTextBox.Text[i] == '\n')
+            {
+                linesCount++;
+            }
         }
-
-        infoTextBlock.Text = $"Length: {mainTextBox.Text.Length}, position: {mainTextBox.CaretIndex}, line: {linesCount}";
+        
+        var charsCount = 1;
+        for (var j = MainTextBox.CaretIndex - 1; j >= 0; j--)
+        {
+            if (MainTextBox.Text[j] == '\n')
+            {
+                break;
+            }
+        
+            charsCount++;
+        }
+        
+        InfoTextBlock.Text = $"Length: {MainTextBox.Text.Length}, caret index: {MainTextBox.CaretIndex}, line: {linesCount}, column: {charsCount}";
     }
 }

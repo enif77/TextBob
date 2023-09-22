@@ -20,10 +20,4 @@ public partial class App : Application
 
         base.OnFrameworkInitializationCompleted();
     }
-
-
-    public void ExitCommand()
-    {
-        // Code for executing the command here.
-    }
 }
