@@ -16,7 +16,6 @@ public partial class MainWindow : Window
     private void MainWindow_OnLoaded(object? sender, RoutedEventArgs e)
     {
         MainTextBox.Focus();
-        UpdateInfoText();
     }
     
 
@@ -24,8 +23,6 @@ public partial class MainWindow : Window
     {
         MainTextBox.Clear();
         MainTextBox.Focus();
-
-        UpdateInfoText();
     }
 
 
