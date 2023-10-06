@@ -2,20 +2,21 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:cc="clr-namespace:TextBob.Controls"
         mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480"
         x:Class="TextBob.MainWindow"
-        Title="Text Bob v1.0.5"
+        Title="Text Bob v1.0.9"
         Icon="/Assets/TextBob_icon-32x32.png"
         Width="640"
         Height="480"
         Loaded="MainWindow_OnLoaded">
 
-    <Window.Styles>
-        <Style Selector="TextBox.main-text-box">
+    <!-- <Window.Styles>
+        <Style Selector="MultiselectTextBox.main-text-box">
             <Setter Property="FontSize" Value="16"/>
-            <Setter Property="FontFamily" Value="Courier"/>
+            <Setter Property="FontFamily" Value="Consolas"/>
         </Style>
-    </Window.Styles>
+    </Window.Styles> -->
 
     <Grid
         HorizontalAlignment="Stretch"
@@ -23,7 +24,22 @@
         ColumnDefinitions="*" 
         RowDefinitions="*, Auto">
 
-        <TextBox Name="MainTextBox"
+        <cc:MultiselectTextBox Name="MainTextBox"
+           Theme="{StaticResource MultiselectTextBox}"
+           Grid.Row="0" Grid.Column="0"
+           HorizontalAlignment="Stretch"
+           VerticalAlignment="Stretch"
+           AcceptsReturn="True"
+           AcceptsTab="True"
+           Classes="main-text-box"
+           Text=""
+           FontSize="16"
+           FontFamily="Consolas"
+           GotFocus="MainTextBoxOn_GotFocus"
+           KeyUp="MainTextBox_OnKeyUp"
+           PointerReleased="MainTextBox_OnPointerReleased"/>
+        
+        <!-- <TextBox Name="MainTextBox"
             Grid.Row="0" Grid.Column="0"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
@@ -33,7 +49,7 @@
             Text=""
             GotFocus="MainTextBoxOn_GotFocus"
             KeyUp="MainTextBox_OnKeyUp"
-            PointerReleased="MainTextBox_OnPointerReleased"/>
+            PointerReleased="MainTextBox_OnPointerReleased"/> -->
 
         <StackPanel
             Grid.Row="1" Grid.Column="0"

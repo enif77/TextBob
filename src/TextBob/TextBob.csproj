@@ -7,6 +7,9 @@
     <ApplicationIcon>./Assets/TextBob_icon-32x32.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    
+    <!-- TODO: Remove this, once Controls/Utils/EnumExtensions is no more required. -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,5 +24,9 @@
 
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controls\Utils\" />
   </ItemGroup>
 </Project>
