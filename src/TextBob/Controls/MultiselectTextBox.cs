@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 
 using Avalonia;
 using Avalonia.Automation.Peers;
@@ -23,6 +24,8 @@ using Avalonia.Media.TextFormatting;
 //using Avalonia.Reactive;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
+
+
 
 using TextBob.Controls.Utils;
 
@@ -351,45 +354,18 @@ public partial class MultiselectTextBox : TemplatedControl, MultiselectTextBoxUn
         });
     }
 
-    // public MultiselectTextBox()
-    // {
-    //     var horizontalScrollBarVisibility = Observable.CombineLatest(
-    //         this.GetObservable(AcceptsReturnProperty),
-    //         this.GetObservable(TextWrappingProperty),
-    //         (acceptsReturn, wrapping) =>
-    //         {
-    //             if (wrapping != TextWrapping.NoWrap)
-    //             {
-    //                 return ScrollBarVisibility.Disabled;
-    //             }
-    //
-    //             return acceptsReturn ? ScrollBarVisibility.Auto : ScrollBarVisibility.Hidden;
-    //         });
-    //     
-    //     this.Bind(
-    //         ScrollViewer.HorizontalScrollBarVisibilityProperty,
-    //         horizontalScrollBarVisibility,
-    //         BindingPriority.Style);
-    //
-    //     _undoRedoHelper = new MultiselectTextBoxUndoRedoHelper<UndoRedoState>(this);
-    //     _selectedTextChangesMadeSinceLastUndoSnapshot = 0;
-    //     _hasDoneSnapshotOnce = false;
-    //     UpdatePseudoclasses();
-    // }
-
     public MultiselectTextBox()
     {
-        var horizontalScrollBarVisibility = this
-            .GetObservable(AcceptsReturnProperty)
-            .CombineLatest(
-                this.GetObservable(TextWrappingProperty),
-                (acceptsReturn, wrapping) =>
+        var horizontalScrollBarVisibility = Observable.CombineLatest(
+            this.GetObservable(AcceptsReturnProperty),
+            this.GetObservable(TextWrappingProperty),
+            (acceptsReturn, wrapping) =>
             {
                 if (wrapping != TextWrapping.NoWrap)
                 {
                     return ScrollBarVisibility.Disabled;
                 }
-
+    
                 return acceptsReturn ? ScrollBarVisibility.Auto : ScrollBarVisibility.Hidden;
             });
         
@@ -397,47 +373,14 @@ public partial class MultiselectTextBox : TemplatedControl, MultiselectTextBoxUn
             ScrollViewer.HorizontalScrollBarVisibilityProperty,
             horizontalScrollBarVisibility,
             BindingPriority.Style);
-
+    
         _undoRedoHelper = new MultiselectTextBoxUndoRedoHelper<UndoRedoState>(this);
         _selectedTextChangesMadeSinceLastUndoSnapshot = 0;
         _hasDoneSnapshotOnce = false;
         UpdatePseudoclasses();
     }
+
     
-    // private IObservable<ScrollBarVisibility>? GetHorizontalScrollBarVisibility()
-    // {
-    //     
-    // }
-    //
-    // internal class cosi : IObservable<ScrollBarVisibility>
-    // {
-    //     public IDisposable Subscribe(IObserver<ScrollBarVisibility> observer)
-    //     {
-    //         var sink = new _((acceptsReturn, wrapping) =>
-    //         {
-    //             if (wrapping != TextWrapping.NoWrap)
-    //             {
-    //                 return ScrollBarVisibility.Disabled;
-    //             }
-    //
-    //             return acceptsReturn ? ScrollBarVisibility.Auto : ScrollBarVisibility.Hidden;
-    //         }, observer);
-    //         
-    //         sink.Run();
-    //         
-    //         return sink;
-    //     }
-    //
-    //     internal sealed class _ : IDisposable
-    //     {
-    //         public void Dispose()
-    //         {
-    //             // TODO release managed resources here
-    //         }
-    //     }
-    // }
-
-
     /// <summary>
     /// Gets or sets a value that determines whether the MultiselectTextBox allows and displays newline or return characters
     /// </summary>
