@@ -4,7 +4,7 @@ using System.Linq;
 
 using Avalonia;
 using Avalonia.Automation.Peers;
-﻿using Avalonia.Automation.Provider;
+using Avalonia.Automation.Provider;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
@@ -26,8 +26,6 @@ using Avalonia.VisualTree;
 
 using TextBob.Controls.Utils;
 
-
-
 namespace TextBob.Controls;
 
 
@@ -37,7 +35,7 @@ namespace TextBob.Controls;
 [TemplatePart("PART_TextPresenter", typeof(MultiselectTextPresenter))]
 [TemplatePart("PART_ScrollViewer", typeof(ScrollViewer))]
 [PseudoClasses(":empty")]
-public partial class MultiselectTextBox : TemplatedControl, UndoRedoHelper<MultiselectTextBox.UndoRedoState>.IUndoRedoHost
+public partial class MultiselectTextBox : TemplatedControl, MultiselectTextBoxUndoRedoHelper<MultiselectTextBox.UndoRedoState>.IUndoRedoHost
 {
     
     /// <summary>
@@ -244,7 +242,7 @@ public partial class MultiselectTextBox : TemplatedControl, UndoRedoHelper<Multi
     /// Defines the <see cref="UndoLimit"/> property
     /// </summary>
     public static readonly StyledProperty<int> UndoLimitProperty =
-        AvaloniaProperty.Register<MultiselectTextBox, int>(nameof(UndoLimit), UndoRedoHelper<UndoRedoState>.DefaultUndoLimit);
+        AvaloniaProperty.Register<MultiselectTextBox, int>(nameof(UndoLimit), MultiselectTextBoxUndoRedoHelper<UndoRedoState>.DefaultUndoLimit);
 
     /// <summary>
     /// Defines the <see cref="CanUndo"/> property
@@ -322,7 +320,7 @@ public partial class MultiselectTextBox : TemplatedControl, UndoRedoHelper<Multi
     private MultiselectTextPresenter? _presenter;
     private ScrollViewer? _scrollViewer;
     private readonly TextBoxTextInputMethodClient _imClient = new();
-    private readonly UndoRedoHelper<UndoRedoState> _undoRedoHelper;
+    private readonly MultiselectTextBoxUndoRedoHelper<UndoRedoState> _undoRedoHelper;
     private bool _isUndoingRedoing;
     private bool _canCut;
     private bool _canCopy;
@@ -353,12 +351,39 @@ public partial class MultiselectTextBox : TemplatedControl, UndoRedoHelper<Multi
         });
     }
 
+    // public MultiselectTextBox()
+    // {
+    //     var horizontalScrollBarVisibility = Observable.CombineLatest(
+    //         this.GetObservable(AcceptsReturnProperty),
+    //         this.GetObservable(TextWrappingProperty),
+    //         (acceptsReturn, wrapping) =>
+    //         {
+    //             if (wrapping != TextWrapping.NoWrap)
+    //             {
+    //                 return ScrollBarVisibility.Disabled;
+    //             }
+    //
+    //             return acceptsReturn ? ScrollBarVisibility.Auto : ScrollBarVisibility.Hidden;
+    //         });
+    //     
+    //     this.Bind(
+    //         ScrollViewer.HorizontalScrollBarVisibilityProperty,
+    //         horizontalScrollBarVisibility,
+    //         BindingPriority.Style);
+    //
+    //     _undoRedoHelper = new MultiselectTextBoxUndoRedoHelper<UndoRedoState>(this);
+    //     _selectedTextChangesMadeSinceLastUndoSnapshot = 0;
+    //     _hasDoneSnapshotOnce = false;
+    //     UpdatePseudoclasses();
+    // }
+
     public MultiselectTextBox()
     {
-        var horizontalScrollBarVisibility = Observable.CombineLatest(
-            this.GetObservable(AcceptsReturnProperty),
-            this.GetObservable(TextWrappingProperty),
-            (acceptsReturn, wrapping) =>
+        var horizontalScrollBarVisibility = this
+            .GetObservable(AcceptsReturnProperty)
+            .CombineLatest(
+                this.GetObservable(TextWrappingProperty),
+                (acceptsReturn, wrapping) =>
             {
                 if (wrapping != TextWrapping.NoWrap)
                 {
@@ -367,18 +392,50 @@ public partial class MultiselectTextBox : TemplatedControl, UndoRedoHelper<Multi
 
                 return acceptsReturn ? ScrollBarVisibility.Auto : ScrollBarVisibility.Hidden;
             });
+        
         this.Bind(
             ScrollViewer.HorizontalScrollBarVisibilityProperty,
             horizontalScrollBarVisibility,
             BindingPriority.Style);
 
-        _undoRedoHelper = new UndoRedoHelper<UndoRedoState>(this);
+        _undoRedoHelper = new MultiselectTextBoxUndoRedoHelper<UndoRedoState>(this);
         _selectedTextChangesMadeSinceLastUndoSnapshot = 0;
         _hasDoneSnapshotOnce = false;
         UpdatePseudoclasses();
-
-        //AvaloniaXamlLoader.Load(this);
     }
+    
+    // private IObservable<ScrollBarVisibility>? GetHorizontalScrollBarVisibility()
+    // {
+    //     
+    // }
+    //
+    // internal class cosi : IObservable<ScrollBarVisibility>
+    // {
+    //     public IDisposable Subscribe(IObserver<ScrollBarVisibility> observer)
+    //     {
+    //         var sink = new _((acceptsReturn, wrapping) =>
+    //         {
+    //             if (wrapping != TextWrapping.NoWrap)
+    //             {
+    //                 return ScrollBarVisibility.Disabled;
+    //             }
+    //
+    //             return acceptsReturn ? ScrollBarVisibility.Auto : ScrollBarVisibility.Hidden;
+    //         }, observer);
+    //         
+    //         sink.Run();
+    //         
+    //         return sink;
+    //     }
+    //
+    //     internal sealed class _ : IDisposable
+    //     {
+    //         public void Dispose()
+    //         {
+    //             // TODO release managed resources here
+    //         }
+    //     }
+    // }
 
 
     /// <summary>
@@ -2074,7 +2131,7 @@ public partial class MultiselectTextBox : TemplatedControl, UndoRedoHelper<Multi
 
     private bool IsPasswordBox => PasswordChar != default(char);
 
-    UndoRedoState UndoRedoHelper<UndoRedoState>.IUndoRedoHost.UndoRedoState
+    UndoRedoState MultiselectTextBoxUndoRedoHelper<UndoRedoState>.IUndoRedoHost.UndoRedoState
     {
         get => new UndoRedoState(Text, CaretIndex);
         set
@@ -2145,7 +2202,7 @@ public partial class MultiselectTextBox : TemplatedControl, UndoRedoHelper<Multi
     /// <summary>
     /// Called from the UndoRedoHelper when the undo stack is modified
     /// </summary>
-    void UndoRedoHelper<UndoRedoState>.IUndoRedoHost.OnUndoStackChanged()
+    void MultiselectTextBoxUndoRedoHelper<UndoRedoState>.IUndoRedoHost.OnUndoStackChanged()
     {
         CanUndo = _undoRedoHelper.CanUndo;
     }
@@ -2153,7 +2210,7 @@ public partial class MultiselectTextBox : TemplatedControl, UndoRedoHelper<Multi
     /// <summary>
     /// Called from the UndoRedoHelper when the redo stack is modified
     /// </summary>
-    void UndoRedoHelper<UndoRedoState>.IUndoRedoHost.OnRedoStackChanged()
+    void MultiselectTextBoxUndoRedoHelper<UndoRedoState>.IUndoRedoHost.OnRedoStackChanged()
     {
         CanRedo = _undoRedoHelper.CanRedo;
     }
