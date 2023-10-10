@@ -257,7 +257,7 @@
              
     <TrayIcon.Icons>
         <TrayIcons>
-            <TrayIcon Icon="/Assets/TextBob_icon-256x256.png" ToolTipText="Text Bob" />
+            <TrayIcon Icon="/Assets/macOS/TextBob.iconset/icon_256x256.png" ToolTipText="Text Bob" />
         </TrayIcons>
     </TrayIcon.Icons>
 </Application>

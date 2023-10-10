@@ -4,9 +4,14 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
-    <ApplicationIcon>./Assets/TextBob_icon-32x32.ico</ApplicationIcon>
+    <ApplicationIcon>./Assets/Windows/icon_32x32.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+
+    <!-- macOS app package path. -->
+    <OutputPath>bin/$(Configuration)/$(Platform)/TextBob.app/Contents/MacOS</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <UseAppHost>true</UseAppHost>
     
     <!-- TODO: Remove this, once Controls/Utils/EnumExtensions is no more required. -->
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -27,6 +32,17 @@
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="Assets/macOS/Info.plist">
+      <TargetPath>%(Filename)%(Extension)</TargetPath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Assets/macOS/TextBob.icns">
+      <TargetPath>%(Filename)%(Extension)</TargetPath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  
   <ItemGroup>
     <Folder Include="Controls\Utils\" />
   </ItemGroup>

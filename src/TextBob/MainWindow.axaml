@@ -6,7 +6,7 @@
         mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480"
         x:Class="TextBob.MainWindow"
         Title="Text Bob v1.0.9"
-        Icon="/Assets/TextBob_icon-32x32.png"
+        Icon="/Assets/macOS/TextBob.iconset/icon_32x32.png"
         Width="640"
         Height="480"
         Loaded="MainWindow_OnLoaded">
