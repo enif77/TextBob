@@ -2,6 +2,14 @@
 
 A simple text editor.
 
+## TODO
+
+- Add a configuration in a JSON file.
+- Tab: increase text intendation of selected lines (or just insert the TAB character, if the selection is none or does not cover multiple lines)
+- SHIFT + Tab: decrease text intendation of selected lines (or nothing, if the selection is none or does not cover multiple lines)
+- Alt: during selection switch to column selection and allow editing at multiple places at the same time. Allow cursor to go beyond the line end.
+- Add support for multiple languages (English, Czech, ...).
+
 ## How to create macOS icons file
 
 You can achieve this using the `sips` command.
