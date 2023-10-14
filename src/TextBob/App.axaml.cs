@@ -16,6 +16,10 @@ public partial class App : Application
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.MainWindow = new MainWindow();
+            
+            // Get the initial window size from the settings.
+            desktop.MainWindow.Width = Program.Settings.MainWindowWidth;
+            desktop.MainWindow.Height = Program.Settings.MainWindowHeight;
         }
 
         base.OnFrameworkInitializationCompleted();
