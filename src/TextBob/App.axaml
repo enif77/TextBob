@@ -223,7 +223,7 @@
                 <Setter Property="IsVisible" Value="True" />
             </Style>
 
-            <!-- <Style Selector="^.revealPasswordButton[AcceptsReturn=False][IsReadOnly=False]:not(cc:MultiselectTextBox:empty)">
+            <Style Selector="^.revealPasswordButton[AcceptsReturn=False][IsReadOnly=False]:not(cc|MultiselectTextBox:empty)">
                 <Setter Property="InnerRightContent">
                 <Template>
                     <ToggleButton Theme="{StaticResource FluentTextBoxToggleButton}"
@@ -240,9 +240,9 @@
                     </ToggleButton>
                 </Template>
                 </Setter>
-            </Style> -->
+            </Style>
 
-            <!-- <Style Selector="^.clearButton[AcceptsReturn=False][IsReadOnly=False]:focus:not(cc:MultiselectTextBox:empty)">
+            <Style Selector="^.clearButton[AcceptsReturn=False][IsReadOnly=False]:focus:not(cc|MultiselectTextBox:empty)">
                 <Setter Property="InnerRightContent">
                     <Template>
                         <Button Theme="{StaticResource FluentTextBoxButton}"
@@ -252,7 +252,7 @@
                         </Button>
                     </Template>
                 </Setter>
-            </Style> -->
+            </Style>
         </ControlTheme>
     </Application.Resources>
              
