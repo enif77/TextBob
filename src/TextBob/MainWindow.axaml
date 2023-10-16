@@ -5,45 +5,67 @@
         xmlns:cc="clr-namespace:TextBob.Controls"
         mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480"
         x:Class="TextBob.MainWindow"
-        Title="Text Bob v1.0.9"
+        Title="Text Bob v1.0.11"
         Icon="/Assets/macOS/TextBob.iconset/icon_32x32.png"
+        TransparencyLevelHint="AcrylicBlur"
+        Background="Transparent"
+        ExtendClientAreaToDecorationsHint="True"
         Width="640"
         Height="480"
         Loaded="MainWindow_OnLoaded">
 
-    <Grid
-        HorizontalAlignment="Stretch"
-        VerticalAlignment="Stretch"
-        ColumnDefinitions="*" 
-        RowDefinitions="*, Auto">
+    <Panel>
+        <ExperimentalAcrylicBorder IsHitTestVisible="False">
+            <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial
+                    BackgroundSource="Digger"
+                    TintColor="Black"
+                    TintOpacity="1"
+                    MaterialOpacity="0.65" />
+            </ExperimentalAcrylicBorder.Material>
+        </ExperimentalAcrylicBorder>
+    
+        <Grid
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            ColumnDefinitions="*" 
+            RowDefinitions="Auto, *, Auto">
 
-        <cc:MultiselectTextBox Name="MainTextBox"
-           Theme="{StaticResource MultiselectTextBox}"
-           Grid.Row="0" Grid.Column="0"
-           HorizontalAlignment="Stretch"
-           VerticalAlignment="Stretch"
-           AcceptsReturn="True"
-           AcceptsTab="True"
-           Text=""
-           FontSize="16"
-           FontFamily="Consolas"
-           GotFocus="MainTextBoxOn_GotFocus"
-           KeyUp="MainTextBox_OnKeyUp"
-           PointerReleased="MainTextBox_OnPointerReleased"/>
-
-        <StackPanel
-            Grid.Row="1" Grid.Column="0"
-            Orientation="Horizontal"
-            HorizontalAlignment="Right">
-
-            <TextBlock Name="InfoTextBlock"
-                Margin="5"
-                Padding="5">Hello!</TextBlock>
+            <TextBox Name="SearchTextBox"
+                Grid.Row="0" Grid.Column="0"
+                HorizontalAlignment="Center"
+                Width="320"
+                Margin="2, 4, 2, 4"
+                Watermark="Search..." />
             
-            <Button
-                Margin="5"
-                Padding="5"
-                Click="ClearButtonClicked">Clear</Button>
-        </StackPanel>
-    </Grid>
+            <cc:MultiselectTextBox Name="MainTextBox"
+                Theme="{StaticResource MultiselectTextBox}"
+                Grid.Row="1" Grid.Column="0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                AcceptsReturn="True"
+                AcceptsTab="True"
+                Text=""
+                FontSize="16"
+                FontFamily="Consolas"
+                GotFocus="MainTextBoxOn_GotFocus"
+                KeyUp="MainTextBox_OnKeyUp"
+                PointerReleased="MainTextBox_OnPointerReleased"/>
+
+            <StackPanel
+                Grid.Row="2" Grid.Column="0"
+                Orientation="Horizontal"
+                HorizontalAlignment="Right">
+
+                <TextBlock Name="InfoTextBlock"
+                    Margin="5"
+                    Padding="5" />
+            
+                <Button
+                    Margin="5"
+                    Padding="5"
+                    Click="ClearButtonClicked"><PathIcon Data="{StaticResource delete_regular}" /></Button>
+            </StackPanel>
+        </Grid>    
+    </Panel>
 </Window>
