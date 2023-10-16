@@ -26,7 +26,7 @@ internal static class Program
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile(
                 "appsettings.json",
-                optional: false,
+                optional: true,
                 reloadOnChange: true);
 
         var config = builder.Build();
