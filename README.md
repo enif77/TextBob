@@ -2,6 +2,8 @@
 
 A simple text editor.
 
+Uses: https://github.com/AvaloniaUI/AvaloniaEdit
+
 ## TODO
 
 - Add a configuration in a JSON file.
@@ -46,6 +48,8 @@ Source: https://stackoverflow.com/questions/12306223/how-to-manually-create-icns
 
 
 ## How to publish
+
+MacOS: https://docs.avaloniaui.net/docs/next/deployment/macOS
 
 ```
 # For Windows:
