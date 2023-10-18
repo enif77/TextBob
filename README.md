@@ -10,7 +10,6 @@ Uses: https://github.com/AvaloniaUI/AvaloniaEdit
 
 ## Keyboard shortcuts
 
-- Delete = Delete
 - Copy = CTRL/CMD + C
 - Cut = CTRL/CMD + X
 - Paste = CTRL/CMD + V
@@ -19,6 +18,41 @@ Uses: https://github.com/AvaloniaUI/AvaloniaEdit
 - Redo = CTRL/CMD + Y
 - Find = CTRL/CMD + F
 - Replace = CTRL + H | CMD + ALT + F
+
+- Delete = Delete
+- DeleteNextWord = CTRL + Delete
+- Backspace = Backspace
+- DeletePreviousWord = CTRL + Backspace
+- EnterParagraphBreak = Enter
+- EnterLineBreak = SHIFT + Enter
+- TabForward = Tab
+- TabBackward = SHIFT + Tab
+- MoveLeftByCharacter = Left
+- SelectLeftByCharacter = SHIFT + Left
+- BoxSelectLeftByCharacter = ALT + SHIFT + Left
+- MoveRightByCharacter = Right
+- SelectRightByCharacter = SHIFT + Right
+- BoxSelectRightByCharacter = ALT + SHIFT + Right
+- MoveLeftByWord = CTRL + Left
+- SelectLeftByWord = SHIFT + CTRL + Left
+- MoveRightByWord = CTRL + Right
+- SelectRightByWord = SHIFT + CTRL + Right
+- MoveUpByLine = Up
+- SelectUpByLine = SHIFT + Up
+- MoveDownByLine = Down
+- SelectDownByLine = SHIFT + Down
+- MoveDownByPage = Page Down
+- SelectDownByPage = SHIFT + Page Down
+- MoveUpByPage = Page Up
+- SelectUpByPage = SHIFT + Page Up
+- MoveToLineStart = Home
+- SelectToLineStart = SHIFT + Home
+- MoveToLineEnd = End
+- SelectToLineEnd = SHIFT + End
+- MoveToDocumentStart = CTRL + Home
+- SelectToDocumentStart = SHIFT + CTRL + Home
+- MoveToDocumentEnd = CTRL + End
+- SelectToDocumentEnd = SHIFT + CTRL + End
 
 ## How to create macOS icons file
 
