@@ -6,11 +6,19 @@ Uses: https://github.com/AvaloniaUI/AvaloniaEdit
 
 ## TODO
 
-- Add a configuration in a JSON file.
-- Tab: increase text indentation of selected lines (or just insert the TAB character, if the selection is none or does not cover multiple lines)
-- SHIFT + Tab: decrease text indentation of selected lines (or nothing, if the selection is none or does not cover multiple lines)
-- Alt: during selection switch to column selection and allow editing at multiple places at the same time. Allow cursor to go beyond the line end.
 - Add support for multiple languages (English, Czech, ...).
+
+## Keyboard shortcuts
+
+- Delete = Delete
+- Copy = CTRL/CMD + C
+- Cut = CTRL/CMD + X
+- Paste = CTRL/CMD + V
+- SelectAll = CTRL/CMD + A
+- Undo = CTRL/CMD + Z
+- Redo = CTRL/CMD + Y
+- Find = CTRL/CMD + F
+- Replace = CTRL + H | CMD + ALT + F
 
 ## How to create macOS icons file
 
