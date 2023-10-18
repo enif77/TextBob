@@ -21,6 +21,7 @@ Uses: https://github.com/AvaloniaUI/AvaloniaEdit
 
 - Delete = Delete
 - DeleteNextWord = CTRL + Delete
+- DeleteLine = CTRL/CMD + D
 - Backspace = Backspace
 - DeletePreviousWord = CTRL + Backspace
 - EnterParagraphBreak = Enter
@@ -53,6 +54,7 @@ Uses: https://github.com/AvaloniaUI/AvaloniaEdit
 - SelectToDocumentStart = SHIFT + CTRL + Home
 - MoveToDocumentEnd = CTRL + End
 - SelectToDocumentEnd = SHIFT + CTRL + End
+- IndentSelection = CTRL/CMD + I
 
 ## How to create macOS icons file
 
