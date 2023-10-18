@@ -6,6 +6,15 @@ Uses: https://github.com/AvaloniaUI/AvaloniaEdit
 
 ## TODO
 
+- Clear button should clear with undo.
+- Set app version to be used in window title and elsewhere.
+- Add context menu with text transformation and other operations.
+- Add TextMate themes.
+- Add theme selection to config.
+- Add font size etc. to config.
+- Add drag and drop support (a file can be dropped on the window).
+- Add app info to macOS About window and menu.
+- Create build scripts for macOS and Windows.
 - Add support for multiple languages (English, Czech, ...).
 
 ## Keyboard shortcuts
@@ -93,7 +102,7 @@ Source: https://stackoverflow.com/questions/12306223/how-to-manually-create-icns
 
 ## How to publish
 
-MacOS: https://docs.avaloniaui.net/docs/next/deployment/macOS
+App uses .NET 8.0.
 
 ```
 # For Windows:
