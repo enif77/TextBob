@@ -8,14 +8,14 @@ using Avalonia;
 
 namespace TextBob;
 
-internal static class Program
+internal class Program
 {
     /// <summary>
     /// Global application settings.
     /// </summary>
     public static Settings Settings { get; private set; } = Settings.DefaultSettings;
-    
-    
+
+
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
     // yet and stuff might break.
@@ -33,13 +33,13 @@ internal static class Program
 
         Settings = config.GetSection("Settings")
             .Get<Settings>() ?? Settings.DefaultSettings;
-        
+
         BuildAvaloniaApp()
             .StartWithClassicDesktopLifetime(args);
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.
-    private static AppBuilder BuildAvaloniaApp()
+    public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .WithInterFont()

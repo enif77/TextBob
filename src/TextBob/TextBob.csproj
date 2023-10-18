@@ -13,9 +13,6 @@
     <OutputPath>bin/$(Configuration)/$(Platform)/TextBob.app/Contents/MacOS</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <UseAppHost>true</UseAppHost>
-    
-    <!-- TODO: Remove this, once Controls/Utils/EnumExtensions is no more required. -->
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,6 +21,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
     
     <PackageReference Include="Avalonia" Version="11.0.4" />
+    <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.0.1" />
     <PackageReference Include="Avalonia.Desktop" Version="11.0.4" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.4" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.4" />

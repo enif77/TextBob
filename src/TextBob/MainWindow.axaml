@@ -2,10 +2,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:cc="clr-namespace:TextBob.Controls"
+        xmlns:AvaloniaEdit="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
         mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480"
         x:Class="TextBob.MainWindow"
-        Title="Text Bob v1.0.11"
+        Title="Text Bob v1.0.19"
         Icon="/Assets/macOS/TextBob.iconset/icon_32x32.png"
         TransparencyLevelHint="AcrylicBlur"
         Background="Transparent"
@@ -24,33 +24,44 @@
                     MaterialOpacity="0.65" />
             </ExperimentalAcrylicBorder.Material>
         </ExperimentalAcrylicBorder>
-    
+
         <Grid
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             ColumnDefinitions="*" 
             RowDefinitions="Auto, *, Auto">
 
-            <TextBox Name="SearchTextBox"
+            <TextBlock Name="TitleTextBlock"
                 Grid.Row="0" Grid.Column="0"
-                HorizontalAlignment="Center"
-                Width="320"
-                Margin="2, 4, 2, 4"
-                Watermark="Search..." />
-            
-            <cc:MultiselectTextBox Name="MainTextBox"
-                Theme="{StaticResource MultiselectTextBox}"
+                Margin="76, 8, 4, 8"
+                Text="Text Bob" />
+
+            <Panel
                 Grid.Row="1" Grid.Column="0"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                AcceptsReturn="True"
-                AcceptsTab="True"
-                Text=""
-                FontSize="16"
-                FontFamily="Consolas"
-                GotFocus="MainTextBoxOn_GotFocus"
-                KeyUp="MainTextBox_OnKeyUp"
-                PointerReleased="MainTextBox_OnPointerReleased"/>
+                Margin="2">
+
+                <ExperimentalAcrylicBorder IsHitTestVisible="False">
+                    <ExperimentalAcrylicBorder.Material>
+                        <ExperimentalAcrylicMaterial
+                            BackgroundSource="Digger"
+                            TintColor="Black"
+                            TintOpacity="1"
+                            MaterialOpacity="0.85" />
+                    </ExperimentalAcrylicBorder.Material>
+                </ExperimentalAcrylicBorder>
+
+                <AvaloniaEdit:TextEditor Name="MainTextBox"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    FontSize="14"
+                    FontFamily="Cascadia Code,Consolas,Menlo,Monospace"
+                    ShowLineNumbers="True"
+                    Text=""
+                    Foreground="LightGray"
+                    GotFocus="MainTextBox_OnGotFocus"
+                    KeyUp="MainTextBox_OnKeyUp"
+                    PointerReleased="MainTextBox_OnPointerReleased" />
+            </Panel>
 
             <StackPanel
                 Grid.Row="2" Grid.Column="0"
@@ -58,14 +69,14 @@
                 HorizontalAlignment="Right">
 
                 <TextBlock Name="InfoTextBlock"
-                    Margin="5"
-                    Padding="5" />
-            
+                    VerticalAlignment="Center"
+                    Margin="4"
+                    Foreground="LightGray" />
+                
                 <Button
-                    Margin="5"
-                    Padding="5"
+                    Margin="4"
                     Click="ClearButtonClicked"><PathIcon Data="{StaticResource delete_regular}" /></Button>
             </StackPanel>
-        </Grid>    
+        </Grid> 
     </Panel>
 </Window>

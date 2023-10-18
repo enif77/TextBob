@@ -16,6 +16,8 @@ public partial class MainWindow : Window
     private void MainWindow_OnLoaded(object? sender, RoutedEventArgs e)
     {
         MainTextBox.Focus();
+
+        UpdateInfoText();
     }
     
 
@@ -23,10 +25,12 @@ public partial class MainWindow : Window
     {
         MainTextBox.Clear();
         MainTextBox.Focus();
+
+        UpdateInfoText();
     }
 
 
-    private void MainTextBoxOn_GotFocus(object sender, GotFocusEventArgs e)
+    private void MainTextBox_OnGotFocus(object sender, GotFocusEventArgs e)
     {
         UpdateInfoText();
     }
@@ -46,31 +50,9 @@ public partial class MainWindow : Window
     
     private void UpdateInfoText()
     {
-        if (MainTextBox.Text == null)
-        {
-            return;
-        }
+        // TODO: CaretOffset se aktualizuje jen při psaní textu. Klik myši ho neaktualizuje.
 
-        var linesCount = 1;
-        for (var i = 0; i < MainTextBox.CaretIndex; i++)
-        {
-            if (MainTextBox.Text[i] == '\n')
-            {
-                linesCount++;
-            }
-        }
-        
-        var charsCount = 1;
-        for (var j = MainTextBox.CaretIndex - 1; j >= 0; j--)
-        {
-            if (MainTextBox.Text[j] == '\n')
-            {
-                break;
-            }
-        
-            charsCount++;
-        }
-        
-        InfoTextBlock.Text = $"Length: {MainTextBox.Text.Length}, caret index: {MainTextBox.CaretIndex}, line: {linesCount}, column: {charsCount}";
+        var caret = MainTextBox.TextArea.Caret;
+        InfoTextBlock.Text = $"Length {MainTextBox.Document.TextLength}, Lines {MainTextBox.Document.LineCount} | Line {caret.Line}, Column {caret.Column}";
     }
 }
