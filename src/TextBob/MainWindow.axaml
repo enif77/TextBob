@@ -57,10 +57,7 @@
                     FontFamily="Cascadia Code,Consolas,Menlo,Monospace"
                     ShowLineNumbers="True"
                     Text=""
-                    Foreground="LightGray"
-                    GotFocus="MainTextBox_OnGotFocus"
-                    KeyUp="MainTextBox_OnKeyUp"
-                    PointerReleased="MainTextBox_OnPointerReleased" />
+                    Foreground="LightGray" />
             </Panel>
 
             <StackPanel
