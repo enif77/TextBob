@@ -6,7 +6,6 @@ Uses: https://github.com/AvaloniaUI/AvaloniaEdit
 
 ## TODO
 
-- Clear button should clear with undo.
 - Set app version to be used in window title and elsewhere.
 - Add context menu with text transformation and other operations.
 - Add TextMate themes.

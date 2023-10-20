@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using AvaloniaEdit.Document;
 
 
 namespace TextBob;
@@ -25,7 +26,13 @@ public partial class MainWindow : Window
 
     private void ClearButtonClicked(object sender, RoutedEventArgs e)
     {
-        MainTextBox.Clear();
+        // This clears all text and clears undo history.
+        //MainTextBox.Clear();
+        
+        // This keeps undo history.
+        MainTextBox.SelectAll();
+        MainTextBox.Delete();
+        
         MainTextBox.Focus();
     }
     
