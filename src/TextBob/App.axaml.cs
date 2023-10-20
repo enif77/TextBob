@@ -15,12 +15,15 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new MainWindow
+            var mainWindow = new MainWindow
             {
-                // Get the initial window size from the settings.
                 Width = Program.Settings.MainWindowWidth,
                 Height = Program.Settings.MainWindowHeight
             };
+
+            mainWindow.SetShowLineNumbers(Program.Settings.TextEditorShowLineNumbers);
+            
+            desktop.MainWindow = mainWindow;
         }
         
         base.OnFrameworkInitializationCompleted();

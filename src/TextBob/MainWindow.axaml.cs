@@ -12,6 +12,7 @@ public partial class MainWindow : Window
         InitializeComponent();
     }
 
+    #region event handlers
     
     private void MainWindow_OnLoaded(object? sender, RoutedEventArgs e)
     {
@@ -46,7 +47,21 @@ public partial class MainWindow : Window
     {
         UpdateInfoText();
     }
+    
+    #endregion
 
+
+    #region settings
+
+    public void SetShowLineNumbers(bool showLineNumbers)
+    {
+        MainTextBox.ShowLineNumbers = showLineNumbers;
+    }
+
+    #endregion
+    
+    
+    #region private
     
     private void UpdateInfoText()
     {
@@ -55,4 +70,6 @@ public partial class MainWindow : Window
         var caret = MainTextBox.TextArea.Caret;
         InfoTextBlock.Text = $"Length {MainTextBox.Document.TextLength}, Lines {MainTextBox.Document.LineCount} | Line {caret.Line}, Column {caret.Column}";
     }
+    
+    #endregion
 }

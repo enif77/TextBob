@@ -5,15 +5,33 @@ namespace TextBob;
 /// </summary>
 public class Settings
 {
+    private const int DefaultMainWindowWidth = 800;
+    private const int DefaultMainWindowHeight = 600;
+    
+    
+    #region main window
+    
     /// <summary>
     /// Initial main window width.
     /// </summary>
-    public int MainWindowWidth { get; init; } = 800;
+    public int MainWindowWidth { get; init; } = DefaultMainWindowWidth;
     
     /// <summary>
     /// Initial main window height.
     /// </summary>
-    public int MainWindowHeight { get; init; } = 600;
+    public int MainWindowHeight { get; init; } = DefaultMainWindowHeight;
+    
+    #endregion
+
+
+    #region text editor
+
+    /// <summary>
+    /// Shows line numbers in text editor.
+    /// </summary>
+    public bool TextEditorShowLineNumbers { get; init; }
+
+    #endregion
     
     
     /// <summary>
@@ -22,7 +40,7 @@ public class Settings
     public static Settings DefaultSettings
         => new()
         {
-            MainWindowWidth = 800,
-            MainWindowHeight = 600
+            MainWindowWidth = DefaultMainWindowWidth,
+            MainWindowHeight = DefaultMainWindowHeight
         };
 }
