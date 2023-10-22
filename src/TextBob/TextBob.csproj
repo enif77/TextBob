@@ -10,8 +10,8 @@
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
 
     <!-- macOS app package path. -->
-    <OutputPath>bin/$(Configuration)/$(Platform)/TextBob.app/Contents/MacOS</OutputPath>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+<!--    <OutputPath>bin/$(Configuration)/$(Platform)/TextBob.app/Contents/MacOS</OutputPath>-->
+<!--    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>-->
     <UseAppHost>true</UseAppHost>
   </PropertyGroup>
 
@@ -36,14 +36,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Assets/macOS/Info.plist">
-      <TargetPath>%(Filename)%(Extension)</TargetPath>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets/macOS/TextBob.icns">
-      <TargetPath>%(Filename)%(Extension)</TargetPath>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+<!--    <None Include="Assets/macOS/Info.plist">-->
+<!--      <TargetPath>%(Filename)%(Extension)</TargetPath>-->
+<!--      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>-->
+<!--    </None>-->
+<!--    <None Include="Assets/macOS/TextBob.icns">-->
+<!--      <TargetPath>%(Filename)%(Extension)</TargetPath>-->
+<!--      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>-->
+<!--    </None>-->
     <None Update="appsettings.json">
       <TargetPath>%(Filename)%(Extension)</TargetPath>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

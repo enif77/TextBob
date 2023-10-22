@@ -64,6 +64,32 @@ Uses: https://github.com/AvaloniaUI/AvaloniaEdit
 - SelectToDocumentEnd = SHIFT + CTRL + End
 - IndentSelection = CTRL/CMD + I
 
+## Building for macOS
+
+To create app package for macOS, run following command in the folder with the `build-macos.sh` build script:
+
+```
+bash ./build-macos.sh
+```
+
+Resulting package structure:
+
+```
+TextBob.app
+    Contents\
+        _CodeSignature\
+            CodeResources
+        MacOS\
+            TextBob
+            TextBob.dll
+            Avalonia.dll
+            ...
+        Resources\
+            TerxtBob.icns (icon file)
+        Info.plist
+        embedded.provisionprofile
+```
+
 ## How to create macOS icons file
 
 You can achieve this using the `sips` command.
