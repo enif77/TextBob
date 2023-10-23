@@ -1,11 +1,18 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using TextBob.ViewModels;
 
 namespace TextBob;
 
 public partial class App : Application
 {
+    public App()
+    {
+        DataContext = new AppViewModel();
+    }
+
+    
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);

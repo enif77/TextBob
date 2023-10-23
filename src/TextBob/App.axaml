@@ -1,6 +1,9 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:TextBob.ViewModels"
              x:Class="TextBob.App"
+             x:DataType="vm:AppViewModel"
+             x:CompileBindings="True"
              Name="Text Bob"
              RequestedThemeVariant="Dark">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
@@ -10,6 +13,14 @@
         <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
         <StyleInclude Source="avares://TextBob/Icons.axaml" />
     </Application.Styles>
+             
+    <NativeMenu.Menu>
+        <NativeMenu>
+            <NativeMenuItem
+                Header="About Text Bob"
+                Command="{Binding ShowAboutWindow}" />
+        </NativeMenu>
+    </NativeMenu.Menu>
              
     <TrayIcon.Icons>
         <TrayIcons>
