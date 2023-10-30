@@ -7,9 +7,15 @@ namespace TextBob;
 
 public partial class App : Application
 {
+    private const string AppVersionInfo = "Text Bob 1.0.23";
+
+
     public App()
     {
-        DataContext = new AppViewModel();
+        DataContext = new AppViewModel()
+        {
+            Name = AppVersionInfo
+        };
     }
 
     
@@ -18,6 +24,7 @@ public partial class App : Application
         AvaloniaXamlLoader.Load(this);
     }
 
+
     public override void OnFrameworkInitializationCompleted()
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -25,7 +32,12 @@ public partial class App : Application
             var mainWindow = new MainWindow
             {
                 Width = Program.Settings.MainWindowWidth,
-                Height = Program.Settings.MainWindowHeight
+                Height = Program.Settings.MainWindowHeight,
+
+                DataContext = new MainWindowViewModel()
+                {
+                    Title = AppVersionInfo
+                }
             };
 
             mainWindow.SetShowLineNumbers(Program.Settings.TextEditorShowLineNumbers);
