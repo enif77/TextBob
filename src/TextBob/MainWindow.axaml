@@ -3,9 +3,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:AvaloniaEdit="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
+        xmlns:vm="using:TextBob.ViewModels"
         mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480"
+        x:CompileBindings="True"
+        x:DataType="vm:MainWindowViewModel"
         x:Class="TextBob.MainWindow"
-        Title="Text Bob v1.0.19"
+        Title="{Binding Title}"
         Icon="/Assets/macOS/TextBob.iconset/icon_32x32.png"
         TransparencyLevelHint="AcrylicBlur"
         Background="Transparent"
@@ -34,7 +37,7 @@
             <TextBlock Name="TitleTextBlock"
                 Grid.Row="0" Grid.Column="0"
                 Margin="76, 8, 4, 8"
-                Text="Text Bob" />
+                Text="{Binding Title}" />
 
             <Panel
                 Grid.Row="1" Grid.Column="0"
