@@ -9,18 +9,17 @@ internal class MainWindowViewModel : ViewModelBase
     /// </summary>
     public string? Title
     {
-        get
-        {
-            return _title;
-        }
+        get => _title;
 
         set
         {
-            if (_title != value)
+            if (_title == value)
             {
-                _title = value;
-                RaisePropertyChanged();
+                return;
             }
+
+            _title = value;
+            RaisePropertyChanged();
         }
     }
 }
