@@ -8,7 +8,7 @@ using Avalonia;
 
 namespace TextBob;
 
-internal class Program
+internal static class Program
 {
     /// <summary>
     /// Global application settings.
