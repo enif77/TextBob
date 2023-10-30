@@ -4,7 +4,7 @@
              x:Class="TextBob.App"
              x:DataType="vm:AppViewModel"
              x:CompileBindings="True"
-             Name="Text Bob"
+             Name="{Binding Name}"
              RequestedThemeVariant="Dark">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
