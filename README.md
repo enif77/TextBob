@@ -140,6 +140,7 @@ dotnet publish -c Release --runtime osx-arm64 --force --self-contained true -p:P
 ## Links
 
 - https://avaloniaui.net/
+- https://avaloniaui.github.io/icons.html
 - https://docs.avaloniaui.net/docs/next/guides/platforms/macos-development
 - https://docs.avaloniaui.net/docs/next/deployment/macOS
 - https://learn.microsoft.com/en-us/windows/apps/design/style/iconography/app-icon-construction
