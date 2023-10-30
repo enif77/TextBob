@@ -6,6 +6,32 @@ namespace TextBob.ViewModels;
 public class AppViewModel : ViewModelBase
 { 
     private AboutWindow? _aboutWindow;
+    private string? _name;
+
+
+    /// <summary>
+    /// The application name.
+    /// </summary>
+    public string? Name
+    {
+        get
+        {
+            return _name;
+        }
+
+        set
+        {
+            if (_name != value)
+            {
+                _name = value;
+
+                // We call RaisePropertyChanged() to notify the UI about changes.
+                // We can omit the property name here because [CallerMemberName] will provide it for us.
+                RaisePropertyChanged();
+            }
+        }
+    }
+    
     
     public async void ShowAboutWindow()
     {
