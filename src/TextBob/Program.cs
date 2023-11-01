@@ -27,7 +27,7 @@ internal static class Program
             .AddJsonFile(
                 "appsettings.json",
                 optional: true,
-                reloadOnChange: true);
+                reloadOnChange: false);  // This slows down app startup. Also - not sure, how to react to config reloads.
 
         var config = builder.Build();
 
