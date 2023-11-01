@@ -77,6 +77,9 @@
                 <Button
                     Margin="4"
                     Click="ClearButtonClicked"><PathIcon Data="{StaticResource delete_regular}" /></Button>
+                <Button
+                    Margin="4"
+                    Click="AboutButtonClicked"><PathIcon Data="{StaticResource info_regular}" /></Button>
             </StackPanel>
         </Grid> 
     </Panel>
