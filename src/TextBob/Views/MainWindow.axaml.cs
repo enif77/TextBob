@@ -21,6 +21,18 @@ public partial class MainWindow : Window
 
         UpdateInfoText();
     }
+
+
+    private void AboutButtonClicked(object sender, RoutedEventArgs e)
+    {
+        var viewModel = DataContext as MainWindowViewModel;
+        if (viewModel == null)
+        {
+            return;
+        }
+
+        viewModel.AppViewModel?.ShowAboutWindow();
+    }
     
 
     private void ClearButtonClicked(object sender, RoutedEventArgs e)
