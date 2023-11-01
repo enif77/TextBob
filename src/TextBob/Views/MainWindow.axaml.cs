@@ -1,6 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 
+using TextBob.ViewModels;
+
 
 namespace TextBob.Views;
 
