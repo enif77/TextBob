@@ -38,6 +38,7 @@ public partial class App : Application
 
                 DataContext = new MainWindowViewModel()
                 {
+                    AppViewModel = (AppViewModel?)DataContext,
                     Title = AppVersionInfo
                 }
             };
