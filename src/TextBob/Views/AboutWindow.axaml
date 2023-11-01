@@ -7,6 +7,7 @@
         Title="About Text Bob"
         Width="320"
         Height="200"
+        WindowStartupLocation="CenterOwner"
         HorizontalContentAlignment="Center"
         VerticalContentAlignment="Center"
         Background="DimGray"
