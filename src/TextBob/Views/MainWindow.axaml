@@ -15,6 +15,7 @@
         ExtendClientAreaToDecorationsHint="True"
         Width="640"
         Height="480"
+        WindowStartupLocation="CenterScreen"
         Loaded="MainWindow_OnLoaded">
 
     <Panel>
