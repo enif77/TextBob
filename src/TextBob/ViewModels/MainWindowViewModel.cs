@@ -9,10 +9,7 @@ internal class MainWindowViewModel : ViewModelBase
     /// </summary>
     public AppViewModel? AppViewModel
     {
-        get
-        {
-            return _appViewModel;
-        }
+        get => _appViewModel;
 
         set
         {
