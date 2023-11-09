@@ -29,21 +29,22 @@
         <TextBlock
             Grid.Row="1"
             Margin="0 5"
-            FontSize="16"
+            FontSize="12"
             FontStyle="Italic"
             xml:space="preserve"
             Text="{Binding VersionInfo}"/>
         
         <ScrollViewer Grid.Row="2">
             <StackPanel>
-                <TextBlock
-                    Margin="0 5"
-                    FontWeight="Bold"
-                    xml:space="preserve">Keyboard shortcuts</TextBlock>
+                <!-- <TextBlock -->
+                <!--     Margin="0 5" -->
+                <!--     FontWeight="Bold" -->
+                <!--     xml:space="preserve">Keyboard shortcuts</TextBlock> -->
                 
                 <TextBlock
-                    Margin="0 5"
+                    Padding="4"
                     xml:space="preserve"
+                    Background="#FF2F2F2F"
                     Text="{Binding Text}"/>
             </StackPanel>
         </ScrollViewer>

@@ -56,7 +56,10 @@ public class AppViewModel : ViewModelBase
             {
                 AppViewModel = this,
                 VersionInfo = mainWindow.Title,
-                Text = @"CTRL/CMD + C - Copy
+                Text = @"Keyboard shortcuts
+------------------
+
+CTRL/CMD + C - Copy
 CTRL/CMD + X - Cut
 CTRL/CMD + V - Paste
 CTRL/CMD + A - Select all
