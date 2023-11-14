@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
+
 using TextBob.Views;
 
 
@@ -34,6 +35,29 @@ public class AppViewModel : ViewModelBase
     }
     
     
+    private readonly string? _versionInfo;
+
+    /// <summary>
+    /// The version info.
+    /// </summary>
+    public string? VersionInfo
+    {
+        get => _versionInfo;
+
+        init
+        {
+            if (_versionInfo == value)
+            {
+                return;
+            }
+
+            _versionInfo = value;
+            
+            RaisePropertyChanged();
+        }
+    }
+    
+    
     public async void ShowAboutWindow()
     {
         if (_aboutWindow is not null)
@@ -55,7 +79,7 @@ public class AppViewModel : ViewModelBase
             DataContext = new AboutWindowViewModel()
             {
                 AppViewModel = this,
-                VersionInfo = mainWindow.Title,
+                VersionInfo = VersionInfo,
                 Text = @"Keyboard shortcuts
 ------------------
 

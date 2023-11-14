@@ -59,7 +59,7 @@
                     VerticalAlignment="Stretch"
                     FontSize="14"
                     FontFamily="Cascadia Code,Consolas,Menlo,Monospace"
-                    ShowLineNumbers="True"
+                    ShowLineNumbers="{Binding ShowLineNumbers}"
                     Text=""
                     Foreground="LightGray" />
             </Panel>

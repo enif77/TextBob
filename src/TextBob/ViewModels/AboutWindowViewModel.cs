@@ -41,6 +41,7 @@ internal class AboutWindowViewModel : ViewModelBase
             }
 
             _versionInfo = value;
+            
             RaisePropertyChanged();
         }
     }
@@ -63,6 +64,7 @@ internal class AboutWindowViewModel : ViewModelBase
             }
 
             _text = value;
+            
             RaisePropertyChanged();
         }
     }

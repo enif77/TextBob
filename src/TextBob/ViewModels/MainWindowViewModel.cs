@@ -45,4 +45,27 @@ internal class MainWindowViewModel : ViewModelBase
             RaisePropertyChanged();
         }
     }
+    
+    
+    private bool _showLineNumbers;
+
+    /// <summary>
+    /// Shows or hides line numbers in the left column.
+    /// </summary>
+    public bool ShowLineNumbers
+    {
+        get => _showLineNumbers;
+
+        set
+        {
+            if (_showLineNumbers == value)
+            {
+                return;
+            }
+
+            _showLineNumbers = value;
+
+            RaisePropertyChanged();
+        }
+    }
 }

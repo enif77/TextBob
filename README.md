@@ -6,13 +6,12 @@ Uses: https://github.com/AvaloniaUI/AvaloniaEdit
 
 ## TODO
 
-- Set app version to be used in window title and elsewhere.
+- Separate the Info window from the About window.
 - Add context menu with text transformation and other operations.
 - Add TextMate themes.
 - Add theme selection to config.
 - Add font size etc. to config.
 - Add drag and drop support (a file can be dropped on the window).
-- Add app info to macOS About window and menu.
 - Create build scripts for macOS and Windows.
 - Add support for multiple languages (English, Czech, ...).
 

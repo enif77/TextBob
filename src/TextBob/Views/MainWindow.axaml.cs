@@ -1,3 +1,4 @@
+//using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 
@@ -54,10 +55,19 @@ public partial class MainWindow : Window
 
     #region settings
 
-    public void SetShowLineNumbers(bool showLineNumbers)
-    {
-        MainTextBox.ShowLineNumbers = showLineNumbers;
-    }
+    // public static readonly DirectProperty<MainWindow, bool> ShowLineNumbersProperty =
+    //     AvaloniaProperty.RegisterDirect<MainWindow, bool>(
+    //         nameof(ShowLineNumbers),
+    //         o => o.ShowLineNumbers,
+    //         (o, v) => o.ShowLineNumbers = v);
+
+    // private bool _showLineNumbers = true;
+
+    // public bool ShowLineNumbers
+    // {
+    //     get { return _showLineNumbers; }
+    //     set { SetAndRaise(ShowLineNumbersProperty, ref _showLineNumbers, value); }
+    // }
 
     #endregion
     
