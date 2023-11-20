@@ -11,7 +11,7 @@ cd "$APP" || exit
 # PUBLISH_OUTPUT_DIRECTORY should point to the output directory of your dotnet publish command.
 # One example is /path/to/your/csproj/bin/Release/netcoreapp3.1/osx-x64/publish/.
 # If you want to change output directories, add `--output /my/directory/path` to your `dotnet publish` command.
-PUBLISH_OUTPUT_DIRECTORY="$PWD/src/TextBob/bin/Release/net7.0/osx-arm64/publish/."
+PUBLISH_OUTPUT_DIRECTORY="$PWD/src/TextBob/bin/Release/net8.0/osx-arm64/publish/."
 
 INFO_PLIST="$APP_SRC/TextBob/Assets/macOS/Info.plist"
 ICON_FILE="$APP_SRC/TextBob/Assets/macOS/TextBob.icns"
