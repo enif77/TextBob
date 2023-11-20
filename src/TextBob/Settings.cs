@@ -34,6 +34,16 @@ public class Settings
     #endregion
     
     
+    #region snapshot file
+    
+    /// <summary>
+    /// A path to the snapshot file.
+    /// </summary>
+    public string? SnapshotFilePath { get; init; }
+    
+    #endregion
+    
+    
     /// <summary>
     /// Returns default settings.
     /// </summary>

@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 
@@ -56,8 +58,72 @@ public class AppViewModel : ViewModelBase
             RaisePropertyChanged();
         }
     }
-    
-    
+
+
+    /// <summary>
+    /// Loads text from the snapshot.
+    /// </summary>
+    /// <returns>A text from the snapshot.</returns>
+    public string LoadTextSnapshot()
+    {
+        try
+        {
+            var snapshotFilePath = GetSnapshotFilePath();
+                
+            // Load text from the snapshot.
+            return (File.Exists(snapshotFilePath))
+                ? File.ReadAllText(snapshotFilePath)
+                : string.Empty;
+        }
+        catch (IOException)
+        {
+            // We are OK with all IO exceptions here.
+            return string.Empty;
+        }
+    }
+
+    /// <summary>
+    /// Saves text to the snapshot.
+    /// </summary>
+    /// <param name="text">A text to be saved to the snapshot file.</param>
+    public void SaveTextSnapshot(string text)
+    {
+        var snapshotFilePath = GetSnapshotFilePath();
+        if (string.IsNullOrEmpty(snapshotFilePath))
+        {
+            return;
+        }
+        
+        try
+        {
+            File.WriteAllText(snapshotFilePath, text);
+        }
+        catch (IOException)
+        {
+            // We are OK with all IO exceptions here.
+        }
+    }
+
+
+    private string GetSnapshotFilePath()
+    {
+        var snapshotFilePath = Program.Settings.SnapshotFilePath ?? string.Empty;
+        if (File.Exists(snapshotFilePath))
+        {
+            return snapshotFilePath;
+        }
+
+        if (snapshotFilePath.StartsWith("~/"))
+        {
+            snapshotFilePath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                snapshotFilePath[2..]);
+        }
+
+        return snapshotFilePath;
+    }
+
+
     public async void ShowAboutWindow()
     {
         if (_aboutWindow is not null)

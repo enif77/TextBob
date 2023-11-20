@@ -60,7 +60,6 @@
                     FontSize="14"
                     FontFamily="Cascadia Code,Consolas,Menlo,Monospace"
                     ShowLineNumbers="{Binding ShowLineNumbers}"
-                    Text=""
                     Foreground="LightGray" />
             </Panel>
 
@@ -74,6 +73,9 @@
                     Margin="4"
                     Foreground="LightGray" />
                 
+                <Button
+                    Margin="4"
+                    Click="SaveButtonClicked"><PathIcon Data="{StaticResource save_regular}" /></Button>
                 <Button
                     Margin="4"
                     Click="ClearButtonClicked"><PathIcon Data="{StaticResource delete_regular}" /></Button>

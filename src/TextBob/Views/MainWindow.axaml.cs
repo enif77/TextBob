@@ -29,15 +29,23 @@ public partial class MainWindow : Window
     private void AboutButtonClicked(object sender, RoutedEventArgs e)
     {
         var viewModel = DataContext as MainWindowViewModel;
-        if (viewModel == null)
-        {
-            return;
-        }
 
-        viewModel.AppViewModel?.ShowAboutWindow();
+        viewModel?.AppViewModel?.ShowAboutWindow();
+        
+        MainTextBox.Focus();
     }
     
 
+    private void SaveButtonClicked(object sender, RoutedEventArgs e)
+    {
+        var viewModel = DataContext as MainWindowViewModel;
+        
+        viewModel?.AppViewModel?.SaveTextSnapshot(MainTextBox.Text);
+        
+        MainTextBox.Focus();
+    }
+    
+    
     private void ClearButtonClicked(object sender, RoutedEventArgs e)
     {
         // This clears all text and clears undo history.

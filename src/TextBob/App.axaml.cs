@@ -34,7 +34,7 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new MainWindow
+            var mainWindow = new MainWindow
             {
                 Width = Program.Settings.MainWindowWidth,
                 Height = Program.Settings.MainWindowHeight,
@@ -46,6 +46,10 @@ public partial class App : Application
                     ShowLineNumbers = Program.Settings.TextEditorShowLineNumbers
                 }
             };
+            
+            mainWindow.MainTextBox.Text = ((AppViewModel?)DataContext)?.LoadTextSnapshot() ?? string.Empty;
+            
+            desktop.MainWindow = mainWindow;
         }
         
         base.OnFrameworkInitializationCompleted();
