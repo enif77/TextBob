@@ -11,7 +11,7 @@ namespace TextBob;
 public partial class App : Application
 {
     private const string AppName = "Text Bob";
-    private const string AppVersionInfo = AppName + " 1.0.27";
+    private const string AppVersionInfo = AppName + " 1.0.28";
 
 
     public App()
