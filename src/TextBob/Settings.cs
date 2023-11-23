@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 namespace TextBob;
 
 /// <summary>
@@ -53,4 +55,27 @@ public class Settings
             MainWindowWidth = DefaultMainWindowWidth,
             MainWindowHeight = DefaultMainWindowHeight
         };
+
+    /// <summary>
+    /// Converts this instance to JSON.
+    /// </summary>
+    /// <returns>JSON representation of this instance.</returns>
+    public string? ToJson()
+    {
+        return JsonSerializer.Serialize(
+            new SettingsContainer()
+            {
+                Settings = this
+            },
+            new JsonSerializerOptions()
+            {
+                WriteIndented = true
+            });
+    }
+
+
+    private class SettingsContainer
+    {
+        public Settings? Settings { get; set; }
+    }
 }

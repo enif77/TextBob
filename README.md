@@ -6,7 +6,8 @@ Uses: https://github.com/AvaloniaUI/AvaloniaEdit
 
 ## TODO
 
-- Add "text changed" against the snapshot file state.
+- Add CTRL/CMD+S shortcut for Save.
+- Add "text changed" indicator against the snapshot file state.
 - Separate the Info window from the About window.
 - Add context menu with text transformation and other operations.
 - Add TextMate themes.

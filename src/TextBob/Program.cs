@@ -2,6 +2,8 @@
 using System.IO;
 
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.FileProviders.Physical;
 
 using Avalonia;
 
@@ -22,11 +24,26 @@ internal static class Program
     [STAThread]
     public static void Main(string[] args)
     {
+        const string configFileName = ".text-bob.json";
+        
+        var configFileRootPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        
+        var configPath = Path.Combine(
+            configFileRootPath,
+            configFileName);
+        if (File.Exists(configPath) == false)
+        {
+            File.WriteAllText(configPath, Settings.DefaultSettings.ToJson());
+        }
+        
         var builder = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
+            //.SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile(
-                "appsettings.json",
-                optional: true,
+                new PhysicalFileProvider(
+                    configFileRootPath,
+                    ExclusionFilters.None),
+                configFileName,
+                optional: false,
                 reloadOnChange: false);  // This slows down app startup. Also - not sure, how to react to config reloads.
 
         var config = builder.Build();
@@ -39,7 +56,7 @@ internal static class Program
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.
-    public static AppBuilder BuildAvaloniaApp()
+    private static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .WithInterFont()
