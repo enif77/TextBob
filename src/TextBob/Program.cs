@@ -26,24 +26,33 @@ internal static class Program
     {
         const string configFileName = ".text-bob.json";
         
+        // We are reading and writing config file in user's home directory.
         var configFileRootPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         
+        // If config file does not exist, create it with default values.
         var configPath = Path.Combine(
             configFileRootPath,
             configFileName);
         if (File.Exists(configPath) == false)
         {
-            File.WriteAllText(configPath, Settings.DefaultSettings.ToJson());
+            try
+            {
+                File.WriteAllText(configPath, Settings.DefaultSettings.ToJson());
+            }
+            catch (IOException)
+            {
+                // We are OK with an IO related exception.
+            }
         }
         
         var builder = new ConfigurationBuilder()
             //.SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile(
-                new PhysicalFileProvider(
+                new PhysicalFileProvider(      // This provider allows us to load config from an absolute path.
                     configFileRootPath,
-                    ExclusionFilters.None),
+                    ExclusionFilters.System),  // We are reading from an hidden file.
                 configFileName,
-                optional: false,
+                optional: true,
                 reloadOnChange: false);  // This slows down app startup. Also - not sure, how to react to config reloads.
 
         var config = builder.Build();
