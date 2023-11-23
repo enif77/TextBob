@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextBob", "TextBob\TextBob.csproj", "{65E59CB8-8BD6-4EDA-8862-C929FD6B5939}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniMvvm", "MiniMvvm\MiniMvvm.csproj", "{E8B81010-44B2-4791-A7CB-509611710ACA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{65E59CB8-8BD6-4EDA-8862-C929FD6B5939}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65E59CB8-8BD6-4EDA-8862-C929FD6B5939}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{65E59CB8-8BD6-4EDA-8862-C929FD6B5939}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8B81010-44B2-4791-A7CB-509611710ACA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8B81010-44B2-4791-A7CB-509611710ACA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8B81010-44B2-4791-A7CB-509611710ACA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8B81010-44B2-4791-A7CB-509611710ACA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
