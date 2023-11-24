@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using MiniMvvm;
@@ -149,7 +150,7 @@ public class AppViewModel : ViewModelBase
     }
 
 
-    public async void ShowAboutWindow()
+    public async Task ShowAboutWindow()
     {
         if (_aboutWindow is not null)
         {
