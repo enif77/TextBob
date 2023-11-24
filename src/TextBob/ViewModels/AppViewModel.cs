@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-
+using MiniMvvm;
 using TextBob.Views;
 
 
@@ -13,6 +13,7 @@ public class AppViewModel : ViewModelBase
     private AboutWindow? _aboutWindow;
     private string? _name;
 
+    #region properties
 
     /// <summary>
     /// The application name.
@@ -58,8 +59,32 @@ public class AppViewModel : ViewModelBase
             RaisePropertyChanged();
         }
     }
+    
+    #endregion
+    
+    
+    #region commands
+    
+    public MiniCommand ExitCommand { get; }
+    
+    #endregion
 
-
+    
+    #region ctor
+    
+    public AppViewModel()
+    {
+        ExitCommand = MiniCommand.Create(() =>
+        {
+            if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
+            {
+                lifetime.Shutdown();
+            }
+        });
+    }
+    
+    #endregion
+    
     /// <summary>
     /// Loads text from the snapshot.
     /// </summary>
