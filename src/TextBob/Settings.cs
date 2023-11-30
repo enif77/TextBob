@@ -32,7 +32,32 @@ public class Settings
     /// Shows line numbers in text editor.
     /// </summary>
     public bool TextEditorShowLineNumbers { get; init; }
+    
+    /// <summary>
+    /// Converts TABs to SPACEs.
+    /// </summary>
+    public bool TextEditorConvertTabsToSpaces { get; init; }
 
+    /// <summary>
+    /// Emails are clickable.
+    /// </summary>
+    public bool TextEditorEnableEmailHyperlinks { get; init; }
+
+    /// <summary>
+    /// URLs are clickable.
+    /// </summary>
+    public bool TextEditorEnableHyperlinks { get; init; }
+
+    /// <summary>
+    /// Highlights the current line.
+    /// </summary>
+    public bool TextEditorHighlightCurrentLine { get; init; }
+
+    /// <summary>
+    /// The number of indentation unit to use in indentation.
+    /// </summary>
+    public int TextEditorIndentationSize { get; init; }
+    
     #endregion
     
     
@@ -53,7 +78,10 @@ public class Settings
         => new()
         {
             MainWindowWidth = DefaultMainWindowWidth,
-            MainWindowHeight = DefaultMainWindowHeight
+            MainWindowHeight = DefaultMainWindowHeight,
+
+            TextEditorConvertTabsToSpaces = true,
+            TextEditorIndentationSize = 4
         };
 
     /// <summary>

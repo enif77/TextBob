@@ -1,3 +1,6 @@
+using MiniMvvm;
+
+
 namespace TextBob.ViewModels;
 
 internal class AboutWindowViewModel : ViewModelBase

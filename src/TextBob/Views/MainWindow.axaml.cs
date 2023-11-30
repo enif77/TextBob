@@ -1,5 +1,9 @@
 //using Avalonia;
+
+using System;
+using System.Runtime.InteropServices;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 
 using TextBob.ViewModels;
@@ -15,13 +19,43 @@ public partial class MainWindow : Window
         
         MainTextBox.TextArea.Caret.PositionChanged += (sender, args) => UpdateInfoText();
     }
+    
+    public static string MenuQuitHeader => RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
+        ? "Quit Text Bob"
+        : "E_xit";
+    
+    public static KeyGesture MenuQuitGesture => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ?
+        new KeyGesture(Key.Q, KeyModifiers.Meta) :
+        new KeyGesture(Key.F4, KeyModifiers.Alt);
+    
 
     #region event handlers
+    
+    public void OnCloseClicked(object sender, EventArgs args)
+    {
+        Close();
+    }
     
     private void MainWindow_OnLoaded(object? sender, RoutedEventArgs e)
     {
         MainTextBox.Focus();
 
+        // TODO: Figure out, how to bind to options.
+
+        var viewModel = DataContext as MainWindowViewModel;
+        if (viewModel == null)
+        {
+            return;
+        }
+        
+        var options = MainTextBox.Options;
+
+        options.ConvertTabsToSpaces = viewModel.ConvertTabsToSpaces;
+        options.EnableEmailHyperlinks = viewModel.EnableEmailHyperlinks;
+        options.EnableHyperlinks = viewModel.EnableHyperlinks;
+        options.HighlightCurrentLine = viewModel.HighlightCurrentLine;
+        options.IndentationSize = viewModel.IndentationSize;
+        
         UpdateInfoText();
     }
 

@@ -3,7 +3,9 @@ using System.IO;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
+
 using MiniMvvm;
+
 using TextBob.Views;
 
 
@@ -12,10 +14,12 @@ namespace TextBob.ViewModels;
 public class AppViewModel : ViewModelBase
 { 
     private AboutWindow? _aboutWindow;
-    private string? _name;
-
+    
+    
     #region properties
 
+    private string? _name;
+    
     /// <summary>
     /// The application name.
     /// </summary>
@@ -97,7 +101,7 @@ public class AppViewModel : ViewModelBase
             var snapshotFilePath = GetSnapshotFilePath();
                 
             // Load text from the snapshot.
-            return (File.Exists(snapshotFilePath))
+            return File.Exists(snapshotFilePath)
                 ? File.ReadAllText(snapshotFilePath)
                 : string.Empty;
         }
