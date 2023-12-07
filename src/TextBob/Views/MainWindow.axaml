@@ -122,7 +122,8 @@
                     Click="CommandButtonClicked"><PathIcon Data="{StaticResource save_regular}" /></Button>
                 <Button
                     Margin="4"
-                    Click="ClearButtonClicked"><PathIcon Data="{StaticResource delete_regular}" /></Button>
+                    Command="{Binding ClearCommand}"
+                    Click="CommandButtonClicked"><PathIcon Data="{StaticResource delete_regular}" /></Button>
                 <Button
                     Margin="4"
                     Command="{Binding AboutCommand}"

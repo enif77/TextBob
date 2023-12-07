@@ -64,19 +64,6 @@ public partial class MainWindow : Window
     {
         MainTextBox.Focus();
     }
-   
-    
-    private void ClearButtonClicked(object sender, RoutedEventArgs e)
-    {
-        // This clears all text and clears undo history.
-        //MainTextBox.Clear();
-        
-        // This keeps undo history.
-        MainTextBox.SelectAll();
-        MainTextBox.Delete();
-        
-        MainTextBox.Focus();
-    }
     
     #endregion
 

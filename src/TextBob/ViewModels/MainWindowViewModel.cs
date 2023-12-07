@@ -224,6 +224,8 @@ internal class MainWindowViewModel : ViewModelBase
 
     public MiniCommand SaveCommand { get; }
     
+    public MiniCommand ClearCommand { get; }
+    
     public MiniCommand ExitCommand { get; }
     
     #endregion
@@ -258,6 +260,11 @@ internal class MainWindowViewModel : ViewModelBase
             }
 
             AppViewModel?.SaveTextSnapshot(Document.Text);
+        });
+        
+        ClearCommand = MiniCommand.Create(() =>
+        {
+            Document?.Replace(0, Document.TextLength, string.Empty);
         });
         
         ExitCommand = MiniCommand.Create(() =>
