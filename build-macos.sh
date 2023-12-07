@@ -3,9 +3,13 @@ APP=$PWD
 APP_SRC="$APP/src"
 APP_NAME="$APP/publish/macOS/TextBob.app"
 
+# Set the language to English.
+export DOTNET_CLI_UI_LANGUAGE=en
+
 # Publish the app.
 cd "$APP_SRC" || exit
-dotnet publish -c Release --runtime osx-arm64 --force --self-contained true -p:PublishSingleFile=true
+#dotnet publish -c Release --runtime osx-arm64 --force --self-contained true -p:PublishSingleFile=true
+dotnet publish ./TextBob/TextBob.csproj -c Release --runtime osx-arm64 --force --self-contained true -p:PublishSingleFile=true
 cd "$APP" || exit
 
 # PUBLISH_OUTPUT_DIRECTORY should point to the output directory of your dotnet publish command.
