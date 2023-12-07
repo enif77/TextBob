@@ -119,13 +119,14 @@
                 <Button
                     Margin="4"
                     Command="{Binding SaveCommand}"
-                    Click="SaveButtonClicked"><PathIcon Data="{StaticResource save_regular}" /></Button>
+                    Click="CommandButtonClicked"><PathIcon Data="{StaticResource save_regular}" /></Button>
                 <Button
                     Margin="4"
                     Click="ClearButtonClicked"><PathIcon Data="{StaticResource delete_regular}" /></Button>
                 <Button
                     Margin="4"
-                    Click="AboutButtonClicked"><PathIcon Data="{StaticResource info_regular}" /></Button>
+                    Command="{Binding AboutCommand}"
+                    Click="CommandButtonClicked"><PathIcon Data="{StaticResource info_regular}" /></Button>
             </StackPanel>
         </Grid> 
     </Panel>

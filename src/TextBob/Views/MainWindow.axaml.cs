@@ -60,21 +60,11 @@ public partial class MainWindow : Window
     }
 
 
-    private void AboutButtonClicked(object sender, RoutedEventArgs e)
-    {
-        var viewModel = DataContext as MainWindowViewModel;
-
-        viewModel?.AppViewModel?.ShowAboutWindow();
-        
-        MainTextBox.Focus();
-    }
-    
-
-    private void SaveButtonClicked(object sender, RoutedEventArgs e)
+    private void CommandButtonClicked(object sender, RoutedEventArgs e)
     {
         MainTextBox.Focus();
     }
-    
+   
     
     private void ClearButtonClicked(object sender, RoutedEventArgs e)
     {
