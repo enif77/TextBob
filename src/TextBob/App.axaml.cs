@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using AvaloniaEdit.Document;
 
 using TextBob.ViewModels;
 using TextBob.Views;
@@ -38,7 +39,6 @@ public partial class App : Application
             {
                 Width = Program.Settings.MainWindowWidth,
                 Height = Program.Settings.MainWindowHeight,
-
                 DataContext = new MainWindowViewModel()
                 {
                     AppViewModel = (AppViewModel?)DataContext,
@@ -48,12 +48,11 @@ public partial class App : Application
                     EnableEmailHyperlinks = Program.Settings.TextEditorEnableEmailHyperlinks,
                     EnableHyperlinks = Program.Settings.TextEditorEnableHyperlinks,
                     HighlightCurrentLine = Program.Settings.TextEditorHighlightCurrentLine,
-                    IndentationSize = Program.Settings.TextEditorIndentationSize
+                    IndentationSize = Program.Settings.TextEditorIndentationSize,
+                    Document = new TextDocument(((AppViewModel?)DataContext)?.LoadTextSnapshot() ?? string.Empty)
                 }
             };
-            
-            mainWindow.MainTextBox.Text = ((AppViewModel?)DataContext)?.LoadTextSnapshot() ?? string.Empty;
-            
+
             desktop.MainWindow = mainWindow;
         }
         

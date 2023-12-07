@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
+using AvaloniaEdit.Document;
 
 using MiniMvvm;
 
@@ -50,6 +51,28 @@ internal class MainWindowViewModel : ViewModelBase
             }
 
             _title = value;
+            RaisePropertyChanged();
+        }
+    }
+    
+    
+    private IDocument? _document;
+
+    /// <summary>
+    /// The main text box text.
+    /// </summary>
+    public IDocument? Document
+    {
+        get => _document;
+
+        set
+        {
+            if (_document == value)
+            {
+                return;
+            }
+
+            _document = value;
             RaisePropertyChanged();
         }
     }
@@ -199,6 +222,8 @@ internal class MainWindowViewModel : ViewModelBase
     
     public MiniCommand AboutCommand { get; }
 
+    public MiniCommand SaveCommand { get; }
+    
     public MiniCommand ExitCommand { get; }
     
     #endregion
@@ -223,6 +248,16 @@ internal class MainWindowViewModel : ViewModelBase
             // {
             //     await dialog.ShowDialog(mainWindow);
             // }
+        });
+        
+        SaveCommand = MiniCommand.Create(() =>
+        {
+            if (Document == null)
+            {
+                return;
+            }
+
+            AppViewModel?.SaveTextSnapshot(Document.Text);
         });
         
         ExitCommand = MiniCommand.Create(() =>

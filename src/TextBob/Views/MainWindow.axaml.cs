@@ -72,10 +72,6 @@ public partial class MainWindow : Window
 
     private void SaveButtonClicked(object sender, RoutedEventArgs e)
     {
-        var viewModel = DataContext as MainWindowViewModel;
-        
-        viewModel?.AppViewModel?.SaveTextSnapshot(MainTextBox.Text);
-        
         MainTextBox.Focus();
     }
     

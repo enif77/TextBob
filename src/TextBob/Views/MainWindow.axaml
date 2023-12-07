@@ -102,7 +102,8 @@
                     FontSize="14"
                     FontFamily="Cascadia Code,Consolas,Menlo,Monospace"
                     ShowLineNumbers="{Binding ShowLineNumbers}"
-                    Foreground="LightGray" />
+                    Foreground="LightGray"
+                    Document="{Binding Document}"/>
             </Panel>
 
             <StackPanel
@@ -117,6 +118,7 @@
                 
                 <Button
                     Margin="4"
+                    Command="{Binding SaveCommand}"
                     Click="SaveButtonClicked"><PathIcon Data="{StaticResource save_regular}" /></Button>
                 <Button
                     Margin="4"
