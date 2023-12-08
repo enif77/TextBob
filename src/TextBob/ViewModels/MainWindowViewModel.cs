@@ -52,6 +52,7 @@ internal class MainWindowViewModel : ViewModelBase
             }
 
             _title = value;
+            
             RaisePropertyChanged();
         }
     }
@@ -74,6 +75,7 @@ internal class MainWindowViewModel : ViewModelBase
             }
 
             _document = value;
+            
             RaisePropertyChanged();
         }
     }
