@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using AvaloniaEdit;
 using AvaloniaEdit.Document;
 
 using TextBob.ViewModels;
@@ -44,11 +45,14 @@ public partial class App : Application
                     AppViewModel = (AppViewModel?)DataContext,
                     Title = AppName,
                     ShowLineNumbers = Program.Settings.TextEditorShowLineNumbers,
-                    ConvertTabsToSpaces = Program.Settings.TextEditorConvertTabsToSpaces,
-                    EnableEmailHyperlinks = Program.Settings.TextEditorEnableEmailHyperlinks,
-                    EnableHyperlinks = Program.Settings.TextEditorEnableHyperlinks,
-                    HighlightCurrentLine = Program.Settings.TextEditorHighlightCurrentLine,
-                    IndentationSize = Program.Settings.TextEditorIndentationSize,
+                    TextEditorOptions = new TextEditorOptions()
+                    {
+                        ConvertTabsToSpaces = Program.Settings.TextEditorConvertTabsToSpaces,
+                        EnableEmailHyperlinks = Program.Settings.TextEditorEnableEmailHyperlinks,
+                        EnableHyperlinks = Program.Settings.TextEditorEnableHyperlinks,
+                        HighlightCurrentLine = Program.Settings.TextEditorHighlightCurrentLine,
+                        IndentationSize = Program.Settings.TextEditorIndentationSize,    
+                    },
                     Document = new TextDocument(((AppViewModel?)DataContext)?.LoadTextSnapshot() ?? string.Empty)
                 }
             };

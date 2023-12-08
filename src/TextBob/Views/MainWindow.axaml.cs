@@ -39,22 +39,16 @@ public partial class MainWindow : Window
     private void MainWindow_OnLoaded(object? sender, RoutedEventArgs e)
     {
         MainTextBox.Focus();
-
-        // TODO: Figure out, how to bind to options.
-
+        
         var viewModel = DataContext as MainWindowViewModel;
         if (viewModel == null)
         {
             return;
         }
         
-        var options = MainTextBox.Options;
-
-        options.ConvertTabsToSpaces = viewModel.ConvertTabsToSpaces;
-        options.EnableEmailHyperlinks = viewModel.EnableEmailHyperlinks;
-        options.EnableHyperlinks = viewModel.EnableHyperlinks;
-        options.HighlightCurrentLine = viewModel.HighlightCurrentLine;
-        options.IndentationSize = viewModel.IndentationSize;
+        // Binding to the Options property does not work.
+        // Something is not yet initialized inside of the AvaloniaEdit during the XAML loading.
+        MainTextBox.Options = viewModel.TextEditorOptions;
         
         UpdateInfoText();
     }

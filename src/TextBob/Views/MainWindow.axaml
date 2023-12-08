@@ -101,8 +101,8 @@
                     VerticalAlignment="Stretch"
                     FontSize="14"
                     FontFamily="Cascadia Code,Consolas,Menlo,Monospace"
-                    ShowLineNumbers="{Binding ShowLineNumbers}"
                     Foreground="LightGray"
+                    ShowLineNumbers="{Binding ShowLineNumbers}"
                     Document="{Binding Document}"/>
             </Panel>
 
