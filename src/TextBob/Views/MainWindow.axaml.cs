@@ -24,9 +24,17 @@ public partial class MainWindow : Window
         ? "Quit Text Bob"
         : "E_xit";
     
+    public static string MenuSaveHeader => RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
+        ? "Save text snapshot"
+        : "S_ave text snapshot";
+    
     public static KeyGesture MenuQuitGesture => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ?
         new KeyGesture(Key.Q, KeyModifiers.Meta) :
         new KeyGesture(Key.F4, KeyModifiers.Alt);
+    
+    public static KeyGesture MenuSaveGesture => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ?
+        new KeyGesture(Key.S, KeyModifiers.Meta) :
+        new KeyGesture(Key.S, KeyModifiers.Control);
     
 
     #region event handlers

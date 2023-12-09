@@ -28,7 +28,10 @@
                     <!-- <NativeMenuItem Icon="/Assets/github_icon.png" Header="Recent"> -->
                     <!--     <NativeMenu/> -->
                     <!-- </NativeMenuItem> -->
-                    <!-- <NativeMenuItemSeparator/> -->
+                    <NativeMenuItem Header="{x:Static local:MainWindow.MenuSaveHeader}"
+                                    Gesture="{x:Static local:MainWindow.MenuSaveGesture}"
+                                    Command="{Binding SaveCommand}" />
+                    <NativeMenuItemSeparator/>
                     <NativeMenuItem Header="{x:Static local:MainWindow.MenuQuitHeader}"
                                     Gesture="{x:Static local:MainWindow.MenuQuitGesture}"
                                     Click="OnCloseClicked" />
