@@ -7,6 +7,8 @@ using Microsoft.Extensions.FileProviders.Physical;
 
 using Avalonia;
 
+using TextBob.Models;
+
 
 namespace TextBob;
 
