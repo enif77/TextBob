@@ -119,14 +119,17 @@
                 <Button
                     Margin="4"
                     Command="{Binding SaveCommand}"
+                    ToolTip.Tip="Saves the current text state to the snapshot file."
                     Click="CommandButtonClicked"><PathIcon Data="{StaticResource save_regular}" /></Button>
                 <Button
                     Margin="4"
                     Command="{Binding ClearCommand}"
+                    ToolTip.Tip="Clears the current text."
                     Click="CommandButtonClicked"><PathIcon Data="{StaticResource delete_regular}" /></Button>
                 <Button
                     Margin="4"
                     Command="{Binding AboutCommand}"
+                    ToolTip.Tip="Shows the about dialog."
                     Click="CommandButtonClicked"><PathIcon Data="{StaticResource info_regular}" /></Button>
             </StackPanel>
         </Grid> 
