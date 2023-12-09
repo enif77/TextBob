@@ -88,19 +88,22 @@ public class Settings
     /// Converts this instance to JSON.
     /// </summary>
     /// <returns>JSON representation of this instance.</returns>
-    public string? ToJson()
+    public string ToJson()
     {
         return JsonSerializer.Serialize(
             new SettingsContainer()
             {
                 Settings = this
             },
-            new JsonSerializerOptions()
-            {
-                WriteIndented = true
-            });
+            JsonSerializerOptions);
     }
 
+    
+    private static readonly JsonSerializerOptions JsonSerializerOptions = new()
+    {
+        WriteIndented = true
+    };
+    
 
     private class SettingsContainer
     {
