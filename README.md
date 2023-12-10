@@ -7,6 +7,7 @@ Uses: https://github.com/AvaloniaUI/AvaloniaEdit
 ## TODO
 
 - Add "text changed" indicator against the snapshot file state.
+- Add all missing menu items.
 - Separate the Info window from the About window.
 - Add context menu with text transformation and other operations.
 - Add TextMate themes.
@@ -15,6 +16,43 @@ Uses: https://github.com/AvaloniaUI/AvaloniaEdit
 - Add drag and drop support (a file can be dropped on the window).
 - Create build scripts for macOS and Windows.
 - Add support for multiple languages (English, Czech, ...).
+
+## Menu Structure
+
+'''
+Text Bob
+  About Text Bob
+  -
+  Settings
+  -
+  ...
+  -
+  Quit Text Bob
+
+File
+  Clear CMD+N
+  -
+  Close CMD+W
+
+Edit
+  Undo CMD+Z
+  Redo SHIFT+CMD+Z
+  -
+  Cut CMD+X
+  Copy CMD+C
+  Paste CMD+V
+  Delete
+  Select All CMD+A
+  -
+  Find
+    Find... CMD+F
+    Find and Replace ALT+CMD+F
+    Find Next CMD+G
+    Find Previous SHIFT+CMD+G
+    Use Selection to Find CMD+E
+    Jump to Selection CMD+J
+'''
+
 
 ## Keyboard shortcuts
 
