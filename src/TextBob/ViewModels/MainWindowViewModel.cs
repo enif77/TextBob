@@ -126,6 +126,29 @@ internal class MainWindowViewModel : ViewModelBase
         }
     }
     
+    
+    private bool _textChanged;
+
+    /// <summary>
+    /// Indicates, that the text has unsaved changes.
+    /// </summary>
+    public bool TextChanged
+    {
+        get => _textChanged;
+
+        set
+        {
+            if (_textChanged == value)
+            {
+                return;
+            }
+
+            _textChanged = value;
+
+            RaisePropertyChanged();
+        }
+    }
+    
     #endregion
     
     

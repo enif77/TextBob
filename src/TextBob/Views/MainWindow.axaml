@@ -62,6 +62,11 @@
         </NativeMenu>
     </NativeMenu.Menu>
     
+    <Window.Styles>
+        <Style Selector="PathIcon.text_changed">
+            <Setter Property="Foreground" Value="Red"/>
+        </Style>
+    </Window.Styles>
     
     <Panel>
         <ExperimentalAcrylicBorder IsHitTestVisible="False">
@@ -123,7 +128,7 @@
                     Margin="4"
                     Command="{Binding SaveCommand}"
                     ToolTip.Tip="Saves the current text state to the snapshot file."
-                    Click="CommandButtonClicked"><PathIcon Data="{StaticResource save_regular}" /></Button>
+                    Click="CommandButtonClicked"><PathIcon Classes.text_changed="{Binding TextChanged}" Data="{StaticResource save_regular}" /></Button>
                 <Button
                     Margin="4"
                     Command="{Binding ClearCommand}"
