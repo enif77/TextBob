@@ -107,8 +107,9 @@
                 <AvaloniaEdit:TextEditor Name="MainTextBox"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
-                    FontSize="14"
-                    FontFamily="Cascadia Code,Consolas,Menlo,Monospace"
+                    Margin="8"
+                    FontSize="{Binding FontSize}"
+                    FontFamily="{Binding FontFamily}"
                     Foreground="LightGray"
                     ShowLineNumbers="{Binding ShowLineNumbers}"
                     Document="{Binding Document}"/>

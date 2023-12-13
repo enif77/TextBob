@@ -104,6 +104,52 @@ internal class MainWindowViewModel : ViewModelBase
     }
     
     
+    private int _fontSize;
+
+    /// <summary>
+    /// Gets or sets the size of the font in the text editor.
+    /// </summary>
+    public int FontSize
+    {
+        get => _fontSize;
+
+        set
+        {
+            if (_fontSize == value)
+            {
+                return;
+            }
+
+            _fontSize = value;
+
+            RaisePropertyChanged();
+        }
+    }
+
+
+    private string _fontFamily = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the font family of the font in the text editor.
+    /// </summary>
+    public string FontFamily
+    {
+        get => _fontFamily;
+
+        set
+        {
+            if (_fontFamily == value)
+            {
+                return;
+            }
+
+            _fontFamily = value;
+
+            RaisePropertyChanged();
+        }
+    }
+    
+    
     private bool _showLineNumbers;
 
     /// <summary>
@@ -169,6 +215,9 @@ internal class MainWindowViewModel : ViewModelBase
     
     public MainWindowViewModel()
     {
+        FontSize = Defaults.DefaultFontSize;
+        FontFamily = Defaults.DefaultFontFamily;
+        
         AboutCommand = MiniCommand.CreateFromTask(async () =>
         {
             if (AppViewModel == null)
@@ -177,13 +226,6 @@ internal class MainWindowViewModel : ViewModelBase
             }
             
             await AppViewModel.ShowAboutWindow();
-            
-            // var dialog = new AboutAvaloniaDialog();
-            //
-            // if ((Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow is { } mainWindow)
-            // {
-            //     await dialog.ShowDialog(mainWindow);
-            // }
         });
         
         SaveCommand = MiniCommand.Create(() =>

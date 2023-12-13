@@ -7,6 +7,7 @@ Uses: https://github.com/AvaloniaUI/AvaloniaEdit
 ## TODO
 
 - Add "text changed" indicator against the snapshot file state.
+- The clear button should be enabled only when there is something to clear.
 - Add all missing menu items.
 - Separate the Info window from the About window.
 - Add context menu with text transformation and other operations.

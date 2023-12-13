@@ -18,6 +18,8 @@ public partial class MainWindow : Window
         InitializeComponent();
         
         MainTextBox.TextArea.Caret.PositionChanged += (sender, args) => UpdateInfoText();
+        
+        //HotKeyManager.SetHotKey(SaveButton, MenuSaveGesture);
     }
     
     public static string MenuQuitHeader => RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
@@ -54,9 +56,10 @@ public partial class MainWindow : Window
             return;
         }
         
-        // Binding to the Options property does not work.
+        // Binding to these properties does not work.
         // Something is not yet initialized inside of the AvaloniaEdit during the XAML loading.
         MainTextBox.Options = viewModel.TextEditorOptions;
+        MainTextBox.FontFamily = viewModel.FontFamily;
         
         UpdateInfoText();
     }

@@ -7,21 +7,17 @@ namespace TextBob.Models;
 /// </summary>
 public class Settings
 {
-    private const int DefaultMainWindowWidth = 800;
-    private const int DefaultMainWindowHeight = 600;
-    
-    
     #region main window
     
     /// <summary>
     /// Initial main window width.
     /// </summary>
-    public int MainWindowWidth { get; init; } = DefaultMainWindowWidth;
+    public int MainWindowWidth { get; init; } = Defaults.DefaultMainWindowWidth;
     
     /// <summary>
     /// Initial main window height.
     /// </summary>
-    public int MainWindowHeight { get; init; } = DefaultMainWindowHeight;
+    public int MainWindowHeight { get; init; } = Defaults.DefaultMainWindowHeight;
     
     #endregion
 
@@ -29,34 +25,44 @@ public class Settings
     #region text editor
 
     /// <summary>
+    /// The size of the font in the text editor.
+    /// </summary>
+    public int TextEditorFontSize { get; init; } = Defaults.DefaultFontSize;
+    
+    /// <summary>
+    /// The font family of the font in the text editor.
+    /// </summary>
+    public string? TextEditorFontFamily { get; init; } = Defaults.DefaultFontFamily;
+    
+    /// <summary>
     /// Shows line numbers in text editor.
     /// </summary>
-    public bool TextEditorShowLineNumbers { get; init; }
+    public bool TextEditorShowLineNumbers { get; init; } = Defaults.DefaultShowLineNumbers;
     
     /// <summary>
     /// Converts TABs to SPACEs.
     /// </summary>
-    public bool TextEditorConvertTabsToSpaces { get; init; }
+    public bool TextEditorConvertTabsToSpaces { get; init; } = Defaults.DefaultConvertTabsToSpaces;
 
     /// <summary>
     /// Emails are clickable.
     /// </summary>
-    public bool TextEditorEnableEmailHyperlinks { get; init; }
+    public bool TextEditorEnableEmailHyperlinks { get; init; } = Defaults.DefaultEnableEmailHyperlinks;
 
     /// <summary>
     /// URLs are clickable.
     /// </summary>
-    public bool TextEditorEnableHyperlinks { get; init; }
+    public bool TextEditorEnableHyperlinks { get; init; } = Defaults.DefaultEnableHyperlinks;
 
     /// <summary>
     /// Highlights the current line.
     /// </summary>
-    public bool TextEditorHighlightCurrentLine { get; init; }
+    public bool TextEditorHighlightCurrentLine { get; init; } = Defaults.DefaultHighlightCurrentLine;
 
     /// <summary>
     /// The number of indentation unit to use in indentation.
     /// </summary>
-    public int TextEditorIndentationSize { get; init; }
+    public int TextEditorIndentationSize { get; init; } = Defaults.DefaultIndentationSize;
     
     #endregion
     
@@ -66,7 +72,7 @@ public class Settings
     /// <summary>
     /// A path to the snapshot file.
     /// </summary>
-    public string? SnapshotFilePath { get; init; }
+    public string? SnapshotFilePath { get; init; } = Defaults.DefaultSnapshotFilePath;
     
     #endregion
     
@@ -75,14 +81,7 @@ public class Settings
     /// Returns default settings.
     /// </summary>
     public static Settings DefaultSettings
-        => new()
-        {
-            MainWindowWidth = DefaultMainWindowWidth,
-            MainWindowHeight = DefaultMainWindowHeight,
-
-            TextEditorConvertTabsToSpaces = true,
-            TextEditorIndentationSize = 4
-        };
+        => new();
 
     /// <summary>
     /// Converts this instance to JSON.

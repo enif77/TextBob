@@ -12,16 +12,12 @@ namespace TextBob;
 
 public partial class App : Application
 {
-    private const string AppName = "Text Bob";
-    private const string AppVersionInfo = AppName + " 1.0.28";
-
-
     public App()
     {
         DataContext = new AppViewModel()
         {
-            Name = AppName,
-            VersionInfo = AppVersionInfo
+            Name = Defaults.AppName,
+            VersionInfo = Defaults.AppVersionInfo
         };
     }
 
@@ -38,12 +34,14 @@ public partial class App : Application
         {
             var mainWindow = new MainWindow
             {
-                Width = Program.Settings.MainWindowWidth,
-                Height = Program.Settings.MainWindowHeight,
+                Width = GetMainWindowWidth(),
+                Height = GetMainWindowHeight(),
                 DataContext = new MainWindowViewModel()
                 {
                     AppViewModel = (AppViewModel?)DataContext,
-                    Title = AppName,
+                    Title = Defaults.AppName,
+                    FontSize = GetTextEditorFontSize(),
+                    FontFamily = GetTextEditorFontFamily(),
                     ShowLineNumbers = Program.Settings.TextEditorShowLineNumbers,
                     TextEditorOptions = new TextEditorOptions()
                     {
@@ -61,5 +59,59 @@ public partial class App : Application
         }
         
         base.OnFrameworkInitializationCompleted();
+    }
+    
+    
+    private int GetMainWindowWidth()
+    {
+        var width = Program.Settings.MainWindowWidth;
+        width = width switch
+        {
+            < 320 => 320,
+            > 4096 => 4096,
+            _ => width
+        };
+
+        return width;
+    }
+    
+    
+    private int GetMainWindowHeight()
+    {
+        var height = Program.Settings.MainWindowHeight;
+        height = height switch
+        {
+            < 240 => 240,
+            > 4096 => 4096,
+            _ => height
+        };
+
+        return height;
+    }
+    
+    
+    private int GetTextEditorFontSize()
+    {
+        var fontSize = Program.Settings.TextEditorFontSize;
+        fontSize = fontSize switch
+        {
+            < 6 => 6,
+            > 72 => 72,
+            _ => fontSize
+        };
+
+        return fontSize;
+    }
+    
+    
+    private string GetTextEditorFontFamily()
+    {
+        var fontFamily = Program.Settings.TextEditorFontFamily;
+        if (string.IsNullOrWhiteSpace(fontFamily))
+        {
+            fontFamily = "Monospace";
+        }
+
+        return fontFamily;
     }
 }

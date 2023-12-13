@@ -26,7 +26,7 @@ internal static class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        const string configFileName = ".text-bob.json";
+        const string configFileName = Defaults.ConfigFileName;
         
         // We are reading and writing config file in user's home directory.
         var configFileRootPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);

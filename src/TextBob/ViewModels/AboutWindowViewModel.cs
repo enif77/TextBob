@@ -27,6 +27,7 @@ internal class AboutWindowViewModel : ViewModelBase
         }
     }
 
+    
     private string? _versionInfo;
 
     /// <summary>
