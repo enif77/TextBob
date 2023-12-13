@@ -236,6 +236,7 @@ internal class MainWindowViewModel : ViewModelBase
             }
 
             AppViewModel?.SaveTextSnapshot(Document.Text);
+            TextChanged = false;
         });
         
         ClearCommand = MiniCommand.Create(() =>

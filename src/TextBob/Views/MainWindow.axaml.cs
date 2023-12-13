@@ -18,7 +18,16 @@ public partial class MainWindow : Window
         InitializeComponent();
         
         MainTextBox.TextArea.Caret.PositionChanged += (sender, args) => UpdateInfoText();
-        
+        MainTextBox.TextChanged += (sender, args) =>
+        {
+            if (DataContext is not MainWindowViewModel viewModel)
+            {
+                return;
+            }
+            
+            viewModel.TextChanged = MainTextBox.IsModified;
+        };
+
         //HotKeyManager.SetHotKey(SaveButton, MenuSaveGesture);
     }
     

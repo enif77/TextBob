@@ -112,7 +112,7 @@
                     FontFamily="{Binding FontFamily}"
                     Foreground="LightGray"
                     ShowLineNumbers="{Binding ShowLineNumbers}"
-                    Document="{Binding Document}"/>
+                    Document="{Binding Document}" />
             </Panel>
 
             <StackPanel
