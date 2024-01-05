@@ -105,9 +105,17 @@ public partial class MainWindow : Window
     
     private void UpdateInfoText()
     {
+        var viewModel = DataContext as MainWindowViewModel;
+        if (viewModel == null)
+        {
+            return;
+        }
+        
         var document = MainTextBox.Document;
         var caret = MainTextBox.TextArea.Caret;
-        InfoTextBlock.Text = $"Length {document.TextLength}, Lines {document.LineCount} | Line {caret.Line}, Column {caret.Column}";
+
+        viewModel.TextInfo =
+            $"Length {document.TextLength}, Lines {document.LineCount} | Line {caret.Line}, Column {caret.Column}, Offset {caret.Offset}, Char {(int)document.GetCharAt(caret.Offset)}";
     }
     
     #endregion

@@ -195,6 +195,29 @@ internal class MainWindowViewModel : ViewModelBase
         }
     }
     
+    
+    private string _textInfo = string.Empty;
+
+    /// <summary>
+    /// Shows info about actual text and cursor state.
+    /// </summary>
+    public string TextInfo
+    {
+        get => _textInfo;
+
+        set
+        {
+            if (_textInfo == value)
+            {
+                return;
+            }
+
+            _textInfo = value;
+
+            RaisePropertyChanged();
+        }
+    }
+    
     #endregion
     
     

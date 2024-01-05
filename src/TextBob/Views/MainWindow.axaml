@@ -120,10 +120,11 @@
                 Orientation="Horizontal"
                 HorizontalAlignment="Right">
 
-                <TextBlock Name="InfoTextBlock"
+                <TextBlock
                     VerticalAlignment="Center"
                     Margin="4"
-                    Foreground="LightGray" />
+                    Foreground="LightGray"
+                    Text="{Binding TextInfo}"/>
                 
                 <Button
                     Margin="4"
