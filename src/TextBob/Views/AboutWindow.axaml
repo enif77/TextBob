@@ -8,32 +8,53 @@
         x:DataType="vm:AboutWindowViewModel"
         x:Class="TextBob.Views.AboutWindow"
         Title="About Text Bob"
+        TransparencyLevelHint="AcrylicBlur"
+        ExtendClientAreaToDecorationsHint="True"
         Width="640"
         Height="600"
         WindowStartupLocation="CenterOwner"
         HorizontalContentAlignment="Stretch"
         VerticalContentAlignment="Stretch"
-        Background="DimGray"
-        Foreground="LightGray">
-    
-    <Grid
-        Margin="10"
-        RowDefinitions="Auto, *">
+        Background="Transparent">
+
+    <Panel>
+        <ExperimentalAcrylicBorder IsHitTestVisible="False">
+            <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial
+                    BackgroundSource="Digger"
+                    TintColor="Black"
+                    TintOpacity="1"
+                    MaterialOpacity="0.65" />
+            </ExperimentalAcrylicBorder.Material>
+        </ExperimentalAcrylicBorder>  
+
+        <Grid
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            RowDefinitions="Auto, *">
+            
+            <TextBlock Name="TitleTextBlock"
+                Grid.Row="0"
+                Margin="16, 8, 4, 8"
+                Text="{Binding VersionInfo}" />
         
-        <TextBlock
-            Grid.Row="0"
-            Margin="0 10"
-            FontSize="18"
-            FontWeight="Bold" Text="{Binding VersionInfo}"/>
-        
-        <ScrollViewer Grid.Row="1">
-            <StackPanel>
-                <TextBlock
-                    Padding="4"
-                    xml:space="preserve"
-                    Background="#FF2F2F2F"
-                    Text="{Binding Text}"/>
-            </StackPanel>
-        </ScrollViewer>
-    </Grid>
+            <Panel
+                Grid.Row="1"
+                Margin="2">
+
+                <ScrollViewer>
+                    <StackPanel>
+                        <TextBlock
+                            Padding="4"
+                            xml:space="preserve"
+                            Foreground="LightGray"
+                            Background="Black"
+                            FontSize="12"
+                            FontFamily="Cascadia Code,Consolas,Menlo,Monospace"
+                            Text="{Binding Text}"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Panel>
+        </Grid>
+    </Panel>
 </Window>
