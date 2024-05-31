@@ -113,9 +113,38 @@ public partial class MainWindow : Window
         
         var document = MainTextBox.Document;
         var caret = MainTextBox.TextArea.Caret;
-
+        var textLength = document.TextLength;
+        
+        var charAt = (-1, "EOF");
+        if (caret.Offset < textLength)
+        {
+            var c = document.GetCharAt(caret.Offset);
+            switch (c)
+            {
+                case ' ':
+                    charAt = (c, "SPC");
+                    break;
+                
+                case '\t':
+                    charAt = (c, "TAB");
+                    break;
+                
+                case '\n':
+                    charAt = (c, "LF");
+                    break;
+                
+                case '\r':
+                    charAt = (c, "CR");
+                    break;
+                
+                default:
+                    charAt = (c, c.ToString());
+                    break;
+            }
+        }
+        
         viewModel.TextInfo =
-            $"Length {document.TextLength}, Lines {document.LineCount} | Line {caret.Line}, Column {caret.Column}, Offset {caret.Offset}, Char {(int)document.GetCharAt(caret.Offset)}";
+            $"Length {textLength}, Lines {document.LineCount} | Line {caret.Line}, Column {caret.Column}, Offset {caret.Offset}, Char {charAt.Item2}, UTF {charAt.Item1}";
     }
     
     #endregion
