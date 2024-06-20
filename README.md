@@ -19,7 +19,7 @@ Uses: https://github.com/AvaloniaUI/AvaloniaEdit
 
 ## Menu Structure
 
-'''
+```
 Text Bob
   About Text Bob
   -
@@ -51,7 +51,7 @@ Edit
     Find Previous SHIFT+CMD+G
     Use Selection to Find CMD+E
     Jump to Selection CMD+J
-'''
+```
 
 
 ## Keyboard shortcuts
