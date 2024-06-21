@@ -127,6 +127,7 @@
                     Text="{Binding TextInfo}"/>
                 
                 <Button
+                    Name="SaveButton"
                     Margin="4"
                     Command="{Binding SaveCommand}"
                     ToolTip.Tip="Saves the current text state to the snapshot file."
