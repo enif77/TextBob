@@ -7,7 +7,7 @@
         x:CompileBindings="True"
         x:DataType="vm:AboutWindowViewModel"
         x:Class="TextBob.Views.AboutWindow"
-        Title="About Text Bob"
+        Title="{Binding VersionInfo}"
         TransparencyLevelHint="AcrylicBlur"
         ExtendClientAreaToDecorationsHint="True"
         Width="640"
@@ -31,15 +31,10 @@
         <Grid
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
-            RowDefinitions="Auto, *">
-            
-            <TextBlock Name="TitleTextBlock"
-                Grid.Row="0"
-                Margin="16, 8, 4, 8"
-                Text="{Binding VersionInfo}" />
+            RowDefinitions="*">
         
             <Panel
-                Grid.Row="1"
+                Grid.Row="0"
                 Margin="2">
 
                 <ScrollViewer>
@@ -48,7 +43,7 @@
                             Padding="4"
                             xml:space="preserve"
                             Foreground="LightGray"
-                            Background="Black"
+                            Background="#2f2f2f"
                             FontSize="12"
                             FontFamily="Monospace"
                             Text="{Binding Text}"/>
