@@ -50,7 +50,7 @@
                             Foreground="LightGray"
                             Background="Black"
                             FontSize="12"
-                            FontFamily="Cascadia Code,Consolas,Menlo,Monospace"
+                            FontFamily="Monospace"
                             Text="{Binding Text}"/>
                     </StackPanel>
                 </ScrollViewer>
