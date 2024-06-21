@@ -2,9 +2,11 @@
 
 using System;
 using System.Runtime.InteropServices;
+
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 
 using TextBob.ViewModels;
 
@@ -70,6 +72,9 @@ public partial class MainWindow : Window
         MainTextBox.Options = viewModel.TextEditorOptions;
         MainTextBox.FontFamily = viewModel.FontFamily;
         
+        // Set hyperlink color.
+        MainTextBox.TextArea.TextView.LinkTextForegroundBrush = Brushes.Gray;
+
         UpdateInfoText();
     }
 
