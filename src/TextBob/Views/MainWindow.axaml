@@ -83,15 +83,10 @@
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             ColumnDefinitions="*" 
-            RowDefinitions="Auto, *, Auto">
-
-            <TextBlock Name="TitleTextBlock"
-                Grid.Row="0" Grid.Column="0"
-                Margin="76, 8, 4, 8"
-                Text="{Binding Title}" />
+            RowDefinitions="*, Auto">
 
             <Panel
-                Grid.Row="1" Grid.Column="0"
+                Grid.Row="0" Grid.Column="0"
                 Margin="2">
 
                 <ExperimentalAcrylicBorder IsHitTestVisible="False">
@@ -116,7 +111,7 @@
             </Panel>
 
             <StackPanel
-                Grid.Row="2" Grid.Column="0"
+                Grid.Row="1" Grid.Column="0"
                 Orientation="Horizontal"
                 HorizontalAlignment="Right">
 
