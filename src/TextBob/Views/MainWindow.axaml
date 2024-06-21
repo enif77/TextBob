@@ -13,7 +13,7 @@
         Icon="/Assets/macOS/TextBob.iconset/icon_32x32.png"
         TransparencyLevelHint="AcrylicBlur"
         Background="Transparent"
-        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaToDecorationsHint="False"
         Width="640"
         Height="480"
         WindowStartupLocation="CenterScreen"

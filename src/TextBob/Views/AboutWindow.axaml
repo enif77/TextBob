@@ -9,7 +9,7 @@
         x:Class="TextBob.Views.AboutWindow"
         Title="{Binding VersionInfo}"
         TransparencyLevelHint="AcrylicBlur"
-        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaToDecorationsHint="False"
         Width="640"
         Height="600"
         WindowStartupLocation="CenterOwner"
