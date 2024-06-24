@@ -44,7 +44,7 @@
                             Foreground="LightGray"
                             Background="#2f2f2f"
                             FontSize="12"
-                            FontFamily="Monospace"
+                            FontFamily="Cascadia Code,Consolas,Menlo,Monospace"
                             Text="{Binding Text}"/>
                 </ScrollViewer>
             </Panel>
