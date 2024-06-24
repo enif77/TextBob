@@ -38,7 +38,6 @@
                 Margin="2">
 
                 <ScrollViewer>
-                    <StackPanel>
                         <TextBlock
                             Padding="4"
                             xml:space="preserve"
@@ -47,7 +46,6 @@
                             FontSize="12"
                             FontFamily="Monospace"
                             Text="{Binding Text}"/>
-                    </StackPanel>
                 </ScrollViewer>
             </Panel>
         </Grid>
