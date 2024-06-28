@@ -1,9 +1,10 @@
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-
+using Avalonia.Platform;
 using MiniMvvm;
 
 using TextBob.Views;
@@ -179,59 +180,24 @@ public class AppViewModel : ViewModelBase
             return;
         }
         
+        // https://docs.avaloniaui.net/docs/basics/user-interface/assets
+        var uri = RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
+            ? new Uri("avares://TextBob/Assets/macOS/about.txt")
+            : new Uri("avares://TextBob/Assets/Windows/about.txt");
+        
+        string aboutText;
+        using (var reader = new StreamReader(AssetLoader.Open(uri), System.Text.Encoding.UTF8))
+        {
+            aboutText = await reader.ReadToEndAsync();
+        }
+        
         _aboutWindow = new AboutWindow()
         {
             DataContext = new AboutWindowViewModel()
             {
                 AppViewModel = this,
                 VersionInfo = VersionInfo,
-                Text = @"Keyboard shortcuts
-------------------
-
-CTRL/CMD + C             - Copy
-CTRL/CMD + X             - Cut
-CTRL/CMD + V             - Paste
-CTRL/CMD + A             - Select all
-CTRL/CMD + Z             - Undo
-CTRL/CMD + Y             - Redo
-CTRL/CMD + F             - Find
-CTRL + H | CMD + ALT + F - Replace
-Delete                   - Delete 
-CTRL + Delete            - Delete next word
-CTRL/CMD + D             - Delete line
-Backspace                - Delete previous character or selection 
-CTRL + Backspace         - Delete previous word
-Enter                    - Enter paragraph break (a new line)
-SHIFT + Enter            - Enter line break
-Tab                      - Tab forward
-SHIFT + Tab              - Tab backward 
-Left                     - Move left by character
-SHIFT + Left             - Select left by character
-ALT + SHIFT + Left       - Box select left by character
-Right                    - Move right by character
-SHIFT + Right            - Select right by character
-ALT + SHIFT + Right      - Box select right ry character
-CTRL + Left              - Move left by word
-SHIFT + CTRL + Left      - Select left by word
-CTRL + Right             - Move right by word
-SHIFT + CTRL + Right     - Select right by word
-Up                       - Move up by line
-SHIFT + Up               - Select up by line
-Down                     - Move down by line
-SHIFT + Down             - Select down by line
-Page Down                - Move down by page
-SHIFT + Page Down        - Select down by page
-Page Up                  - Move up by page
-SHIFT + Page Up          - Select up by page
-Home                     - Move to line start
-SHIFT + Home             - Select to line start
-End                      - Move to line end
-SHIFT + End              - Select to line end
-CTRL + Home              - Move to document start
-SHIFT + CTRL + Home      - Select to document start
-CTRL + End               - Move to document end
-SHIFT + CTRL + End       - Select to document end
-CTRL/CMD + I             - Indent selection"
+                Text = aboutText
             }
         };
         await _aboutWindow.ShowDialog(mainWindow);
