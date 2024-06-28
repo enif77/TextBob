@@ -70,6 +70,7 @@ public class AppViewModel : ViewModelBase
     
     #region commands
     
+    public MiniCommand ShowCommand { get; }
     public MiniCommand ExitCommand { get; }
     
     #endregion
@@ -79,6 +80,14 @@ public class AppViewModel : ViewModelBase
     
     public AppViewModel()
     {
+        ShowCommand = MiniCommand.Create(() =>
+        {
+            if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
+            {
+                lifetime.MainWindow?.Activate();
+            }
+        });
+        
         ExitCommand = MiniCommand.Create(() =>
         {
             if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
