@@ -224,11 +224,9 @@ internal class MainWindowViewModel : ViewModelBase
     #region commands
     
     public MiniCommand AboutCommand { get; }
-
+    public MiniCommand OpenCommand { get; }
     public MiniCommand SaveCommand { get; }
-    
     public MiniCommand ClearCommand { get; }
-    
     public MiniCommand ExitCommand { get; }
     
     #endregion
@@ -249,6 +247,12 @@ internal class MainWindowViewModel : ViewModelBase
             }
             
             await AppViewModel.ShowAboutWindow();
+        });
+        
+        OpenCommand = MiniCommand.Create(() =>
+        {
+            Document = new TextDocument(AppViewModel?.LoadTextSnapshot() ?? string.Empty);
+            TextChanged = false;
         });
         
         SaveCommand = MiniCommand.Create(() =>

@@ -122,6 +122,12 @@
                     Text="{Binding TextInfo}"/>
                 
                 <Button
+                    Name="OpenButton"
+                    Margin="4"
+                    Command="{Binding OpenCommand}"
+                    ToolTip.Tip="Loads the current text state from the snapshot file."
+                    Click="CommandButtonClicked"><PathIcon Data="{StaticResource open_regular}" /></Button>
+                <Button
                     Name="SaveButton"
                     Margin="4"
                     Command="{Binding SaveCommand}"
