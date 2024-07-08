@@ -67,7 +67,7 @@
             <Setter Property="Foreground" Value="Red"/>
         </Style>
         <Style Selector="PathIcon.delete_selected">
-            <Setter Property="Foreground" Value="LightBlue"/>
+            <Setter Property="Foreground" Value="DodgerBlue"/>
         </Style>
         <Style Selector="PathIcon.ui_disabled">
             <Setter Property="Foreground" Value="Black"/>
@@ -146,7 +146,7 @@
                     Margin="4"
                     Command="{Binding ClearCommand}"
                     ToolTip.Tip="Deletes the current (selected) text."
-                    Click="CommandButtonClicked"><PathIcon Classes.ui_disabled="{Binding !IsUiEnabled}" Classes.delete_selected="{Binding DeleteSelectedTextOnly}" Data="{StaticResource delete_regular}" /></Button>
+                    Click="CommandButtonClicked"><PathIcon Classes.ui_disabled="{Binding !IsUiEnabled}" Classes.delete_selected="{Binding IsTextSelected}" Data="{StaticResource delete_regular}" /></Button>
                 <Button
                     Margin="4"
                     Command="{Binding AboutCommand}"

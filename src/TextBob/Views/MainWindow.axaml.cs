@@ -37,6 +37,7 @@ public partial class MainWindow : Window, ITextEditorHandler
             }
             
             viewModel.SelectionChanged();
+            UpdateInfoText();
         };
 
         HotKeyManager.SetHotKey(SaveButton, MenuSaveGesture);
@@ -171,8 +172,14 @@ public partial class MainWindow : Window, ITextEditorHandler
             }
         }
         
+        var selection = "Nothing selected";
+        if (viewModel.IsTextSelected)
+        {
+            selection = $"{SelectionLength} chars from {SelectionStart}";
+        }
+        
         viewModel.TextInfo =
-            $"Length {textLength}, Lines {document.LineCount} | Line {caret.Line}, Column {caret.Column}, Offset {caret.Offset}, Char '{charAt.Item2}', UTF {charAt.Item1}";
+            $"{textLength} chars, {document.LineCount} lines | {selection} | Line {caret.Line}, Column {caret.Column}, Offset {caret.Offset}, Char '{charAt.Item2}', UTF {charAt.Item1}";
     }
     
     #endregion

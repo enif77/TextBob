@@ -81,9 +81,9 @@ internal class MainWindowViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// Flag, that indicates if only the selected text should be deleted.
+    /// Flag, that indicates if a text is selected.
     /// </summary>
-    public bool DeleteSelectedTextOnly
+    public bool IsTextSelected
     {
         get
         {
@@ -328,7 +328,7 @@ internal class MainWindowViewModel : ViewModelBase
             
             var document = Document!;
             
-            if (DeleteSelectedTextOnly)
+            if (IsTextSelected)
             {
                 document.Remove(TextEditorHandler!.SelectionStart, TextEditorHandler.SelectionLength);
             }
@@ -353,7 +353,7 @@ internal class MainWindowViewModel : ViewModelBase
     
     public void SelectionChanged()
     {
-        RaisePropertyChanged(nameof(DeleteSelectedTextOnly));
+        RaisePropertyChanged(nameof(IsTextSelected));
     }
     
     #endregion
