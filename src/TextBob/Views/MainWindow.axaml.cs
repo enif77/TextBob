@@ -13,7 +13,7 @@ using TextBob.ViewModels;
 
 namespace TextBob.Views;
 
-public partial class MainWindow : Window
+public partial class MainWindow : Window, ITextEditorHandler
 {
     public MainWindow()
     {
@@ -28,6 +28,15 @@ public partial class MainWindow : Window
             }
             
             viewModel.TextChanged = MainTextBox.IsModified;
+        };
+        MainTextBox.TextArea.SelectionChanged += (sender, args) =>
+        {
+            if (DataContext is not MainWindowViewModel viewModel)
+            {
+                return;
+            }
+            
+            viewModel.SelectionChanged();
         };
 
         HotKeyManager.SetHotKey(SaveButton, MenuSaveGesture);
@@ -102,6 +111,20 @@ public partial class MainWindow : Window
     //     get { return _showLineNumbers; }
     //     set { SetAndRaise(ShowLineNumbersProperty, ref _showLineNumbers, value); }
     // }
+
+    #endregion
+    
+    
+    #region ITextEditorHandler
+
+    /// <inheritdoc />
+    public int SelectionLength => MainTextBox?.SelectionLength ?? 0;
+
+    /// <inheritdoc />
+    public int SelectionStart => MainTextBox?.SelectionStart ?? 0;
+
+    /// <inheritdoc />
+    public string SelectedText => MainTextBox?.SelectedText ?? string.Empty;
 
     #endregion
     

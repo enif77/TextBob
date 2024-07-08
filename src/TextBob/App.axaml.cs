@@ -35,26 +35,29 @@ public partial class App : Application
             var mainWindow = new MainWindow
             {
                 Width = GetMainWindowWidth(),
-                Height = GetMainWindowHeight(),
-                DataContext = new MainWindowViewModel()
-                {
-                    AppViewModel = (AppViewModel?)DataContext,
-                    Title = Defaults.AppName,
-                    FontSize = GetTextEditorFontSize(),
-                    FontFamily = GetTextEditorFontFamily(),
-                    ShowLineNumbers = Program.Settings.TextEditorShowLineNumbers,
-                    TextEditorOptions = new TextEditorOptions()
-                    {
-                        ConvertTabsToSpaces = Program.Settings.TextEditorConvertTabsToSpaces,
-                        EnableEmailHyperlinks = Program.Settings.TextEditorEnableEmailHyperlinks,
-                        EnableHyperlinks = Program.Settings.TextEditorEnableHyperlinks,
-                        HighlightCurrentLine = Program.Settings.TextEditorHighlightCurrentLine,
-                        IndentationSize = Program.Settings.TextEditorIndentationSize,    
-                    },
-                    Document = new TextDocument(((AppViewModel?)DataContext)?.LoadTextSnapshot() ?? string.Empty)
-                }
+                Height = GetMainWindowHeight()
             };
 
+            var viewModel = new MainWindowViewModel()
+            {
+                AppViewModel = (AppViewModel?)DataContext,
+                Title = Defaults.AppName,
+                FontSize = GetTextEditorFontSize(),
+                FontFamily = GetTextEditorFontFamily(),
+                ShowLineNumbers = Program.Settings.TextEditorShowLineNumbers,
+                TextEditorOptions = new TextEditorOptions()
+                {
+                    ConvertTabsToSpaces = Program.Settings.TextEditorConvertTabsToSpaces,
+                    EnableEmailHyperlinks = Program.Settings.TextEditorEnableEmailHyperlinks,
+                    EnableHyperlinks = Program.Settings.TextEditorEnableHyperlinks,
+                    HighlightCurrentLine = Program.Settings.TextEditorHighlightCurrentLine,
+                    IndentationSize = Program.Settings.TextEditorIndentationSize,
+                },
+                TextEditorHandler = mainWindow,
+                Document = new TextDocument(((AppViewModel?)DataContext)?.LoadTextSnapshot() ?? string.Empty)
+            };
+            
+            mainWindow.DataContext = viewModel;
             desktop.MainWindow = mainWindow;
         }
         

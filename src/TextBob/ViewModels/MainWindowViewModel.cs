@@ -79,8 +79,24 @@ internal class MainWindowViewModel : ViewModelBase
             RaisePropertyChanged();
         }
     }
-    
-    
+
+    /// <summary>
+    /// Flag, that indicates if only the selected text should be deleted.
+    /// </summary>
+    public bool DeleteSelectedTextOnly
+    {
+        get
+        {
+            if (TextEditorHandler == null)
+            {
+                return false;
+            }
+
+            return TextEditorHandler.SelectionLength > 0;
+        }
+    }
+
+
     private IDocument? _document;
 
     /// <summary>
@@ -219,6 +235,12 @@ internal class MainWindowViewModel : ViewModelBase
     }
     
     
+    /// <summary>
+    /// Handler for the text editor.
+    /// </summary>
+    public ITextEditorHandler? TextEditorHandler { get; set; }
+    
+    
     private string _textInfo = string.Empty;
 
     /// <summary>
@@ -299,13 +321,39 @@ internal class MainWindowViewModel : ViewModelBase
         
         ClearCommand = MiniCommand.Create(() =>
         {
-            Document?.Replace(0, Document.TextLength, string.Empty);
+            if (Document == null)
+            {
+                return;
+            }
+            
+            var document = Document!;
+            
+            if (DeleteSelectedTextOnly)
+            {
+                document.Remove(TextEditorHandler!.SelectionStart, TextEditorHandler.SelectionLength);
+            }
+            else
+            {
+                document.Remove(0, document.TextLength);
+            }
+            
+            //document.Replace(0, Document.TextLength, string.Empty);
         });
         
         ExitCommand = MiniCommand.Create(() =>
         {
             (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.Shutdown();
         });
+    }
+    
+    #endregion
+    
+    
+    #region public
+    
+    public void SelectionChanged()
+    {
+        RaisePropertyChanged(nameof(DeleteSelectedTextOnly));
     }
     
     #endregion
