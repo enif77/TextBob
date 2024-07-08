@@ -66,9 +66,15 @@
         <Style Selector="PathIcon.text_changed">
             <Setter Property="Foreground" Value="Red"/>
         </Style>
+        <Style Selector="PathIcon.ui_disabled">
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
     </Window.Styles>
     
-    <Panel>
+    <Panel
+        Classes.ui_disabled="{Binding !IsUiEnabled}"
+        IsEnabled="{Binding IsUiEnabled}">
+        
         <ExperimentalAcrylicBorder IsHitTestVisible="False">
             <ExperimentalAcrylicBorder.Material>
                 <ExperimentalAcrylicMaterial
@@ -126,23 +132,23 @@
                     Margin="4"
                     Command="{Binding OpenCommand}"
                     ToolTip.Tip="Loads the current text state from the snapshot file."
-                    Click="CommandButtonClicked"><PathIcon Data="{StaticResource open_regular}" /></Button>
+                    Click="CommandButtonClicked"><PathIcon Classes.ui_disabled="{Binding !IsUiEnabled}" Data="{StaticResource open_regular}" /></Button>
                 <Button
                     Name="SaveButton"
                     Margin="4"
                     Command="{Binding SaveCommand}"
                     ToolTip.Tip="Saves the current text state to the snapshot file."
-                    Click="CommandButtonClicked"><PathIcon Classes.text_changed="{Binding TextChanged}" Data="{StaticResource save_regular}" /></Button>
+                    Click="CommandButtonClicked"><PathIcon Classes.ui_disabled="{Binding !IsUiEnabled}" Classes.text_changed="{Binding TextChanged}" Data="{StaticResource save_regular}" /></Button>
                 <Button
                     Margin="4"
                     Command="{Binding ClearCommand}"
                     ToolTip.Tip="Clears the current text."
-                    Click="CommandButtonClicked"><PathIcon Data="{StaticResource delete_regular}" /></Button>
+                    Click="CommandButtonClicked"><PathIcon Classes.ui_disabled="{Binding !IsUiEnabled}" Data="{StaticResource delete_regular}" /></Button>
                 <Button
                     Margin="4"
                     Command="{Binding AboutCommand}"
                     ToolTip.Tip="Shows the about dialog."
-                    Click="CommandButtonClicked"><PathIcon Data="{StaticResource info_regular}" /></Button>
+                    Click="CommandButtonClicked"><PathIcon Classes.ui_disabled="{Binding !IsUiEnabled}" Data="{StaticResource info_regular}" /></Button>
             </StackPanel>
         </Grid> 
     </Panel>

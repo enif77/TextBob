@@ -58,6 +58,29 @@ internal class MainWindowViewModel : ViewModelBase
     }
     
     
+    private bool _isUiEnabled = true;
+
+    /// <summary>
+    /// Indicates, that the UI is enabled.
+    /// </summary>
+    public bool IsUiEnabled
+    {
+        get => _isUiEnabled;
+
+        set
+        {
+            if (_isUiEnabled == value)
+            {
+                return;
+            }
+
+            _isUiEnabled = value;
+            
+            RaisePropertyChanged();
+        }
+    }
+    
+    
     private IDocument? _document;
 
     /// <summary>
@@ -245,8 +268,16 @@ internal class MainWindowViewModel : ViewModelBase
             {
                 return;
             }
-            
-            await AppViewModel.ShowAboutWindow();
+
+            IsUiEnabled = false;
+            try
+            {
+                await AppViewModel.ShowAboutWindow();
+            }
+            finally
+            {
+                IsUiEnabled = true;
+            }
         });
         
         OpenCommand = MiniCommand.Create(() =>
