@@ -172,7 +172,7 @@ public partial class MainWindow : Window, ITextEditorHandler
         }
         
         viewModel.TextInfo =
-            $"Length {textLength}, Lines {document.LineCount} | Line {caret.Line}, Column {caret.Column}, Offset {caret.Offset}, Char {charAt.Item2}, UTF {charAt.Item1}";
+            $"Length {textLength}, Lines {document.LineCount} | Line {caret.Line}, Column {caret.Column}, Offset {caret.Offset}, Char '{charAt.Item2}', UTF {charAt.Item1}";
     }
     
     #endregion
