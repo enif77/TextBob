@@ -102,6 +102,63 @@ Edit
 - SelectToDocumentEnd = SHIFT + CTRL + End
 - IndentSelection = CTRL/CMD + I
 
+## Building for Windows
+
+Build it:
+
+```
+dotnet publish ./TextBob/TextBob.csproj -c Release --runtime win-x64 --force --self-contained true -p:PublishSingleFile=true
+```
+
+Copy it to a folder, from which you will execute it. Files there should be:
+
+```
+libHarfBuzzSharp.dll
+libSkiaSharp.dll
+TextBob.exe
+TextBob.pdb
+TextBob.png
+```
+
+Note: The `TextBob.png` is created from the 512x512 MacOS icon.
+
+## Building for Linux
+
+Build it:
+
+```
+dotnet publish ./TextBob/TextBob.csproj -c Release --runtime linux-x64 --force --self-contained true -p:PublishSingleFile=true
+```
+
+Copy it to a folder, from which you will execute it. Files there should be:
+
+```
+libHarfBuzzSharp.so
+libSkiaSharp.so
+TextBob
+TextBob.pdb
+TextBob.png
+```
+
+Note: The `TextBob.png` is created from the 512x512 MacOS icon.
+
+To create a `.desktop` entry in Ubuntu/Mint, add it under something like `~/.local/share/applications/Text Bob.desktop`
+with the following content (of course referencing the right file location and version):
+
+```
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Name=Text Bob
+Exec=/home/user/path/to/TextBob/TextBob %u
+Icon=/home/user/path/to/TextBob/TextBob.png
+Version=1.0
+Type=Application
+Categories=Development
+Terminal=false
+Comment=A simple text editor for taking quick notes.
+StartupNotify=true
+```
+
 ## Building for macOS
 
 To create app package for macOS, run following command in the folder with the `build-macos.sh` build script:
