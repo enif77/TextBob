@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text.Json;
 
 namespace TextBob.Models;
@@ -67,12 +68,12 @@ public class Settings
     #endregion
     
     
-    #region snapshot file
+    #region snapshot files
     
     /// <summary>
-    /// A path to the snapshot file.
+    /// A list of snapshot files.
     /// </summary>
-    public string? SnapshotFilePath { get; init; } = Defaults.DefaultSnapshotFilePath;
+    public IList<SnapshotFile> Snapshots { get; set; } = new List<SnapshotFile>();
     
     #endregion
     
@@ -108,4 +109,21 @@ public class Settings
     {
         public Settings? Settings { get; set; }
     }
+}
+
+
+/// <summary>
+/// Describes a snapshot file.
+/// </summary>
+public class SnapshotFile
+{
+    /// <summary>
+    /// Name of the snapshot displayed in the UI.
+    /// </summary>
+    public string Name { get; set; } = Defaults.DefaultSnapshotName;
+    
+    /// <summary>
+    /// Path to the snapshot file.
+    /// </summary>
+    public string Path { get; set; } = Defaults.DefaultSnapshotFilePath;
 }

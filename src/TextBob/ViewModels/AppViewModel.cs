@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Avalonia;
@@ -147,7 +148,7 @@ public class AppViewModel : ViewModelBase
 
     private string GetSnapshotFilePath()
     {
-        var snapshotFilePath = Program.Settings.SnapshotFilePath ?? string.Empty;
+        var snapshotFilePath = Program.Settings.Snapshots.FirstOrDefault()?.Path ?? Defaults.DefaultSnapshotFilePath;
         if (File.Exists(snapshotFilePath))
         {
             return snapshotFilePath;

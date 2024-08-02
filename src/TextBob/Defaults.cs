@@ -6,6 +6,7 @@ public static class Defaults
     public const string AppVersionInfo = AppName + " 1.0.34";
     
     public const string ConfigFileName = ".text-bob.json";
+    public const string DefaultSnapshotName = "snapshot";
     public const string DefaultSnapshotFilePath = "";
     
     public const int DefaultMainWindowWidth = 800;
