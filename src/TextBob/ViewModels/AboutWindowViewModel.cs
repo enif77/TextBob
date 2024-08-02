@@ -3,6 +3,9 @@ using MiniMvvm;
 
 namespace TextBob.ViewModels;
 
+/// <summary>
+/// View model for the about window.
+/// </summary>
 internal class AboutWindowViewModel : ViewModelBase
 {
     private AppViewModel? _appViewModel;
