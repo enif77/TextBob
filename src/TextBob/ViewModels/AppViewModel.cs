@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 using Avalonia;
@@ -10,6 +11,7 @@ using Avalonia.Platform;
 
 using MiniMvvm;
 
+using TextBob.Models;
 using TextBob.Views;
 
 
@@ -233,17 +235,36 @@ public class AppViewModel : ViewModelBase
             ? await File.ReadAllTextAsync(settingsFilePath)
             : Program.Settings.ToJson();
 
+        var settingsViewModel = new SettingsWindowViewModel()
+        {
+            AppViewModel = this,
+            Text = settingsText
+        };
+        
         _settingsWindow = new SettingsWindow()
         {
-            DataContext = new SettingsWindowViewModel()
-            {
-                AppViewModel = this,
-                Text = settingsText
-            }
+            DataContext = settingsViewModel
         };
         await _settingsWindow.ShowDialog(mainWindow);
         _settingsWindow = null;
         
+        var settingsJson = settingsViewModel.Text;
+        try
+        {
+            // Validate settings.
+            _ = JsonSerializer.Deserialize<Settings>(settingsJson);
+            
+            // Save settings.
+            await File.WriteAllTextAsync(settingsFilePath, settingsJson);
+        }
+        catch (Exception)
+        {
+            // TODO: Log the exception.
+
+            return;
+        }
+        
         // TODO: Reload settings.
+        
     }
 }

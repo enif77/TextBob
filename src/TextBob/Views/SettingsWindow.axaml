@@ -38,7 +38,7 @@
                 Margin="2">
 
                 <ScrollViewer>
-                        <TextBlock
+                        <TextBox
                             Padding="4"
                             xml:space="preserve"
                             Foreground="LightGray"
