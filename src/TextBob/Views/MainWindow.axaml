@@ -149,6 +149,11 @@
                     Click="CommandButtonClicked"><PathIcon Classes.ui_disabled="{Binding !IsUiEnabled}" Classes.delete_selected="{Binding IsTextSelected}" Data="{StaticResource delete_regular}" /></Button>
                 <Button
                     Margin="4"
+                    Command="{Binding SettingsCommand}"
+                    ToolTip.Tip="Shows the settings dialog."
+                    Click="CommandButtonClicked"><PathIcon Classes.ui_disabled="{Binding !IsUiEnabled}" Data="{StaticResource settings_regular}" /></Button>
+                <Button
+                    Margin="4"
                     Command="{Binding AboutCommand}"
                     ToolTip.Tip="Shows the about dialog."
                     Click="CommandButtonClicked"><PathIcon Classes.ui_disabled="{Binding !IsUiEnabled}" Data="{StaticResource info_regular}" /></Button>

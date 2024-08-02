@@ -26,15 +26,10 @@ internal static class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        const string configFileName = Defaults.ConfigFileName;
-        
-        // We are reading and writing config file in user's home directory.
-        var configFileRootPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        var configFileRootPath = GetSettingsFileRootPath();
+        var configPath = GetSettingsFilePath();
         
         // If config file does not exist, create it with default values.
-        var configPath = Path.Combine(
-            configFileRootPath,
-            configFileName);
         if (File.Exists(configPath) == false)
         {
             try
@@ -53,7 +48,7 @@ internal static class Program
                 new PhysicalFileProvider(      // This provider allows us to load config from an absolute path.
                     configFileRootPath,
                     ExclusionFilters.System),  // We are reading from an hidden file.
-                configFileName,
+                Defaults.ConfigFileName,
                 optional: true,
                 reloadOnChange: false);  // This slows down app startup. Also - not sure, how to react to config reloads.
 
@@ -65,6 +60,26 @@ internal static class Program
         BuildAvaloniaApp()
             .StartWithClassicDesktopLifetime(args);
     }
+    
+    /// <summary>
+    /// Returns a path to the settings file.
+    /// </summary>
+    /// <returns>A path to the settings file.</returns>
+    public static string GetSettingsFilePath()
+    {
+        
+        return Path.Combine(
+            GetSettingsFileRootPath(),
+            Defaults.ConfigFileName);
+    }
+    
+    
+    private static string GetSettingsFileRootPath()
+    {
+        // We are reading and writing config file in user's home directory.
+        return Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+    }
+    
 
     // Avalonia configuration, don't remove; also used by visual designer.
     private static AppBuilder BuildAvaloniaApp()

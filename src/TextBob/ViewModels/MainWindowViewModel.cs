@@ -8,6 +8,9 @@ using MiniMvvm;
 
 namespace TextBob.ViewModels;
 
+/// <summary>
+/// View model for the main window.
+/// </summary>
 internal class MainWindowViewModel : ViewModelBase
 {
     #region properties
@@ -268,10 +271,11 @@ internal class MainWindowViewModel : ViewModelBase
     
     #region commands
     
-    public MiniCommand AboutCommand { get; }
     public MiniCommand OpenCommand { get; }
     public MiniCommand SaveCommand { get; }
     public MiniCommand ClearCommand { get; }
+    public MiniCommand SettingsCommand { get; }
+    public MiniCommand AboutCommand { get; }
     public MiniCommand ExitCommand { get; }
     
     #endregion
@@ -295,6 +299,24 @@ internal class MainWindowViewModel : ViewModelBase
             try
             {
                 await AppViewModel.ShowAboutWindow();
+            }
+            finally
+            {
+                IsUiEnabled = true;
+            }
+        });
+        
+        SettingsCommand = MiniCommand.CreateFromTask(async () =>
+        {
+            if (AppViewModel == null)
+            {
+                return;
+            }
+
+            IsUiEnabled = false;
+            try
+            {
+                await AppViewModel.ShowSettingsWindow();
             }
             finally
             {

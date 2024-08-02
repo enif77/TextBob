@@ -3,9 +3,11 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform;
+
 using MiniMvvm;
 
 using TextBob.Views;
@@ -13,9 +15,13 @@ using TextBob.Views;
 
 namespace TextBob.ViewModels;
 
+/// <summary>
+/// View model for the whole application.
+/// </summary>
 public class AppViewModel : ViewModelBase
 { 
     private AboutWindow? _aboutWindow;
+    private SettingsWindow? _settingsWindow;
     
     
     #region properties
@@ -203,5 +209,41 @@ public class AppViewModel : ViewModelBase
         };
         await _aboutWindow.ShowDialog(mainWindow);
         _aboutWindow = null;
+    }
+    
+    
+    public async Task ShowSettingsWindow()
+    {
+        if (_settingsWindow is not null)
+        {
+            _settingsWindow.Activate();
+            
+            return;
+        }
+     
+        var applicationLifeTime = Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
+        var mainWindow = applicationLifeTime?.MainWindow;
+        if (mainWindow is null)
+        {
+            return;
+        }
+
+        var settingsFilePath = Program.GetSettingsFilePath();
+        var settingsText = File.Exists(settingsFilePath)
+            ? await File.ReadAllTextAsync(settingsFilePath)
+            : Program.Settings.ToJson();
+
+        _settingsWindow = new SettingsWindow()
+        {
+            DataContext = new SettingsWindowViewModel()
+            {
+                AppViewModel = this,
+                Text = settingsText
+            }
+        };
+        await _settingsWindow.ShowDialog(mainWindow);
+        _settingsWindow = null;
+        
+        // TODO: Reload settings.
     }
 }
