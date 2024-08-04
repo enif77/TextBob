@@ -39,12 +39,15 @@
 
                 <ScrollViewer>
                         <TextBox
+                            AcceptsReturn="True"
+                            AcceptsTab="True"
+                            TextWrapping="NoWrap"
                             Padding="4"
                             xml:space="preserve"
                             Foreground="LightGray"
                             Background="#2f2f2f"
                             FontSize="14"
-                            FontFamily="Cascadia Code,Consolas,Menlo,Monospace"
+                            FontFamily="Monospace"
                             Text="{Binding Text}"/>
                 </ScrollViewer>
             </Panel>
