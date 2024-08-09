@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:AvaloniaEdit="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
         xmlns:vm="using:TextBob.ViewModels"
+        xmlns:m="using:TextBob.Models"
         xmlns:local="clr-namespace:TextBob.Views"
         mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480"
         x:CompileBindings="True"
@@ -129,11 +130,13 @@
                 SelectedIndex="0"
                 AutoScrollToSelectedItem="True">
 
-                <!-- <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Name}" FontFamily="{Binding}" />
-                </DataTemplate>
-                </ComboBox.ItemTemplate> -->
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock
+                            Text="{Binding}"
+                            ToolTip.Tip="{Binding Path=Path, DataType={x:Type m:SnapshotFile}}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
 
             <StackPanel
