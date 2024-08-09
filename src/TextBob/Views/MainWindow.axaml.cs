@@ -85,6 +85,7 @@ public partial class MainWindow : Window, ITextEditorHandler
         // Set hyperlink color.
         MainTextBox.TextArea.TextView.LinkTextForegroundBrush = Brushes.Gray;
 
+        UpdateBuffersList();
         UpdateInfoText();
     }
 
@@ -131,6 +132,18 @@ public partial class MainWindow : Window, ITextEditorHandler
     
     
     #region private
+
+    private void UpdateBuffersList()
+    {
+        BuffersComboBox.Items.Clear();
+
+        foreach (var snapshot in Program.Settings.Snapshots)
+        {
+            BuffersComboBox.Items.Add(snapshot);
+        }
+
+        BuffersComboBox.SelectedIndex = 0;
+    }
     
     private void UpdateInfoText()
     {
