@@ -128,7 +128,8 @@
                 MaxWidth="200"
                 MaxDropDownHeight="200"
                 SelectedIndex="0"
-                AutoScrollToSelectedItem="True">
+                AutoScrollToSelectedItem="True"
+                SelectedValue="{Binding Path=SelectedSnapshotFile}">
 
                 <ComboBox.ItemTemplate>
                     <DataTemplate>

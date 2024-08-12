@@ -54,7 +54,7 @@ public partial class App : Application
                     IndentationSize = Program.Settings.TextEditorIndentationSize,
                 },
                 TextEditorHandler = mainWindow,
-                Document = new TextDocument(((AppViewModel?)DataContext)?.LoadTextSnapshot() ?? string.Empty)
+                Document = new TextDocument()
             };
             
             mainWindow.DataContext = viewModel;

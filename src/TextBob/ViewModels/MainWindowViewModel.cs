@@ -1,9 +1,12 @@
+using System;
+using System.IO;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using AvaloniaEdit;
 using AvaloniaEdit.Document;
 
 using MiniMvvm;
+using TextBob.Models;
 
 
 namespace TextBob.ViewModels;
@@ -266,6 +269,30 @@ internal class MainWindowViewModel : ViewModelBase
         }
     }
     
+    
+    private SnapshotFile? _selectedSnapshotFile = new ();
+
+    /// <summary>
+    /// The selected snapshot file.
+    /// </summary>
+    public SnapshotFile? SelectedSnapshotFile
+    {
+        get => _selectedSnapshotFile;
+
+        set
+        {
+            if (_selectedSnapshotFile == value)
+            {
+                return;
+            }
+
+            _selectedSnapshotFile = value;
+            LoadSelectedBuffer();
+
+            RaisePropertyChanged();
+        }
+    }
+    
     #endregion
     
     
@@ -324,22 +351,8 @@ internal class MainWindowViewModel : ViewModelBase
             }
         });
         
-        OpenCommand = MiniCommand.Create(() =>
-        {
-            Document = new TextDocument(AppViewModel?.LoadTextSnapshot() ?? string.Empty);
-            TextChanged = false;
-        });
-        
-        SaveCommand = MiniCommand.Create(() =>
-        {
-            if (Document == null)
-            {
-                return;
-            }
-
-            AppViewModel?.SaveTextSnapshot(Document.Text);
-            TextChanged = false;
-        });
+        OpenCommand = MiniCommand.Create(LoadSelectedBuffer);
+        SaveCommand = MiniCommand.Create(SaveSelectedBuffer);
         
         ClearCommand = MiniCommand.Create(() =>
         {
@@ -376,6 +389,36 @@ internal class MainWindowViewModel : ViewModelBase
     public void SelectionChanged()
     {
         RaisePropertyChanged(nameof(IsTextSelected));
+    }
+    
+    #endregion
+    
+    
+    #region private
+    
+    private void LoadSelectedBuffer()
+    {
+        if (SelectedSnapshotFile == null)
+        {
+            return;
+        }
+        
+        Document = new TextDocument(AppViewModel?.LoadTextSnapshot(SelectedSnapshotFile.Path) ?? string.Empty);
+        TextChanged = false;
+    }
+    
+    
+    private void SaveSelectedBuffer()
+    {
+        if (Document == null)
+        {
+            return;
+        }
+        
+        var selectedSnapshotFile = SelectedSnapshotFile ?? new SnapshotFile();
+
+        AppViewModel?.SaveTextSnapshot(selectedSnapshotFile.Path, Document.Text);
+        TextChanged = false;
     }
     
     #endregion

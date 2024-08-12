@@ -112,13 +112,19 @@ public class AppViewModel : ViewModelBase
     /// <summary>
     /// Loads text from the snapshot.
     /// </summary>
+    /// <param name="snapshotFilePath">A path to the snapshot file.</param>
     /// <returns>A text from the snapshot.</returns>
-    public string LoadTextSnapshot()
+    public string LoadTextSnapshot(string snapshotFilePath)
     {
+        if (string.IsNullOrEmpty(snapshotFilePath))
+        {
+            return string.Empty;
+        }
+        
         try
         {
-            var snapshotFilePath = GetSnapshotFilePath();
-                
+            snapshotFilePath = GetSnapshotFilePath(snapshotFilePath);
+            
             // Load text from the snapshot.
             return File.Exists(snapshotFilePath)
                 ? File.ReadAllText(snapshotFilePath)
@@ -134,10 +140,10 @@ public class AppViewModel : ViewModelBase
     /// <summary>
     /// Saves text to the snapshot.
     /// </summary>
+    /// <param name="snapshotFilePath">A path to the snapshot file.</param>
     /// <param name="text">A text to be saved to the snapshot file.</param>
-    public void SaveTextSnapshot(string text)
+    public void SaveTextSnapshot(string snapshotFilePath, string text)
     {
-        var snapshotFilePath = GetSnapshotFilePath();
         if (string.IsNullOrEmpty(snapshotFilePath))
         {
             return;
@@ -145,18 +151,17 @@ public class AppViewModel : ViewModelBase
         
         try
         {
-            File.WriteAllText(snapshotFilePath, text);
+            File.WriteAllText(GetSnapshotFilePath(snapshotFilePath), text);
         }
         catch (IOException)
         {
             // We are OK with all IO exceptions here.
         }
     }
-
-
-    private string GetSnapshotFilePath()
+    
+    
+    private string GetSnapshotFilePath(string snapshotFilePath)
     {
-        var snapshotFilePath = Program.Settings.Snapshots.FirstOrDefault()?.Path ?? Defaults.DefaultSnapshotFilePath;
         if (File.Exists(snapshotFilePath))
         {
             return snapshotFilePath;
@@ -171,7 +176,7 @@ public class AppViewModel : ViewModelBase
 
         return snapshotFilePath;
     }
-
+    
 
     public async Task ShowAboutWindow()
     {
