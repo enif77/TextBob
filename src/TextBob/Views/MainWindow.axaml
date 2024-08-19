@@ -171,7 +171,7 @@
                 <Button
                     Margin="4"
                     Command="{Binding SettingsCommand}"
-                    ToolTip.Tip="Shows the settings dialog."
+                    ToolTip.Tip="Loads the settings file for editing."
                     Click="CommandButtonClicked"><PathIcon Classes.ui_disabled="{Binding !IsUiEnabled}" Data="{StaticResource settings_regular}" /></Button>
                 <Button
                     Margin="4"
