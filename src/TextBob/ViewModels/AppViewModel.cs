@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 using Avalonia;
@@ -11,7 +10,6 @@ using Avalonia.Platform;
 
 using MiniMvvm;
 
-using TextBob.Models;
 using TextBob.Views;
 
 
@@ -23,7 +21,6 @@ namespace TextBob.ViewModels;
 public class AppViewModel : ViewModelBase
 { 
     private AboutWindow? _aboutWindow;
-    private SettingsWindow? _settingsWindow;
     
     
     #region properties
@@ -216,60 +213,5 @@ public class AppViewModel : ViewModelBase
         };
         await _aboutWindow.ShowDialog(mainWindow);
         _aboutWindow = null;
-    }
-    
-    
-    public async Task ShowSettingsWindow()
-    {
-        if (_settingsWindow is not null)
-        {
-            _settingsWindow.Activate();
-            
-            return;
-        }
-     
-        var applicationLifeTime = Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
-        var mainWindow = applicationLifeTime?.MainWindow;
-        if (mainWindow is null)
-        {
-            return;
-        }
-
-        var settingsFilePath = Program.GetSettingsFilePath();
-        var settingsText = File.Exists(settingsFilePath)
-            ? await File.ReadAllTextAsync(settingsFilePath)
-            : Program.Settings.ToJson();
-
-        var settingsViewModel = new SettingsWindowViewModel()
-        {
-            AppViewModel = this,
-            Text = settingsText
-        };
-        
-        _settingsWindow = new SettingsWindow()
-        {
-            DataContext = settingsViewModel
-        };
-        await _settingsWindow.ShowDialog(mainWindow);
-        _settingsWindow = null;
-        
-        var settingsJson = settingsViewModel.Text;
-        try
-        {
-            // Validate settings.
-            _ = JsonSerializer.Deserialize<Settings>(settingsJson);
-            
-            // Save settings.
-            await File.WriteAllTextAsync(settingsFilePath, settingsJson);
-        }
-        catch (Exception)
-        {
-            // TODO: Log the exception.
-
-            return;
-        }
-        
-        // TODO: Reload settings.
-        
     }
 }
