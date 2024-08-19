@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using System.Text.Json;
+
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using AvaloniaEdit;
@@ -333,22 +335,19 @@ internal class MainWindowViewModel : ViewModelBase
             }
         });
         
-        SettingsCommand = MiniCommand.CreateFromTask(async () =>
+        SettingsCommand = MiniCommand.Create(() =>
         {
             if (AppViewModel == null)
             {
                 return;
             }
 
-            IsUiEnabled = false;
-            try
-            {
-                await AppViewModel.ShowSettingsWindow();
-            }
-            finally
-            {
-                IsUiEnabled = true;
-            }
+            var settingsFilePath = Program.GetSettingsFilePath();
+            Document = new TextDocument(File.Exists(settingsFilePath)
+                ? AppViewModel?.LoadTextSnapshot(settingsFilePath)
+                : Program.Settings.ToJson());
+            TextChanged = false;
+            _settingsLoaded = true;
         });
         
         OpenCommand = MiniCommand.Create(LoadSelectedBuffer);
@@ -395,6 +394,12 @@ internal class MainWindowViewModel : ViewModelBase
     
     
     #region private
+
+    /// <summary>
+    /// Flag, that indicates if the settings are loaded.
+    /// </summary>
+    private bool _settingsLoaded;
+    
     
     private void LoadSelectedBuffer()
     {
@@ -405,6 +410,7 @@ internal class MainWindowViewModel : ViewModelBase
         
         Document = new TextDocument(AppViewModel?.LoadTextSnapshot(SelectedSnapshotFile.Path) ?? string.Empty);
         TextChanged = false;
+        _settingsLoaded = false;
     }
     
     
@@ -415,10 +421,40 @@ internal class MainWindowViewModel : ViewModelBase
             return;
         }
         
-        var selectedSnapshotFile = SelectedSnapshotFile ?? new SnapshotFile();
-
-        AppViewModel?.SaveTextSnapshot(selectedSnapshotFile.Path, Document.Text);
+        if (_settingsLoaded)
+        {
+            SaveSettings();
+        }
+        else
+        {
+            AppViewModel?.SaveTextSnapshot(
+                (SelectedSnapshotFile ?? new SnapshotFile()).Path,
+                Document.Text);
+        }
+        
         TextChanged = false;
+    }
+
+
+    private void SaveSettings()
+    {
+        var settingsJson = Document!.Text;
+        try
+        {
+            // Validate settings.
+            _ = JsonSerializer.Deserialize<Settings>(settingsJson);
+            
+            // Save settings.
+            File.WriteAllText(Program.GetSettingsFilePath(), settingsJson);
+
+            // TODO: Reload settings.
+        }
+        catch (Exception)
+        {
+            // TODO: Log the exception.
+
+            return;
+        }
     }
     
     #endregion
