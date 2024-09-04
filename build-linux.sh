@@ -3,7 +3,7 @@ APP=$PWD
 APP_SRC="$APP/src"
 APP_NAME="$APP/publish/linux/TextBob"
 
-VersionName=1.1.0
+VersionName=1.1.1
 
 # Set the language to English.
 export DOTNET_CLI_UI_LANGUAGE=en
