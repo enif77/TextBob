@@ -228,6 +228,9 @@ App uses .NET 8.0.
 # For Windows:
 dotnet publish -c Release --runtime win-x64 --force --self-contained true -p:PublishSingleFile=true
 
+# For linux (x64):
+dotnet publish -c Release --runtime linux-x64 --force --self-contained true -p:PublishSingleFile=true
+
 # For macOS (arm64):
 dotnet publish -c Release --runtime osx-arm64 --force --self-contained true -p:PublishSingleFile=true
 ```
