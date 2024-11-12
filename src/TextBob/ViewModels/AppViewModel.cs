@@ -91,7 +91,18 @@ public class AppViewModel : ViewModelBase
         {
             if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
             {
-                lifetime.MainWindow?.Activate();
+                var mainWindow = lifetime.MainWindow;
+                if (mainWindow == null)
+                {
+                    return;
+                }
+
+                // This makes the main window active/focused.
+                mainWindow.Activate();
+                
+                // This ensures main window to be visible.
+                mainWindow.Topmost = true;
+                mainWindow.Topmost = false;
             }
         });
         
