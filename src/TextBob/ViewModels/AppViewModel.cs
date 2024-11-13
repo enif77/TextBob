@@ -20,7 +20,7 @@ namespace TextBob.ViewModels;
 /// </summary>
 public class AppViewModel : ViewModelBase
 { 
-    private AboutWindow? _aboutWindow;
+    //private AboutWindow? _aboutWindow;
     
     
     #region properties
@@ -186,43 +186,43 @@ public class AppViewModel : ViewModelBase
     }
     
 
-    public async Task ShowAboutWindow()
-    {
-        if (_aboutWindow is not null)
-        {
-            _aboutWindow.Activate();
-            
-            return;
-        }
-     
-        var applicationLifeTime = Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
-        var mainWindow = applicationLifeTime?.MainWindow;
-        if (mainWindow is null)
-        {
-            return;
-        }
-        
-        // https://docs.avaloniaui.net/docs/basics/user-interface/assets
-        var uri = RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
-            ? new Uri("avares://TextBob/Assets/macOS/about.txt")
-            : new Uri("avares://TextBob/Assets/Windows/about.txt");
-        
-        string aboutText;
-        using (var reader = new StreamReader(AssetLoader.Open(uri), System.Text.Encoding.UTF8))
-        {
-            aboutText = await reader.ReadToEndAsync();
-        }
-        
-        _aboutWindow = new AboutWindow()
-        {
-            DataContext = new AboutWindowViewModel()
-            {
-                AppViewModel = this,
-                VersionInfo = VersionInfo,
-                Text = aboutText
-            }
-        };
-        await _aboutWindow.ShowDialog(mainWindow);
-        _aboutWindow = null;
-    }
+    // public async Task ShowAboutWindow()
+    // {
+    //     if (_aboutWindow is not null)
+    //     {
+    //         _aboutWindow.Activate();
+    //         
+    //         return;
+    //     }
+    //  
+    //     var applicationLifeTime = Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
+    //     var mainWindow = applicationLifeTime?.MainWindow;
+    //     if (mainWindow is null)
+    //     {
+    //         return;
+    //     }
+    //     
+    //     // https://docs.avaloniaui.net/docs/basics/user-interface/assets
+    //     var uri = RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
+    //         ? new Uri("avares://TextBob/Assets/macOS/about.txt")
+    //         : new Uri("avares://TextBob/Assets/Windows/about.txt");
+    //     
+    //     string aboutText;
+    //     using (var reader = new StreamReader(AssetLoader.Open(uri), System.Text.Encoding.UTF8))
+    //     {
+    //         aboutText = await reader.ReadToEndAsync();
+    //     }
+    //     
+    //     _aboutWindow = new AboutWindow()
+    //     {
+    //         DataContext = new AboutWindowViewModel()
+    //         {
+    //             AppViewModel = this,
+    //             VersionInfo = VersionInfo,
+    //             Text = aboutText
+    //         }
+    //     };
+    //     await _aboutWindow.ShowDialog(mainWindow);
+    //     _aboutWindow = null;
+    // }
 }

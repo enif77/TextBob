@@ -4,6 +4,7 @@ using System.Text.Json;
 
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Platform;
 using AvaloniaEdit;
 using AvaloniaEdit.Document;
 
@@ -88,6 +89,75 @@ internal class MainWindowViewModel : ViewModelBase
         }
     }
 
+    
+    private bool _isTextEditorEnabled = true;
+
+    /// <summary>
+    /// Indicates, that the main text editor is enabled.
+    /// </summary>
+    public bool IsTextEditorEnabled
+    {
+        get => _isTextEditorEnabled;
+
+        set
+        {
+            if (_isTextEditorEnabled == value)
+            {
+                return;
+            }
+
+            _isTextEditorEnabled = value;
+            
+            RaisePropertyChanged();
+        }
+    }
+    
+    
+    private bool _isSaveButtonEnabled = true;
+
+    /// <summary>
+    /// Indicates, that the save button is enabled.
+    /// </summary>
+    public bool IsSaveButtonEnabled
+    {
+        get => _isSaveButtonEnabled;
+
+        set
+        {
+            if (_isSaveButtonEnabled == value)
+            {
+                return;
+            }
+
+            _isSaveButtonEnabled = value;
+            
+            RaisePropertyChanged();
+        }
+    }
+    
+    
+    private bool _isDeleteButtonEnabled = true;
+
+    /// <summary>
+    /// Indicates, that the delete button is enabled.
+    /// </summary>
+    public bool IsDeleteButtonEnabled
+    {
+        get => _isDeleteButtonEnabled;
+
+        set
+        {
+            if (_isDeleteButtonEnabled == value)
+            {
+                return;
+            }
+
+            _isDeleteButtonEnabled = value;
+            
+            RaisePropertyChanged();
+        }
+    }
+    
     /// <summary>
     /// Flag, that indicates if a text is selected.
     /// </summary>
@@ -270,25 +340,49 @@ internal class MainWindowViewModel : ViewModelBase
             RaisePropertyChanged();
         }
     }
-    
-    
-    private SnapshotFile? _selectedSnapshotFile = new ();
 
+
+    private TextBuffer? _currentTextBuffer = new ();
+    
     /// <summary>
-    /// The selected snapshot file.
+    /// The current text buffer.
     /// </summary>
-    public SnapshotFile? SelectedSnapshotFile
+    public TextBuffer? CurrentTextBuffer
     {
-        get => _selectedSnapshotFile;
+        get => _currentTextBuffer;
 
         set
         {
-            if (_selectedSnapshotFile == value)
+            if (_currentTextBuffer == value)
             {
                 return;
             }
 
-            _selectedSnapshotFile = value;
+            _currentTextBuffer = value;
+            LoadCurrentBuffer();
+            
+            RaisePropertyChanged();
+        }
+    }
+    
+    
+    private TextBuffer? _selectedTextBuffer = new ();
+
+    /// <summary>
+    /// The selected text buffer.
+    /// </summary>
+    public TextBuffer? SelectedTextBuffer
+    {
+        get => _selectedTextBuffer;
+
+        set
+        {
+            if (_selectedTextBuffer == value)
+            {
+                return;
+            }
+
+            _selectedTextBuffer = value;
             LoadSelectedBuffer();
 
             RaisePropertyChanged();
@@ -316,6 +410,7 @@ internal class MainWindowViewModel : ViewModelBase
     {
         FontSize = Defaults.DefaultFontSize;
         FontFamily = Defaults.DefaultFontFamily;
+        TextInfo = Defaults.AppVersionInfo;
         
         AboutCommand = MiniCommand.CreateFromTask(async () =>
         {
@@ -324,15 +419,27 @@ internal class MainWindowViewModel : ViewModelBase
                 return;
             }
 
-            IsUiEnabled = false;
-            try
+            var text = Defaults.AppName;
+
+            // https://docs.avaloniaui.net/docs/basics/user-interface/assets
+            using (var reader = new StreamReader(AssetLoader.Open(new Uri("avares://TextBob/Assets/Windows/about.txt"))))
             {
-                await AppViewModel.ShowAboutWindow();
+                text = await reader.ReadToEndAsync();
             }
-            finally
+
+            text = text.Replace("${version-info}", Defaults.AppVersionInfo);
+
+            CurrentTextBuffer = new TextBuffer
             {
-                IsUiEnabled = true;
-            }
+                Name = "About",
+                Text = text,
+                IsReadOnly = true
+            };
+            
+            // Disable editing.
+            IsTextEditorEnabled = false;
+            IsSaveButtonEnabled = false;
+            IsDeleteButtonEnabled = false;
         });
         
         SettingsCommand = MiniCommand.Create(() =>
@@ -342,16 +449,23 @@ internal class MainWindowViewModel : ViewModelBase
                 return;
             }
 
+            // TODO: Change this to a text buffer.
+            
             var settingsFilePath = Program.GetSettingsFilePath();
             Document = new TextDocument(File.Exists(settingsFilePath)
                 ? AppViewModel?.LoadTextSnapshot(settingsFilePath)
                 : Program.Settings.ToJson());
             TextChanged = false;
             _settingsLoaded = true;
+            
+            // Enable editing.
+            IsTextEditorEnabled = true;
+            IsSaveButtonEnabled = true;
+            IsDeleteButtonEnabled = false;
         });
         
         OpenCommand = MiniCommand.Create(LoadSelectedBuffer);
-        SaveCommand = MiniCommand.Create(SaveSelectedBuffer);
+        SaveCommand = MiniCommand.Create(SaveCurrentBuffer);
         
         ClearCommand = MiniCommand.Create(() =>
         {
@@ -401,20 +515,49 @@ internal class MainWindowViewModel : ViewModelBase
     private bool _settingsLoaded;
     
     
-    private void LoadSelectedBuffer()
+    private void LoadCurrentBuffer()
     {
-        if (SelectedSnapshotFile == null)
-        {
-            return;
-        }
+        Document = new TextDocument((CurrentTextBuffer == null)
+            ? string.Empty
+            : CurrentTextBuffer.Text);
         
-        Document = new TextDocument(AppViewModel?.LoadTextSnapshot(SelectedSnapshotFile.Path) ?? string.Empty);
+        // Reset the text changed flag.
         TextChanged = false;
+        
+        // Clear the settings loaded flag.
         _settingsLoaded = false;
     }
     
     
-    private void SaveSelectedBuffer()
+    private void LoadSelectedBuffer()
+    {
+        if (SelectedTextBuffer == null)
+        {
+            IsSaveButtonEnabled = false;
+            IsDeleteButtonEnabled = false;
+            IsTextEditorEnabled = true;
+            
+            return;
+        }
+        
+        // Update the selected buffer with the contents of the snapshot.
+        SelectedTextBuffer.Text = AppViewModel?.LoadTextSnapshot(SelectedTextBuffer.Path) ?? string.Empty;
+        
+        // Update the current buffer.
+        CurrentTextBuffer = null;
+        CurrentTextBuffer = SelectedTextBuffer;
+        
+        // Disable editing if the buffer is read only.
+        IsTextEditorEnabled = SelectedTextBuffer.IsReadOnly == false;
+        IsDeleteButtonEnabled = IsTextEditorEnabled;
+        IsSaveButtonEnabled = IsTextEditorEnabled;
+        
+        //TextChanged = false;
+        //_settingsLoaded = false;
+    }
+    
+    
+    private void SaveCurrentBuffer()
     {
         if (Document == null)
         {
@@ -427,9 +570,17 @@ internal class MainWindowViewModel : ViewModelBase
         }
         else
         {
-            AppViewModel?.SaveTextSnapshot(
-                (SelectedSnapshotFile ?? new SnapshotFile()).Path,
-                Document.Text);
+            var currentTextBuffer = CurrentTextBuffer;
+            if (currentTextBuffer != null && currentTextBuffer.IsReadOnly == false)
+            {
+                // Update the text buffer.
+                currentTextBuffer.Text = Document.Text;
+                
+                // Save the text buffer to a snapshot.
+                AppViewModel?.SaveTextSnapshot(
+                    currentTextBuffer.Path,
+                    currentTextBuffer.Text);
+            }
         }
         
         TextChanged = false;

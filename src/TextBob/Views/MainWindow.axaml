@@ -117,7 +117,8 @@
                     FontFamily="{Binding FontFamily}"
                     Foreground="LightGray"
                     ShowLineNumbers="{Binding ShowLineNumbers}"
-                    Document="{Binding Document}" />
+                    Document="{Binding Document}"
+                    IsReadOnly="{Binding !IsTextEditorEnabled}"/>
             </Panel>
 
             <ComboBox Name="BuffersComboBox"
@@ -129,7 +130,7 @@
                 MaxDropDownHeight="200"
                 SelectedIndex="0"
                 AutoScrollToSelectedItem="True"
-                SelectedValue="{Binding Path=SelectedSnapshotFile}">
+                SelectedValue="{Binding Path=SelectedTextBuffer}">
 
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
@@ -161,13 +162,15 @@
                     Name="SaveButton"
                     Margin="4"
                     Command="{Binding SaveCommand}"
+                    IsEnabled="{Binding IsSaveButtonEnabled}"
                     ToolTip.Tip="Saves the current text state to the snapshot file."
-                    Click="CommandButtonClicked"><PathIcon Classes.ui_disabled="{Binding !IsUiEnabled}" Classes.text_changed="{Binding TextChanged}" Data="{StaticResource save_regular}" /></Button>
+                    Click="CommandButtonClicked"><PathIcon Classes.ui_disabled="{Binding !IsSaveButtonEnabled}" Classes.text_changed="{Binding TextChanged}" Data="{StaticResource save_regular}" /></Button>
                 <Button
                     Margin="4"
                     Command="{Binding ClearCommand}"
+                    IsEnabled="{Binding IsDeleteButtonEnabled}"
                     ToolTip.Tip="Deletes the current (selected) text."
-                    Click="CommandButtonClicked"><PathIcon Classes.ui_disabled="{Binding !IsUiEnabled}" Classes.delete_selected="{Binding IsTextSelected}" Data="{StaticResource delete_regular}" /></Button>
+                    Click="CommandButtonClicked"><PathIcon Classes.ui_disabled="{Binding !IsDeleteButtonEnabled}" Classes.delete_selected="{Binding IsTextSelected}" Data="{StaticResource delete_regular}" /></Button>
                 <Button
                     Margin="4"
                     Command="{Binding SettingsCommand}"

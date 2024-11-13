@@ -40,12 +40,17 @@ public partial class MainWindow : Window, ITextEditorHandler
             UpdateInfoText();
         };
 
+        HotKeyManager.SetHotKey(OpenButton, MenuOpenGesture);
         HotKeyManager.SetHotKey(SaveButton, MenuSaveGesture);
     }
     
     public static string MenuQuitHeader => RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
         ? "Quit Text Bob"
         : "E_xit";
+    
+    public static string MenuOpenHeader => RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
+        ? "Open/reload selected buffer"
+        : "O_pen/reload selected buffer";
     
     public static string MenuSaveHeader => RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
         ? "Save text snapshot"
@@ -54,6 +59,10 @@ public partial class MainWindow : Window, ITextEditorHandler
     public static KeyGesture MenuQuitGesture => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ?
         new KeyGesture(Key.Q, KeyModifiers.Meta) :
         new KeyGesture(Key.F4, KeyModifiers.Alt);
+    
+    public static KeyGesture MenuOpenGesture => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ?
+        new KeyGesture(Key.O, KeyModifiers.Meta) :
+        new KeyGesture(Key.O, KeyModifiers.Alt);
     
     public static KeyGesture MenuSaveGesture => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ?
         new KeyGesture(Key.S, KeyModifiers.Meta) :
@@ -139,7 +148,12 @@ public partial class MainWindow : Window, ITextEditorHandler
 
         foreach (var snapshot in Program.Settings.Snapshots)
         {
-            BuffersComboBox.Items.Add(snapshot);
+            BuffersComboBox.Items.Add(new TextBuffer
+            {
+                Name = snapshot.Name,
+                Path = snapshot.Path,
+                IsReadOnly = snapshot.ReadOnly
+            });
         }
 
         BuffersComboBox.SelectedIndex = 0;

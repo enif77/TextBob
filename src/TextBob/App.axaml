@@ -14,13 +14,13 @@
         <StyleInclude Source="avares://TextBob/Icons.axaml" />
     </Application.Styles>
              
-    <NativeMenu.Menu>
-        <NativeMenu>
-            <NativeMenuItem
-                Header="About Text Bob"
-                Command="{Binding ShowAboutWindow}" />
-        </NativeMenu>
-    </NativeMenu.Menu>
+    <!-- <NativeMenu.Menu> -->
+    <!--     <NativeMenu> -->
+    <!--         <NativeMenuItem -->
+    <!--             Header="About Text Bob" -->
+    <!--             Command="{Binding ShowAboutWindow}" /> -->
+    <!--     </NativeMenu> -->
+    <!-- </NativeMenu.Menu> -->
              
     <TrayIcon.Icons>
         <TrayIcons>
