@@ -461,7 +461,7 @@ internal class MainWindowViewModel : ViewModelBase
             // Enable editing.
             IsTextEditorEnabled = true;
             IsSaveButtonEnabled = true;
-            IsDeleteButtonEnabled = false;
+            IsDeleteButtonEnabled = true;
         });
         
         OpenCommand = MiniCommand.Create(LoadSelectedBuffer);
