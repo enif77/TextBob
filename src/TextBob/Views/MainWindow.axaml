@@ -136,7 +136,7 @@
                     <DataTemplate>
                         <TextBlock
                             Text="{Binding}"
-                            ToolTip.Tip="{Binding Path=Path, DataType={x:Type m:SnapshotFile}}" />
+                            ToolTip.Tip="{Binding Path=Path, DataType={x:Type vm:TextBuffer}}" />
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
