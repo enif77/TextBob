@@ -6,7 +6,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.FileProviders.Physical;
 
 using Avalonia;
-
+using Avalonia.ReactiveUI;
 using TextBob.Models;
 
 
@@ -86,5 +86,6 @@ internal static class Program
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .WithInterFont()
-            .LogToTrace();
+            .LogToTrace()
+            .UseReactiveUI();
 }

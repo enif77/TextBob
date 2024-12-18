@@ -1,4 +1,4 @@
-using MiniMvvm;
+using ReactiveUI;
 
 
 namespace TextBob.ViewModels;
@@ -6,7 +6,7 @@ namespace TextBob.ViewModels;
 /// <summary>
 /// View model for the text buffer.
 /// </summary>
-public class TextBuffer: ViewModelBase
+public class TextBuffer: ReactiveObject
 {
     private string _name = Defaults.DefaultSnapshotName;
     
@@ -16,18 +16,7 @@ public class TextBuffer: ViewModelBase
     public string Name
     {
         get => _name;
-
-        set
-        {
-            if (_name == value)
-            {
-                return;
-            }
-
-            _name = value;
-            
-            RaisePropertyChanged();
-        }
+        set => this.RaiseAndSetIfChanged(ref _name, value);
     }
     
     
@@ -39,18 +28,7 @@ public class TextBuffer: ViewModelBase
     public string Text
     {
         get => _text;
-
-        set
-        {
-            if (_text == value)
-            {
-                return;
-            }
-
-            _text = value;
-            
-            RaisePropertyChanged();
-        }
+        set => this.RaiseAndSetIfChanged(ref _text, value);
     }
     
     
@@ -62,18 +40,7 @@ public class TextBuffer: ViewModelBase
     public string Path
     {
         get => _path;
-
-        set
-        {
-            if (_path == value)
-            {
-                return;
-            }
-
-            _path = value;
-            
-            RaisePropertyChanged();
-        }
+        set => this.RaiseAndSetIfChanged(ref _path, value);
     }
     
     
@@ -85,18 +52,7 @@ public class TextBuffer: ViewModelBase
     public bool IsReadOnly
     {
         get => _isReadOnly;
-
-        set
-        {
-            if (_isReadOnly == value)
-            {
-                return;
-            }
-
-            _isReadOnly = value;
-            
-            RaisePropertyChanged();
-        }
+        set => this.RaiseAndSetIfChanged(ref _isReadOnly, value);
     }
     
     

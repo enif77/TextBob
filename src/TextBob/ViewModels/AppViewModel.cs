@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Reactive;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
@@ -8,8 +9,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform;
 
-using MiniMvvm;
-
+using ReactiveUI;
 using TextBob.Views;
 
 
@@ -18,11 +18,8 @@ namespace TextBob.ViewModels;
 /// <summary>
 /// View model for the whole application.
 /// </summary>
-public class AppViewModel : ViewModelBase
+public class AppViewModel : ReactiveObject
 { 
-    //private AboutWindow? _aboutWindow;
-    
-    
     #region properties
 
     private string? _name;
@@ -33,20 +30,7 @@ public class AppViewModel : ViewModelBase
     public string? Name
     {
         get => _name;
-
-        set
-        {
-            if (_name == value)
-            {
-                return;
-            }
-
-            _name = value;
-
-            // We call RaisePropertyChanged() to notify the UI about changes.
-            // We can omit the property name here because [CallerMemberName] will provide it for us.
-            RaisePropertyChanged();
-        }
+        set => this.RaiseAndSetIfChanged(ref _name, value);
     }
     
     
@@ -58,18 +42,7 @@ public class AppViewModel : ViewModelBase
     public string? VersionInfo
     {
         get => _versionInfo;
-
-        init
-        {
-            if (_versionInfo == value)
-            {
-                return;
-            }
-
-            _versionInfo = value;
-            
-            RaisePropertyChanged();
-        }
+        init => this.RaiseAndSetIfChanged(ref _versionInfo, value);
     }
     
     #endregion
@@ -77,8 +50,8 @@ public class AppViewModel : ViewModelBase
     
     #region commands
     
-    public MiniCommand ShowCommand { get; }
-    public MiniCommand ExitCommand { get; }
+    public ReactiveCommand<Unit, Unit> ShowCommand { get; }
+    public ReactiveCommand<Unit, Unit> ExitCommand { get; }
     
     #endregion
 
@@ -87,7 +60,7 @@ public class AppViewModel : ViewModelBase
     
     public AppViewModel()
     {
-        ShowCommand = MiniCommand.Create(() =>
+        ShowCommand = ReactiveCommand.Create(() =>
         {
             if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
             {
@@ -106,7 +79,7 @@ public class AppViewModel : ViewModelBase
             }
         });
         
-        ExitCommand = MiniCommand.Create(() =>
+        ExitCommand = ReactiveCommand.Create(() =>
         {
             if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
             {

@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Reactive;
 using System.Text.Json;
 
 using Avalonia;
@@ -8,7 +9,7 @@ using Avalonia.Platform;
 using AvaloniaEdit;
 using AvaloniaEdit.Document;
 
-using MiniMvvm;
+using ReactiveUI;
 using TextBob.Models;
 
 
@@ -17,7 +18,7 @@ namespace TextBob.ViewModels;
 /// <summary>
 /// View model for the main window.
 /// </summary>
-internal class MainWindowViewModel : ViewModelBase
+internal class MainWindowViewModel : ReactiveObject
 {
     #region properties
     
@@ -29,18 +30,7 @@ internal class MainWindowViewModel : ViewModelBase
     public AppViewModel? AppViewModel
     {
         get => _appViewModel;
-
-        set
-        {
-            if (_appViewModel == value)
-            {
-                return;
-            }
-
-            _appViewModel = value;
-            
-            RaisePropertyChanged();
-        }
+        set => this.RaiseAndSetIfChanged(ref _appViewModel, value);
     }
 
 
@@ -52,18 +42,7 @@ internal class MainWindowViewModel : ViewModelBase
     public string? Title
     {
         get => _title;
-
-        set
-        {
-            if (_title == value)
-            {
-                return;
-            }
-
-            _title = value;
-            
-            RaisePropertyChanged();
-        }
+        set => this.RaiseAndSetIfChanged(ref _title, value);
     }
     
     
@@ -75,18 +54,7 @@ internal class MainWindowViewModel : ViewModelBase
     public bool IsUiEnabled
     {
         get => _isUiEnabled;
-
-        set
-        {
-            if (_isUiEnabled == value)
-            {
-                return;
-            }
-
-            _isUiEnabled = value;
-            
-            RaisePropertyChanged();
-        }
+        set => this.RaiseAndSetIfChanged(ref _isUiEnabled, value);
     }
 
     
@@ -98,18 +66,7 @@ internal class MainWindowViewModel : ViewModelBase
     public bool IsTextEditorEnabled
     {
         get => _isTextEditorEnabled;
-
-        set
-        {
-            if (_isTextEditorEnabled == value)
-            {
-                return;
-            }
-
-            _isTextEditorEnabled = value;
-            
-            RaisePropertyChanged();
-        }
+        set => this.RaiseAndSetIfChanged(ref _isTextEditorEnabled, value);
     }
     
     
@@ -121,18 +78,7 @@ internal class MainWindowViewModel : ViewModelBase
     public bool IsSaveButtonEnabled
     {
         get => _isSaveButtonEnabled;
-
-        set
-        {
-            if (_isSaveButtonEnabled == value)
-            {
-                return;
-            }
-
-            _isSaveButtonEnabled = value;
-            
-            RaisePropertyChanged();
-        }
+        set => this.RaiseAndSetIfChanged(ref _isSaveButtonEnabled, value);
     }
     
     
@@ -144,18 +90,7 @@ internal class MainWindowViewModel : ViewModelBase
     public bool IsDeleteButtonEnabled
     {
         get => _isDeleteButtonEnabled;
-
-        set
-        {
-            if (_isDeleteButtonEnabled == value)
-            {
-                return;
-            }
-
-            _isDeleteButtonEnabled = value;
-            
-            RaisePropertyChanged();
-        }
+        set => this.RaiseAndSetIfChanged(ref _isDeleteButtonEnabled, value);
     }
     
     /// <summary>
@@ -183,18 +118,7 @@ internal class MainWindowViewModel : ViewModelBase
     public IDocument? Document
     {
         get => _document;
-
-        set
-        {
-            if (_document == value)
-            {
-                return;
-            }
-
-            _document = value;
-            
-            RaisePropertyChanged();
-        }
+        set => this.RaiseAndSetIfChanged(ref _document, value);
     }
 
 
@@ -206,18 +130,7 @@ internal class MainWindowViewModel : ViewModelBase
     public TextEditorOptions? TextEditorOptions
     {
         get => _textEditorOptions;
-
-        set
-        {
-            if (_textEditorOptions == value)
-            {
-                return;
-            }
-
-            _textEditorOptions = value;
-
-            RaisePropertyChanged();
-        }
+        set => this.RaiseAndSetIfChanged(ref _textEditorOptions, value);
     }
     
     
@@ -229,18 +142,7 @@ internal class MainWindowViewModel : ViewModelBase
     public int FontSize
     {
         get => _fontSize;
-
-        set
-        {
-            if (_fontSize == value)
-            {
-                return;
-            }
-
-            _fontSize = value;
-
-            RaisePropertyChanged();
-        }
+        set => this.RaiseAndSetIfChanged(ref _fontSize, value);
     }
 
 
@@ -252,18 +154,7 @@ internal class MainWindowViewModel : ViewModelBase
     public string FontFamily
     {
         get => _fontFamily;
-
-        set
-        {
-            if (_fontFamily == value)
-            {
-                return;
-            }
-
-            _fontFamily = value;
-
-            RaisePropertyChanged();
-        }
+        set => this.RaiseAndSetIfChanged(ref _fontFamily, value);
     }
     
     
@@ -275,18 +166,7 @@ internal class MainWindowViewModel : ViewModelBase
     public bool ShowLineNumbers
     {
         get => _showLineNumbers;
-
-        set
-        {
-            if (_showLineNumbers == value)
-            {
-                return;
-            }
-
-            _showLineNumbers = value;
-
-            RaisePropertyChanged();
-        }
+        set => this.RaiseAndSetIfChanged(ref _showLineNumbers, value);
     }
     
     
@@ -298,18 +178,7 @@ internal class MainWindowViewModel : ViewModelBase
     public bool TextChanged
     {
         get => _textChanged;
-
-        set
-        {
-            if (_textChanged == value)
-            {
-                return;
-            }
-
-            _textChanged = value;
-
-            RaisePropertyChanged();
-        }
+        set => this.RaiseAndSetIfChanged(ref _textChanged, value);
     }
     
     
@@ -327,18 +196,7 @@ internal class MainWindowViewModel : ViewModelBase
     public string TextInfo
     {
         get => _textInfo;
-
-        set
-        {
-            if (_textInfo == value)
-            {
-                return;
-            }
-
-            _textInfo = value;
-
-            RaisePropertyChanged();
-        }
+        set => this.RaiseAndSetIfChanged(ref _textInfo, value);
     }
 
 
@@ -361,7 +219,7 @@ internal class MainWindowViewModel : ViewModelBase
             _currentTextBuffer = value;
             LoadCurrentBuffer();
             
-            RaisePropertyChanged();
+            this.RaisePropertyChanged();
         }
     }
     
@@ -385,7 +243,7 @@ internal class MainWindowViewModel : ViewModelBase
             _selectedTextBuffer = value;
             LoadSelectedBuffer();
 
-            RaisePropertyChanged();
+            this.RaisePropertyChanged();
         }
     }
     
@@ -394,12 +252,12 @@ internal class MainWindowViewModel : ViewModelBase
     
     #region commands
     
-    public MiniCommand OpenCommand { get; }
-    public MiniCommand SaveCommand { get; }
-    public MiniCommand ClearCommand { get; }
-    public MiniCommand SettingsCommand { get; }
-    public MiniCommand AboutCommand { get; }
-    public MiniCommand ExitCommand { get; }
+    public ReactiveCommand<Unit, Unit> OpenCommand { get; }
+    public ReactiveCommand<Unit, Unit> SaveCommand { get; }
+    public ReactiveCommand<Unit, Unit> ClearCommand { get; }
+    public ReactiveCommand<Unit, Unit> SettingsCommand { get; }
+    public ReactiveCommand<Unit, Unit> AboutCommand { get; }
+    public ReactiveCommand<Unit, Unit> ExitCommand { get; }
     
     #endregion
     
@@ -412,7 +270,7 @@ internal class MainWindowViewModel : ViewModelBase
         FontFamily = Defaults.DefaultFontFamily;
         TextInfo = Defaults.AppVersionInfo;
         
-        AboutCommand = MiniCommand.CreateFromTask(async () =>
+        AboutCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             if (AppViewModel == null)
             {
@@ -442,7 +300,7 @@ internal class MainWindowViewModel : ViewModelBase
             IsDeleteButtonEnabled = false;
         });
         
-        SettingsCommand = MiniCommand.Create(() =>
+        SettingsCommand = ReactiveCommand.Create(() =>
         {
             if (AppViewModel == null)
             {
@@ -464,10 +322,10 @@ internal class MainWindowViewModel : ViewModelBase
             IsDeleteButtonEnabled = true;
         });
         
-        OpenCommand = MiniCommand.Create(LoadSelectedBuffer);
-        SaveCommand = MiniCommand.Create(SaveCurrentBuffer);
+        OpenCommand = ReactiveCommand.Create(LoadSelectedBuffer);
+        SaveCommand = ReactiveCommand.Create(SaveCurrentBuffer);
         
-        ClearCommand = MiniCommand.Create(() =>
+        ClearCommand = ReactiveCommand.Create(() =>
         {
             if (Document == null)
             {
@@ -488,7 +346,7 @@ internal class MainWindowViewModel : ViewModelBase
             //document.Replace(0, Document.TextLength, string.Empty);
         });
         
-        ExitCommand = MiniCommand.Create(() =>
+        ExitCommand = ReactiveCommand.Create(() =>
         {
             (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.Shutdown();
         });
@@ -501,7 +359,7 @@ internal class MainWindowViewModel : ViewModelBase
     
     public void SelectionChanged()
     {
-        RaisePropertyChanged(nameof(IsTextSelected));
+        this.RaisePropertyChanged(nameof(IsTextSelected));
     }
     
     #endregion

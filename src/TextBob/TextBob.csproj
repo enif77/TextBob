@@ -56,8 +56,4 @@
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\MiniMvvm\MiniMvvm.csproj" />
-  </ItemGroup>
 </Project>
