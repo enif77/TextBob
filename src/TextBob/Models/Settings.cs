@@ -73,7 +73,12 @@ public class Settings
     /// <summary>
     /// A list of snapshot files.
     /// </summary>
-    public IList<SnapshotFile> Snapshots { get; set; } = new List<SnapshotFile>();
+    public IList<Snapshot> Snapshots { get; set; } = new List<Snapshot>();
+    
+    /// <summary>
+    /// A directory where snapshots can be stored.
+    /// </summary>
+    public string SnapshotsDirectoryPath { get; set; } = Defaults.DefaultSnapshotsDirectoryPath;
     
     #endregion
     

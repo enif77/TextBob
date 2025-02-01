@@ -1,19 +1,14 @@
+namespace TextBob.ViewModels;
+
 using System;
 using System.IO;
-using System.Linq;
 using System.Reactive;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Platform;
 
 using ReactiveUI;
-using TextBob.Views;
 
-
-namespace TextBob.ViewModels;
 
 /// <summary>
 /// View model for the whole application.

@@ -1,3 +1,5 @@
+namespace TextBob.ViewModels;
+
 using System;
 using System.IO;
 using System.Reactive;
@@ -10,10 +12,9 @@ using AvaloniaEdit;
 using AvaloniaEdit.Document;
 
 using ReactiveUI;
+
 using TextBob.Models;
 
-
-namespace TextBob.ViewModels;
 
 /// <summary>
 /// View model for the main window.
@@ -294,6 +295,8 @@ internal class MainWindowViewModel : ReactiveObject
                 IsReadOnly = true
             };
             
+            //  TODO: Disable editing as a method.
+            
             // Disable editing.
             IsTextEditorEnabled = false;
             IsSaveButtonEnabled = false;
@@ -307,7 +310,7 @@ internal class MainWindowViewModel : ReactiveObject
                 return;
             }
 
-            // TODO: Change this to a text buffer.
+            // TODO: Change this to a text buffer. (Use CurrentTextBuffer like the About command)
             
             var settingsFilePath = Program.GetSettingsFilePath();
             Document = new TextDocument(File.Exists(settingsFilePath)
@@ -315,6 +318,8 @@ internal class MainWindowViewModel : ReactiveObject
                 : Program.Settings.ToJson());
             TextChanged = false;
             _settingsLoaded = true;
+            
+            // TODO: Enable editing as a method.
             
             // Enable editing.
             IsTextEditorEnabled = true;
@@ -409,9 +414,6 @@ internal class MainWindowViewModel : ReactiveObject
         IsTextEditorEnabled = SelectedTextBuffer.IsReadOnly == false;
         IsDeleteButtonEnabled = IsTextEditorEnabled;
         IsSaveButtonEnabled = IsTextEditorEnabled;
-        
-        //TextChanged = false;
-        //_settingsLoaded = false;
     }
     
     
@@ -461,8 +463,6 @@ internal class MainWindowViewModel : ReactiveObject
         catch (Exception)
         {
             // TODO: Log the exception.
-
-            return;
         }
     }
     

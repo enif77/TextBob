@@ -1,4 +1,6 @@
-﻿using System;
+﻿namespace TextBob;
+
+using System;
 using System.IO;
 
 using Microsoft.Extensions.Configuration;
@@ -7,10 +9,9 @@ using Microsoft.Extensions.FileProviders.Physical;
 
 using Avalonia;
 using Avalonia.ReactiveUI;
+
 using TextBob.Models;
 
-
-namespace TextBob;
 
 internal static class Program
 {

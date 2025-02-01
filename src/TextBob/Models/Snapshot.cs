@@ -3,7 +3,7 @@ namespace TextBob.Models;
 /// <summary>
 /// Describes a snapshot file.
 /// </summary>
-public class SnapshotFile
+public class Snapshot
 {
     /// <summary>
     /// Name of the snapshot displayed in the UI.

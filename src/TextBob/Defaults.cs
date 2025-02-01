@@ -6,6 +6,10 @@ public static class Defaults
     public const string AppVersionInfo = AppName + " 1.2.1";
     
     public const string ConfigFileName = ".text-bob.json";
+    public const string SnapshotsListFileName = ".snapshots.json";
+    
+    public const string DefaultSnapshotsDirectoryPath = "~/TextBob";
+    
     public const string DefaultSnapshotName = "snapshot";
     public const string DefaultSnapshotFilePath = "";
     
