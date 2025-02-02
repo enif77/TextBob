@@ -129,28 +129,15 @@ public partial class MainWindow : Window, ITextEditorHandler
 
     private void UpdateBuffersList()
     {
+        var viewModel = DataContext as MainWindowViewModel;
+        if (viewModel == null)
+        {
+            return;
+        }
+        
         BuffersComboBox.Items.Clear();
 
-        var snapshotsDirectoryPath = GetSnapshotsDirectoryPath(Program.Settings);
-        
-        var snapshotsListFilePath = Path.Combine(snapshotsDirectoryPath, Defaults.SnapshotsListFileName);
-        if (File.Exists(snapshotsListFilePath) == false)
-        {
-            File.WriteAllText(snapshotsListFilePath, SnapshotsList.DefaultSnapshotsList.ToJson());
-        }
-
-        var snapshotsMap = new Dictionary<string, string>();
-        var snapshotsList = new List<Snapshot>();
-
-        // Load the list of snapshots from the settings.
-        ProcessSnapshotsList(Program.Settings.Snapshots, snapshotsDirectoryPath, snapshotsMap, snapshotsList);
-  
-        // Load the list of snapshots from the snapshots list file.
-        var userDefinedSnapshotsList = JsonSerializer.Deserialize<SnapshotsList>(File.ReadAllText(snapshotsListFilePath)) ??
-                                       SnapshotsList.DefaultSnapshotsList;
-        ProcessSnapshotsList(userDefinedSnapshotsList.Snapshots, snapshotsDirectoryPath, snapshotsMap, snapshotsList);
-
-        foreach (var snapshot in snapshotsList)
+        foreach (var snapshot in viewModel.GetSnapshotsList())
         {
             BuffersComboBox.Items.Add(new TextBuffer
             {
@@ -161,145 +148,6 @@ public partial class MainWindow : Window, ITextEditorHandler
         }
         
         BuffersComboBox.SelectedIndex = 0;
-    }
-    
-    
-        private void ProcessSnapshotsList(
-        IList<Snapshot> snapshots,
-        string snapshotsDirectoryPath,
-        Dictionary<string, string> snapshotsMap,
-        List<Snapshot> snapshotsList)
-    {
-        foreach (var userDefinedSnapshot in snapshots)
-        {
-            // The ellipsis is a marker, that loads all snapshots from the snapshot directory, that are not already loaded.
-            // Use this at the end of the list of snapshots.
-            if (userDefinedSnapshot.Name == "...")
-            {
-                // Load the list of snapshots from the snapshots directory.
-                var directSnapshotFilePathsList = GetSnapshotFilePaths(snapshotsDirectoryPath);
-                foreach (var directSnapshotFilePath in directSnapshotFilePathsList)
-                {
-                    // Skip snapshots defined in the user defined list of snapshots.
-                    if (snapshotsMap.ContainsKey(directSnapshotFilePath))
-                    {
-                        continue;
-                    }
-
-                    var snapshot = new Snapshot
-                    {
-                        Name = Path.GetFileName(directSnapshotFilePath),
-                        Path = directSnapshotFilePath
-                    };
-
-                    snapshotsMap[directSnapshotFilePath] = directSnapshotFilePath;
-                    snapshotsList.Add(snapshot);
-                }
-
-                continue;
-            }
-
-            // Skip entries without a path.
-            var snapshotFilePath = userDefinedSnapshot.Path;
-            if (string.IsNullOrWhiteSpace(snapshotFilePath))
-            {
-                continue;
-            }
-
-            // If the path is relative to the user home directory, make it absolute.
-            if (snapshotFilePath.StartsWith("~/") || snapshotFilePath.StartsWith("~\\"))
-            {
-                snapshotFilePath = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-                    snapshotFilePath[2..]);
-            }
-
-            // If the path is relative to the current directory, make it absolute using the snapshots directory path.
-            else if (snapshotFilePath.StartsWith("./") || snapshotFilePath.StartsWith(".\\"))
-            {
-                snapshotFilePath = Path.Combine(
-                    snapshotsDirectoryPath,
-                    snapshotFilePath[2..]);
-            }
-
-            // Try to find the file. If it exists or if it is an absolute path, do nothing.
-            // If not, try to find it in the snapshots directory.
-            else if (Path.IsPathRooted(snapshotFilePath) == false)
-            {
-                if (File.Exists(snapshotFilePath) == false)
-                {
-                    // Add the snapshots directory st the root of this snapshot path.
-                    snapshotFilePath = Path.Combine(
-                        snapshotsDirectoryPath,
-                        snapshotFilePath);
-                }
-            }
-
-            // Do not add duplicities.
-            if (snapshotsMap.ContainsKey(snapshotFilePath))
-            {
-                continue;
-            }
-
-            // Change the path to the absolute path.
-            userDefinedSnapshot.Path = snapshotFilePath;
-
-            // Remember the snapshot.
-            snapshotsMap[snapshotFilePath] = snapshotFilePath!;
-            snapshotsList.Add(userDefinedSnapshot);
-        }
-    }
-
-
-    private IList<string> GetSnapshotFilePaths(string snapshotsDirectoryPath)
-    {
-        var snapshotFilePaths = Directory.GetFiles(snapshotsDirectoryPath, "*.*");
-
-        var snapshotFilePathsList = new List<string>();
-
-        foreach (var snapshotFilePath in snapshotFilePaths)
-        {
-            // TODO: Toto řešit jako jako konfiguraci aplikace a ne jako běžný buffer/snapshot.
-
-            //var snapshotFileName = Path.GetFileName(snapshotFilePath);
-            //if (snapshotFileName == Defaults.SnapshotsListFileName)
-            //{
-            //    continue;
-            //}
-
-            snapshotFilePathsList.Add(snapshotFilePath);
-        }
-
-        return snapshotFilePathsList.OrderBy(path => path).ToList();
-    }
-
-
-    private string GetSnapshotsDirectoryPath(Settings settings)
-    {
-        var snapshotsDirectoryPath = settings.SnapshotsDirectoryPath;
-        if (string.IsNullOrWhiteSpace(snapshotsDirectoryPath))
-        {
-            snapshotsDirectoryPath = Defaults.DefaultSnapshotsDirectoryPath;
-        }
-        
-        if (Directory.Exists(snapshotsDirectoryPath))
-        {
-            return snapshotsDirectoryPath;
-        }
-
-        if (snapshotsDirectoryPath.StartsWith("~/"))
-        {
-            snapshotsDirectoryPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-                snapshotsDirectoryPath[2..]);
-        }
-        
-        if (Directory.Exists(snapshotsDirectoryPath) == false)
-        {
-            Directory.CreateDirectory(snapshotsDirectoryPath);
-        }
-
-        return snapshotsDirectoryPath;
     }
     
     
