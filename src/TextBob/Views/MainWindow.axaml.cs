@@ -1,8 +1,4 @@
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
-using TextBob.Models;
+using Avalonia.Controls.Primitives;
 
 namespace TextBob.Views;
 
@@ -107,7 +103,7 @@ public partial class MainWindow : Window, ITextEditorHandler
     {
         MainTextBox.Focus();
     }
-    
+
     #endregion
     
     

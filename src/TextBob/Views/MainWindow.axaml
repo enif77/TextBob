@@ -153,6 +153,15 @@
                     Text="{Binding TextInfo}" />
                 
                 <Button
+                    Name="OpenTextBuffersListButton"
+                    Margin="4"
+                    Command="{Binding OpenTextBuffersListCommand}"
+                    ToolTip.Tip="Shows the list of know text buffers.">
+                    
+                    <PathIcon Classes.ui_disabled="{Binding !IsUiEnabled}" Data="{StaticResource list_regular}" />
+                </Button>
+                
+                <Button
                     Name="OpenButton"
                     Margin="4"
                     Command="{Binding OpenCommand}"

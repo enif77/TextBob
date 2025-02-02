@@ -1,7 +1,7 @@
+namespace TextBob.ViewModels;
+
 using ReactiveUI;
 
-
-namespace TextBob.ViewModels;
 
 /// <summary>
 /// View model for the text buffer.

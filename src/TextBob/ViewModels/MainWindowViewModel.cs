@@ -256,6 +256,7 @@ internal class MainWindowViewModel : ReactiveObject
     
     #region commands
     
+    public ReactiveCommand<Unit, Unit> OpenTextBuffersListCommand { get; }
     public ReactiveCommand<Unit, Unit> OpenCommand { get; }
     public ReactiveCommand<Unit, Unit> SaveCommand { get; }
     public ReactiveCommand<Unit, Unit> ClearCommand { get; }
@@ -328,6 +329,16 @@ internal class MainWindowViewModel : ReactiveObject
             IsTextEditorEnabled = true;
             IsSaveButtonEnabled = true;
             IsDeleteButtonEnabled = true;
+        });
+        
+        OpenTextBuffersListCommand = ReactiveCommand.Create(() =>
+        {
+            if (AppViewModel == null)
+            {
+                return;
+            }
+
+            // TODO: Implement OpenTextBuffersListCommand.
         });
         
         OpenCommand = ReactiveCommand.Create(LoadSelectedBuffer);
