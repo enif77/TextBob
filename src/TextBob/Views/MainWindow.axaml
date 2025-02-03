@@ -130,7 +130,8 @@
                 MaxDropDownHeight="400"
                 SelectedIndex="0"
                 AutoScrollToSelectedItem="True"
-                SelectedValue="{Binding Path=SelectedTextBuffer}">
+                SelectedValue="{Binding SelectedTextBuffer}"
+                ItemsSource="{Binding TextBuffers}">
 
                 <ComboBox.ItemTemplate>
                     <DataTemplate>

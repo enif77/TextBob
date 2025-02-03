@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace TextBob.ViewModels;
@@ -251,6 +252,18 @@ internal class MainWindowViewModel : ReactiveObject
         }
     }
     
+    
+    private ObservableCollection<TextBuffer> _textBuffers = [];
+    
+    /// <summary>
+    /// The list of text buffers.
+    /// </summary>
+    public ObservableCollection<TextBuffer> TextBuffers
+    {
+        get => _textBuffers;
+        set => this.RaiseAndSetIfChanged(ref _textBuffers, value);
+    }
+    
     #endregion
     
     
@@ -380,9 +393,35 @@ internal class MainWindowViewModel : ReactiveObject
     {
         this.RaisePropertyChanged(nameof(IsTextSelected));
     }
+
+
+    public void UpdateTextBuffersList()
+    {
+        TextBuffers.Clear();
+
+        foreach (var snapshot in GetSnapshotsList())
+        {
+            TextBuffers.Add(new TextBuffer
+            {
+                Name = snapshot.Name,
+                Path = snapshot.Path,
+                IsReadOnly = snapshot.ReadOnly
+            });
+        }
+    }
+
+    #endregion
     
     
-    public IList<Snapshot> GetSnapshotsList()
+    #region private
+
+    /// <summary>
+    /// Flag, that indicates if the settings are loaded.
+    /// </summary>
+    private bool _settingsLoaded;
+    
+    
+    private IList<Snapshot> GetSnapshotsList()
     {
         var snapshotsDirectoryPath = GetSnapshotsDirectoryPath(Program.Settings);
         
@@ -406,11 +445,7 @@ internal class MainWindowViewModel : ReactiveObject
         return snapshotsList;
     }
     
-    #endregion
     
-    
-    #region private
-
     private IList<string> GetSnapshotFilePaths(string snapshotsDirectoryPath)
     {
         var snapshotFilePaths = Directory.GetFiles(snapshotsDirectoryPath, "*.*");
@@ -548,11 +583,6 @@ internal class MainWindowViewModel : ReactiveObject
             snapshotsList.Add(userDefinedSnapshot);
         }
     }
-    
-    /// <summary>
-    /// Flag, that indicates if the settings are loaded.
-    /// </summary>
-    private bool _settingsLoaded;
     
     
     private void LoadCurrentBuffer()

@@ -97,7 +97,12 @@ public partial class MainWindow : Window, ITextEditorHandler
         // Set hyperlink color.
         MainTextBox.TextArea.TextView.LinkTextForegroundBrush = Brushes.Gray;
 
-        UpdateBuffersList();
+        // Load the first text buffer if any.
+        if (viewModel.TextBuffers.Count > 0)
+        {
+            BuffersComboBox.SelectedIndex = 0;
+        }
+        
         UpdateInfoText();
     }
 
@@ -125,30 +130,6 @@ public partial class MainWindow : Window, ITextEditorHandler
     
     
     #region private
-
-    private void UpdateBuffersList()
-    {
-        var viewModel = DataContext as MainWindowViewModel;
-        if (viewModel == null)
-        {
-            return;
-        }
-        
-        BuffersComboBox.Items.Clear();
-
-        foreach (var snapshot in viewModel.GetSnapshotsList())
-        {
-            BuffersComboBox.Items.Add(new TextBuffer
-            {
-                Name = snapshot.Name,
-                Path = snapshot.Path,
-                IsReadOnly = snapshot.ReadOnly
-            });
-        }
-        
-        BuffersComboBox.SelectedIndex = 0;
-    }
-    
     
     private void UpdateInfoText()
     {

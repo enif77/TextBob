@@ -57,6 +57,10 @@ public partial class App : Application
                 Document = new TextDocument()
             };
             
+            // TODO: Load text buffers and assign them to the view model here. VM should not load anything.
+            
+            viewModel.UpdateTextBuffersList();
+            
             mainWindow.DataContext = viewModel;
             desktop.MainWindow = mainWindow;
         }
