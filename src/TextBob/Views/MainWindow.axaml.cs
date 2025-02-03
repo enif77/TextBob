@@ -19,7 +19,9 @@ public partial class MainWindow : Window, ITextEditorHandler
     {
         InitializeComponent();
         
-        MainTextBox.TextArea.Caret.PositionChanged += (sender, args) => UpdateInfoText();
+        MainTextBox.TextArea.Caret.PositionChanged += (sender, args)
+            => UpdateInfoText();
+        
         MainTextBox.TextChanged += (sender, args) =>
         {
             if (DataContext is not MainWindowViewModel viewModel)
@@ -29,6 +31,7 @@ public partial class MainWindow : Window, ITextEditorHandler
             
             viewModel.TextChanged = MainTextBox.IsModified;
         };
+        
         MainTextBox.TextArea.SelectionChanged += (sender, args) =>
         {
             if (DataContext is not MainWindowViewModel viewModel)

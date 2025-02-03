@@ -125,9 +125,9 @@
                 Grid.Row="1" Grid.Column="0"
                 Margin="4"
                 VerticalAlignment="Center"
-                MinWidth="150"
-                MaxWidth="200"
-                MaxDropDownHeight="200"
+                MinWidth="200"
+                MaxWidth="400"
+                MaxDropDownHeight="400"
                 SelectedIndex="0"
                 AutoScrollToSelectedItem="True"
                 SelectedValue="{Binding Path=SelectedTextBuffer}">
