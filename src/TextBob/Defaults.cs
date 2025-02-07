@@ -3,7 +3,7 @@ namespace TextBob;
 public static class Defaults
 {
     public const string AppName = "Text Bob";
-    public const string AppVersionInfo = AppName + " 1.3.0";
+    public const string AppVersionInfo = AppName + " 1.4.2";
     
     public const string ConfigFileName = ".text-bob.json";
     public const string SnapshotsListFileName = ".snapshots.json";

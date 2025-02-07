@@ -1,5 +1,3 @@
-using Avalonia.Controls.Primitives;
-
 namespace TextBob.Views;
 
 using System;
@@ -18,20 +16,10 @@ public partial class MainWindow : Window, ITextEditorHandler
     public MainWindow()
     {
         InitializeComponent();
-        
+
         MainTextBox.TextArea.Caret.PositionChanged += (sender, args)
             => UpdateInfoText();
-        
-        MainTextBox.TextChanged += (sender, args) =>
-        {
-            if (DataContext is not MainWindowViewModel viewModel)
-            {
-                return;
-            }
-            
-            viewModel.TextChanged = MainTextBox.IsModified;
-        };
-        
+
         MainTextBox.TextArea.SelectionChanged += (sender, args) =>
         {
             if (DataContext is not MainWindowViewModel viewModel)
@@ -46,7 +34,8 @@ public partial class MainWindow : Window, ITextEditorHandler
         HotKeyManager.SetHotKey(OpenButton, MenuOpenGesture);
         HotKeyManager.SetHotKey(SaveButton, MenuSaveGesture);
     }
-    
+
+
     public static string MenuQuitHeader => RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
         ? "Quit Text Bob"
         : "E_xit";
@@ -54,10 +43,10 @@ public partial class MainWindow : Window, ITextEditorHandler
     public static string MenuOpenHeader => RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
         ? "Open/reload selected buffer"
         : "O_pen/reload selected buffer";
-    
+
     public static string MenuSaveHeader => RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
-        ? "Save text snapshot"
-        : "S_ave text snapshot";
+        ? "Save current buffer"
+        : "S_ave current buffer";
     
     public static KeyGesture MenuQuitGesture => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ?
         new KeyGesture(Key.Q, KeyModifiers.Meta) :
@@ -65,24 +54,27 @@ public partial class MainWindow : Window, ITextEditorHandler
     
     public static KeyGesture MenuOpenGesture => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ?
         new KeyGesture(Key.O, KeyModifiers.Meta) :
-        new KeyGesture(Key.O, KeyModifiers.Alt);
-    
+        new KeyGesture(Key.O, KeyModifiers.Control);
+
     public static KeyGesture MenuSaveGesture => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ?
         new KeyGesture(Key.S, KeyModifiers.Meta) :
         new KeyGesture(Key.S, KeyModifiers.Control);
-    
 
-    #region event handlers
     
+    #region event handlers
+
     public void OnCloseClicked(object sender, EventArgs args)
     {
         Close();
     }
-    
+
+
     private void MainWindow_OnLoaded(object? sender, RoutedEventArgs e)
     {
         MainTextBox.Focus();
-        
+
+        // TODO: Figure out, how to bind to options.
+
         var viewModel = DataContext as MainWindowViewModel;
         if (viewModel == null)
         {
@@ -95,17 +87,17 @@ public partial class MainWindow : Window, ITextEditorHandler
         MainTextBox.FontFamily = viewModel.FontFamily;
         
         // Set hyperlink color.
-        MainTextBox.TextArea.TextView.LinkTextForegroundBrush = Brushes.Gray;
+        MainTextBox.TextArea.TextView.LinkTextForegroundBrush = Brushes.LightBlue;
 
-        // Load the first text buffer if any.
-        if (viewModel.TextBuffers.Count > 0)
+        // Load the first text buffer, if any.
+        if (viewModel.TextBuffers != null && viewModel.TextBuffers.Count > 0)
         {
             BuffersComboBox.SelectedIndex = 0;
         }
         
         UpdateInfoText();
     }
-
+    
 
     private void CommandButtonClicked(object sender, RoutedEventArgs e)
     {
@@ -113,8 +105,8 @@ public partial class MainWindow : Window, ITextEditorHandler
     }
 
     #endregion
-    
-    
+
+
     #region ITextEditorHandler
 
     /// <inheritdoc />
@@ -127,10 +119,8 @@ public partial class MainWindow : Window, ITextEditorHandler
     public string SelectedText => MainTextBox?.SelectedText ?? string.Empty;
 
     #endregion
-    
-    
-    #region private
-    
+
+
     private void UpdateInfoText()
     {
         var viewModel = DataContext as MainWindowViewModel;
@@ -138,7 +128,7 @@ public partial class MainWindow : Window, ITextEditorHandler
         {
             return;
         }
-        
+
         var document = MainTextBox.Document;
         var caret = MainTextBox.TextArea.Caret;
         var textLength = document.TextLength;
@@ -180,6 +170,4 @@ public partial class MainWindow : Window, ITextEditorHandler
         viewModel.TextInfo =
             $"{textLength} chars, {document.LineCount} lines | {selection} | Line {caret.Line}, Column {caret.Column}, Offset {caret.Offset}, Char '{charAt.Item2}', UTF {charAt.Item1}";
     }
-    
-    #endregion
 }

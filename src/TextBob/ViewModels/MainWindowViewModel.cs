@@ -1,43 +1,25 @@
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-
 namespace TextBob.ViewModels;
 
-using System;
-using System.IO;
+using System.Collections.ObjectModel;
 using System.Reactive;
-using System.Text.Json;
 
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Platform;
+
 using AvaloniaEdit;
 using AvaloniaEdit.Document;
 
 using ReactiveUI;
 
-using TextBob.Models;
+using TextBob.Services;
 
 
-/// <summary>
-/// View model for the main window.
-/// </summary>
 internal class MainWindowViewModel : ReactiveObject
 {
+    private readonly IAppService _appService;
+
+
     #region properties
-    
-    private AppViewModel? _appViewModel;
-
-    /// <summary>
-    /// The app view model.
-    /// </summary>
-    public AppViewModel? AppViewModel
-    {
-        get => _appViewModel;
-        set => this.RaiseAndSetIfChanged(ref _appViewModel, value);
-    }
-
 
     private string? _title;
 
@@ -49,8 +31,8 @@ internal class MainWindowViewModel : ReactiveObject
         get => _title;
         set => this.RaiseAndSetIfChanged(ref _title, value);
     }
-    
-    
+
+
     private bool _isUiEnabled = true;
 
     /// <summary>
@@ -62,7 +44,7 @@ internal class MainWindowViewModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref _isUiEnabled, value);
     }
 
-    
+
     private bool _isTextEditorEnabled = true;
 
     /// <summary>
@@ -73,31 +55,31 @@ internal class MainWindowViewModel : ReactiveObject
         get => _isTextEditorEnabled;
         set => this.RaiseAndSetIfChanged(ref _isTextEditorEnabled, value);
     }
-    
-    
+
+
     private bool _isSaveButtonEnabled = true;
 
     /// <summary>
-    /// Indicates, that the save button is enabled.
+    /// Indicates, that the SaveButton is enabled.
     /// </summary>
     public bool IsSaveButtonEnabled
     {
         get => _isSaveButtonEnabled;
         set => this.RaiseAndSetIfChanged(ref _isSaveButtonEnabled, value);
     }
-    
-    
+
+
     private bool _isDeleteButtonEnabled = true;
 
     /// <summary>
-    /// Indicates, that the delete button is enabled.
+    /// Indicates, that the DeleteButton is enabled.
     /// </summary>
     public bool IsDeleteButtonEnabled
     {
         get => _isDeleteButtonEnabled;
         set => this.RaiseAndSetIfChanged(ref _isDeleteButtonEnabled, value);
     }
-    
+
     /// <summary>
     /// Flag, that indicates if a text is selected.
     /// </summary>
@@ -137,8 +119,8 @@ internal class MainWindowViewModel : ReactiveObject
         get => _textEditorOptions;
         set => this.RaiseAndSetIfChanged(ref _textEditorOptions, value);
     }
-    
-    
+
+
     private int _fontSize;
 
     /// <summary>
@@ -161,8 +143,8 @@ internal class MainWindowViewModel : ReactiveObject
         get => _fontFamily;
         set => this.RaiseAndSetIfChanged(ref _fontFamily, value);
     }
-    
-    
+
+
     private bool _showLineNumbers;
 
     /// <summary>
@@ -173,8 +155,8 @@ internal class MainWindowViewModel : ReactiveObject
         get => _showLineNumbers;
         set => this.RaiseAndSetIfChanged(ref _showLineNumbers, value);
     }
-    
-    
+
+
     private bool _textChanged;
 
     /// <summary>
@@ -183,20 +165,28 @@ internal class MainWindowViewModel : ReactiveObject
     public bool TextChanged
     {
         get => _textChanged;
-        set => this.RaiseAndSetIfChanged(ref _textChanged, value);
+        set
+        {
+            if (CurrentTextBuffer != null && CurrentTextBuffer != _emptyTextBuffer)
+            {
+                CurrentTextBuffer.IsModified = value;
+            }
+
+            this.RaiseAndSetIfChanged(ref _textChanged, value);
+        }
     }
-    
-    
+
+
     /// <summary>
     /// Handler for the text editor.
     /// </summary>
     public ITextEditorHandler? TextEditorHandler { get; set; }
-    
-    
+
+
     private string _textInfo = string.Empty;
 
     /// <summary>
-    /// Shows info about actual text and cursor state.
+    /// Shows information related to the actual cursor position and text.
     /// </summary>
     public string TextInfo
     {
@@ -206,9 +196,9 @@ internal class MainWindowViewModel : ReactiveObject
 
 
     private TextBuffer? _currentTextBuffer = new ();
-    
+
     /// <summary>
-    /// The current text buffer.
+    /// The currently edited text buffer.
     /// </summary>
     public TextBuffer? CurrentTextBuffer
     {
@@ -221,14 +211,15 @@ internal class MainWindowViewModel : ReactiveObject
                 return;
             }
 
+            var previousTextBuffer = _currentTextBuffer;
             _currentTextBuffer = value;
-            LoadCurrentBuffer();
-            
+            LoadCurrentTextBuffer(previousTextBuffer);
+
             this.RaisePropertyChanged();
         }
     }
-    
-    
+
+
     private TextBuffer? _selectedTextBuffer = new ();
 
     /// <summary>
@@ -246,29 +237,29 @@ internal class MainWindowViewModel : ReactiveObject
             }
 
             _selectedTextBuffer = value;
-            LoadSelectedBuffer();
+            LoadSelectedTextBuffer();
 
             this.RaisePropertyChanged();
         }
     }
-    
-    
-    private ObservableCollection<TextBuffer> _textBuffers = [];
-    
+
+
+    private ObservableCollection<TextBuffer>? _textBuffers = new();
+
     /// <summary>
     /// The list of text buffers.
     /// </summary>
-    public ObservableCollection<TextBuffer> TextBuffers
+    public ObservableCollection<TextBuffer>? TextBuffers
     {
         get => _textBuffers;
         set => this.RaiseAndSetIfChanged(ref _textBuffers, value);
     }
     
     #endregion
-    
-    
+
+
     #region commands
-    
+
     public ReactiveCommand<Unit, Unit> OpenTextBuffersListCommand { get; }
     public ReactiveCommand<Unit, Unit> OpenCommand { get; }
     public ReactiveCommand<Unit, Unit> SaveCommand { get; }
@@ -276,117 +267,98 @@ internal class MainWindowViewModel : ReactiveObject
     public ReactiveCommand<Unit, Unit> SettingsCommand { get; }
     public ReactiveCommand<Unit, Unit> AboutCommand { get; }
     public ReactiveCommand<Unit, Unit> ExitCommand { get; }
-    
+
     #endregion
-    
-    
+
+
     #region ctor
-    
-    public MainWindowViewModel()
+
+    public MainWindowViewModel(IAppService appService)
     {
+        _appService = appService;
+
         FontSize = Defaults.DefaultFontSize;
         FontFamily = Defaults.DefaultFontFamily;
         TextInfo = Defaults.AppVersionInfo;
-        
-        AboutCommand = ReactiveCommand.CreateFromTask(async () =>
+
+        AboutCommand = ReactiveCommand.Create(() =>
         {
-            if (AppViewModel == null)
-            {
-                return;
-            }
-
-            var text = Defaults.AppName;
-
-            // https://docs.avaloniaui.net/docs/basics/user-interface/assets
-            using (var reader = new StreamReader(AssetLoader.Open(new Uri("avares://TextBob/Assets/Windows/about.txt"))))
-            {
-                text = await reader.ReadToEndAsync();
-            }
-
-            text = text.Replace("${version-info}", Defaults.AppVersionInfo);
+            // TODO: Create special About text buffer.
 
             CurrentTextBuffer = new TextBuffer
             {
                 Name = "About",
-                Text = text,
-                IsReadOnly = true
+                Text = _appService.GetAboutText(),
+                IsReadOnly = true,
+                TextLoaded = true
             };
-            
-            //  TODO: Disable editing as a method.
-            
-            // Disable editing.
-            IsTextEditorEnabled = false;
-            IsSaveButtonEnabled = false;
-            IsDeleteButtonEnabled = false;
+
+            DisableEditing();
         });
-        
+
         SettingsCommand = ReactiveCommand.Create(() =>
         {
-            if (AppViewModel == null)
-            {
-                return;
-            }
+            // TODO: Create special Settings text buffer.
 
-            // TODO: Change this to a text buffer. (Use CurrentTextBuffer like the About command)
-            
-            var settingsFilePath = Program.GetSettingsFilePath();
-            Document = new TextDocument(File.Exists(settingsFilePath)
-                ? AppViewModel?.LoadTextSnapshot(settingsFilePath)
-                : Program.Settings.ToJson());
-            TextChanged = false;
-            _settingsLoaded = true;
-            
-            // TODO: Enable editing as a method.
-            
-            // Enable editing.
-            IsTextEditorEnabled = true;
-            IsSaveButtonEnabled = true;
-            IsDeleteButtonEnabled = true;
+            CurrentTextBuffer = new TextBuffer
+            {
+                Name = "Settings",
+                Text = _appService.GetSettingsJson(),
+                TextLoaded = true
+            };
+
+            EnableEditing();
         });
-        
+
         OpenTextBuffersListCommand = ReactiveCommand.Create(() =>
         {
-            if (AppViewModel == null)
-            {
-                return;
-            }
-
             // TODO: Implement OpenTextBuffersListCommand.
         });
-        
-        OpenCommand = ReactiveCommand.Create(LoadSelectedBuffer);
-        SaveCommand = ReactiveCommand.Create(SaveCurrentBuffer);
-        
+
+        OpenCommand = ReactiveCommand.Create(() =>
+        {
+            // If Settings or About is loaded, do not reload the selected buffer from the snapshots store.
+            LoadSelectedTextBuffer(CurrentTextBuffer != null && CurrentTextBuffer.Name != "Settings" && CurrentTextBuffer.Name != "About");
+        });
+
+        SaveCommand = ReactiveCommand.Create(SaveCurrentTextBuffer);
+
         ClearCommand = ReactiveCommand.Create(() =>
-        {
-            if (Document == null)
             {
-                return;
-            }
+                if (Document == null)
+                {
+                    return;
+                }
+
+                var document = Document!;
+                
+                if (IsTextSelected)
+                {
+                    document.Remove(TextEditorHandler!.SelectionStart, TextEditorHandler.SelectionLength);
+                }
+                else
+                {
+                    document.Remove(0, document.TextLength);
+                }
+                
+                //Document?.Replace(0, Document.TextLength, string.Empty);
+            },
+
+            // https://docs.avaloniaui.net/docs/concepts/reactiveui/reactive-command
+
+            this.WhenAnyValue(
+                x => x.IsDeleteButtonEnabled,
+                x => x == true));
             
-            var document = Document!;
-            
-            if (IsTextSelected)
+            ExitCommand = ReactiveCommand.Create(() =>
             {
-                document.Remove(TextEditorHandler!.SelectionStart, TextEditorHandler.SelectionLength);
-            }
-            else
-            {
-                document.Remove(0, document.TextLength);
-            }
-            
-            //document.Replace(0, Document.TextLength, string.Empty);
-        });
-        
-        ExitCommand = ReactiveCommand.Create(() =>
-        {
-            (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.Shutdown();
-        });
+                (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.Shutdown();
+            });
     }
     
     #endregion
-    
-    
+
+
     #region public
     
     public void SelectionChanged()
@@ -397,9 +369,11 @@ internal class MainWindowViewModel : ReactiveObject
 
     public void UpdateTextBuffersList()
     {
+        TextBuffers ??= [];
+
         TextBuffers.Clear();
 
-        foreach (var snapshot in GetSnapshotsList())
+        foreach (var snapshot in _appService.GetSnapshotsList())
         {
             TextBuffers.Add(new TextBuffer
             {
@@ -409,269 +383,135 @@ internal class MainWindowViewModel : ReactiveObject
             });
         }
     }
-
+    
     #endregion
-    
-    
+
+
     #region private
 
+    private readonly TextBuffer _emptyTextBuffer = new()
+    {
+        Name = "Empty",
+        Text = string.Empty,
+        IsReadOnly = true,
+        TextLoaded = true
+    };
+
+
+    private void EnableEditing()
+    {
+        IsTextEditorEnabled = true;
+        IsSaveButtonEnabled = true;
+        IsDeleteButtonEnabled = true;
+    }
+
+
+    private void DisableEditing()
+    {
+        IsTextEditorEnabled = false;
+        IsSaveButtonEnabled = false;
+        IsDeleteButtonEnabled = false;
+    }
+
     /// <summary>
-    /// Flag, that indicates if the settings are loaded.
+    /// Loads the current buffer to UI.
     /// </summary>
-    private bool _settingsLoaded;
-    
-    
-    private IList<Snapshot> GetSnapshotsList()
+    private void LoadCurrentTextBuffer(TextBuffer? previousTextBuffer)
     {
-        var snapshotsDirectoryPath = GetSnapshotsDirectoryPath(Program.Settings);
-        
-        var snapshotsListFilePath = Path.Combine(snapshotsDirectoryPath, Defaults.SnapshotsListFileName);
-        if (File.Exists(snapshotsListFilePath) == false)
+        // Get the previous TextBuffer and store its state.
+        if (previousTextBuffer != null && previousTextBuffer != _emptyTextBuffer)
         {
-            File.WriteAllText(snapshotsListFilePath, SnapshotsList.DefaultSnapshotsList.ToJson());
+            // TODO: Store the Document in the TextBuffer to keep its state.
+
+            previousTextBuffer.Text = Document?.Text ?? string.Empty;
+            previousTextBuffer.IsModified = TextChanged;
+        }
+        
+        if (CurrentTextBuffer == null)
+        {
+            _currentTextBuffer = _emptyTextBuffer;
         }
 
-        var snapshotsMap = new Dictionary<string, string>();
-        var snapshotsList = new List<Snapshot>();
+        // Restore the current buffer state.
+        Document = new TextDocument(CurrentTextBuffer!.Text);
 
-        // Load the list of snapshots from the settings.
-        ProcessSnapshotsList(Program.Settings.Snapshots, snapshotsDirectoryPath, snapshotsMap, snapshotsList);
-  
-        // Load the list of snapshots from the snapshots list file.
-        var userDefinedSnapshotsList = JsonSerializer.Deserialize<SnapshotsList>(File.ReadAllText(snapshotsListFilePath)) ??
-                                       SnapshotsList.DefaultSnapshotsList;
-        ProcessSnapshotsList(userDefinedSnapshotsList.Snapshots, snapshotsDirectoryPath, snapshotsMap, snapshotsList);
+        // We are updating the UI state from the TB state, we do not want to update the TB state.
+        // See the TextChanged property setter.
+        _textChanged = CurrentTextBuffer.IsModified;
+        this.RaisePropertyChanged(nameof(TextChanged));
         
-        return snapshotsList;
-    }
-    
-    
-    private IList<string> GetSnapshotFilePaths(string snapshotsDirectoryPath)
-    {
-        var snapshotFilePaths = Directory.GetFiles(snapshotsDirectoryPath, "*.*");
-
-        var snapshotFilePathsList = new List<string>();
-
-        foreach (var snapshotFilePath in snapshotFilePaths)
-        {
-            // TODO: Toto řešit jako jako konfiguraci aplikace a ne jako běžný buffer/snapshot.
-
-            //var snapshotFileName = Path.GetFileName(snapshotFilePath);
-            //if (snapshotFileName == Defaults.SnapshotsListFileName)
-            //{
-            //    continue;
-            //}
-
-            snapshotFilePathsList.Add(snapshotFilePath);
-        }
-
-        return snapshotFilePathsList.OrderBy(path => path).ToList();
+        // Disable editing if the buffer is read-only.
+        IsSaveButtonEnabled = CurrentTextBuffer.IsReadOnly == false;
+        IsDeleteButtonEnabled = IsSaveButtonEnabled;
+        IsTextEditorEnabled = IsSaveButtonEnabled;
     }
 
-
-    private string GetSnapshotsDirectoryPath(Settings settings)
+    /// <summary>
+    /// Loads the selected buffer.
+    /// </summary>
+    /// <param name="forceReload">Used by the OpenCommand - forces reloading the selected snapshot from the snapshots store.</param>
+    private void LoadSelectedTextBuffer(bool forceReload = false)
     {
-        var snapshotsDirectoryPath = settings.SnapshotsDirectoryPath;
-        if (string.IsNullOrWhiteSpace(snapshotsDirectoryPath))
-        {
-            snapshotsDirectoryPath = Defaults.DefaultSnapshotsDirectoryPath;
-        }
-        
-        if (Directory.Exists(snapshotsDirectoryPath))
-        {
-            return snapshotsDirectoryPath;
-        }
-
-        if (snapshotsDirectoryPath.StartsWith("~/"))
-        {
-            snapshotsDirectoryPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-                snapshotsDirectoryPath[2..]);
-        }
-        
-        if (Directory.Exists(snapshotsDirectoryPath) == false)
-        {
-            Directory.CreateDirectory(snapshotsDirectoryPath);
-        }
-
-        return snapshotsDirectoryPath;
-    }
-
-    
-    private void ProcessSnapshotsList(
-        IList<Snapshot> snapshots,
-        string snapshotsDirectoryPath,
-        Dictionary<string, string> snapshotsMap,
-        List<Snapshot> snapshotsList)
-    {
-        foreach (var userDefinedSnapshot in snapshots)
-        {
-            // The ellipsis is a marker, that loads all snapshots from the snapshot directory, that are not already loaded.
-            // Use this at the end of the list of snapshots.
-            if (userDefinedSnapshot.Name == "...")
-            {
-                // Load the list of snapshots from the snapshots directory.
-                var directSnapshotFilePathsList = GetSnapshotFilePaths(snapshotsDirectoryPath);
-                foreach (var directSnapshotFilePath in directSnapshotFilePathsList)
-                {
-                    // Skip snapshots defined in the user defined list of snapshots.
-                    if (snapshotsMap.ContainsKey(directSnapshotFilePath))
-                    {
-                        continue;
-                    }
-
-                    var snapshot = new Snapshot
-                    {
-                        Name = Path.GetFileName(directSnapshotFilePath),
-                        Path = directSnapshotFilePath
-                    };
-
-                    snapshotsMap[directSnapshotFilePath] = directSnapshotFilePath;
-                    snapshotsList.Add(snapshot);
-                }
-
-                continue;
-            }
-
-            // Skip entries without a path.
-            var snapshotFilePath = userDefinedSnapshot.Path;
-            if (string.IsNullOrWhiteSpace(snapshotFilePath))
-            {
-                continue;
-            }
-
-            // If the path is relative to the user home directory, make it absolute.
-            if (snapshotFilePath.StartsWith("~/") || snapshotFilePath.StartsWith("~\\"))
-            {
-                snapshotFilePath = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-                    snapshotFilePath[2..]);
-            }
-
-            // If the path is relative to the current directory, make it absolute using the snapshots directory path.
-            else if (snapshotFilePath.StartsWith("./") || snapshotFilePath.StartsWith(".\\"))
-            {
-                snapshotFilePath = Path.Combine(
-                    snapshotsDirectoryPath,
-                    snapshotFilePath[2..]);
-            }
-
-            // Try to find the file. If it exists or if it is an absolute path, do nothing.
-            // If not, try to find it in the snapshots directory.
-            else if (Path.IsPathRooted(snapshotFilePath) == false)
-            {
-                if (File.Exists(snapshotFilePath) == false)
-                {
-                    // Add the snapshots directory st the root of this snapshot path.
-                    snapshotFilePath = Path.Combine(
-                        snapshotsDirectoryPath,
-                        snapshotFilePath);
-                }
-            }
-
-            // Do not add duplicities.
-            if (snapshotsMap.ContainsKey(snapshotFilePath))
-            {
-                continue;
-            }
-
-            // Change the path to the absolute path.
-            userDefinedSnapshot.Path = snapshotFilePath;
-
-            // Remember the snapshot.
-            snapshotsMap[snapshotFilePath] = snapshotFilePath!;
-            snapshotsList.Add(userDefinedSnapshot);
-        }
-    }
-    
-    
-    private void LoadCurrentBuffer()
-    {
-        Document = new TextDocument((CurrentTextBuffer == null)
-            ? string.Empty
-            : CurrentTextBuffer.Text);
-        
-        // Reset the text changed flag.
-        TextChanged = false;
-        
-        // Clear the settings loaded flag.
-        _settingsLoaded = false;
-    }
-    
-    
-    private void LoadSelectedBuffer()
-    {
+        // If nothing is selected, use the read only empty buffer.
         if (SelectedTextBuffer == null)
         {
-            IsSaveButtonEnabled = false;
-            IsDeleteButtonEnabled = false;
-            IsTextEditorEnabled = true;
-            
+            CurrentTextBuffer = _emptyTextBuffer;
+
             return;
         }
-        
-        // Update the selected buffer with the contents of the snapshot.
-        SelectedTextBuffer.Text = AppViewModel?.LoadTextSnapshot(SelectedTextBuffer.Path) ?? string.Empty;
-        
-        // Update the current buffer.
+
+        // Invalidate the current buffer.
         CurrentTextBuffer = null;
+
+        // Do not load the buffer, if it is already loaded.
+        if (SelectedTextBuffer.TextLoaded == false || forceReload)
+        {
+            // Update the selected buffer with the contents of the snapshot file.
+            SelectedTextBuffer.Text = _appService.LoadTextFromSnapshot(SelectedTextBuffer.Path);
+            SelectedTextBuffer.TextLoaded = true;
+
+            // Any changes in the buffer were lost by loading contents from the snapshot.
+            SelectedTextBuffer.IsModified = false;
+        }
+
+        // Update the current buffer.
         CurrentTextBuffer = SelectedTextBuffer;
-        
-        // Disable editing if the buffer is read only.
-        IsTextEditorEnabled = SelectedTextBuffer.IsReadOnly == false;
-        IsDeleteButtonEnabled = IsTextEditorEnabled;
-        IsSaveButtonEnabled = IsTextEditorEnabled;
     }
-    
-    
-    private void SaveCurrentBuffer()
+
+    /// <summary>
+    /// Saves the selected buffer.
+    /// </summary>
+    private void SaveCurrentTextBuffer()
     {
         if (Document == null)
         {
             return;
         }
-        
-        if (_settingsLoaded)
+
+        var currentTextBuffer = CurrentTextBuffer;
+        if (currentTextBuffer == null || currentTextBuffer.IsReadOnly)
         {
-            SaveSettings();
+            return;
+        }
+
+        currentTextBuffer.Text = Document.Text;
+
+        if (currentTextBuffer.Name == "Settings")
+        {
+            if (_appService.SaveSettings(currentTextBuffer.Text))
+            {
+                // TODO: Reload settings.
+            }
         }
         else
         {
-            var currentTextBuffer = CurrentTextBuffer;
-            if (currentTextBuffer != null && currentTextBuffer.IsReadOnly == false)
-            {
-                // Update the text buffer.
-                currentTextBuffer.Text = Document.Text;
-                
-                // Save the text buffer to a snapshot.
-                AppViewModel?.SaveTextSnapshot(
-                    currentTextBuffer.Path,
-                    currentTextBuffer.Text);
-            }
+            _appService.SaveTextToSnapshot(
+                currentTextBuffer.Path,
+                currentTextBuffer.Text);
         }
         
         TextChanged = false;
     }
 
-
-    private void SaveSettings()
-    {
-        var settingsJson = Document!.Text;
-        try
-        {
-            // Validate settings.
-            _ = JsonSerializer.Deserialize<Settings>(settingsJson);
-            
-            // Save settings.
-            File.WriteAllText(Program.GetSettingsFilePath(), settingsJson);
-
-            // TODO: Reload settings.
-        }
-        catch (Exception)
-        {
-            // TODO: Log the exception.
-        }
-    }
-    
     #endregion
 }

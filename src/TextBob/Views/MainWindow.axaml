@@ -74,11 +74,11 @@
             <Setter Property="Foreground" Value="Black"/>
         </Style>
     </Window.Styles>
-    
+
     <Panel
         Classes.ui_disabled="{Binding !IsUiEnabled}"
         IsEnabled="{Binding IsUiEnabled}">
-        
+
         <ExperimentalAcrylicBorder IsHitTestVisible="False">
             <ExperimentalAcrylicBorder.Material>
                 <ExperimentalAcrylicMaterial
@@ -118,7 +118,8 @@
                     Foreground="LightGray"
                     ShowLineNumbers="{Binding ShowLineNumbers}"
                     Document="{Binding Document}"
-                    IsReadOnly="{Binding !IsTextEditorEnabled}"/>
+                    IsReadOnly="{Binding !IsTextEditorEnabled}"
+                    IsModified="{Binding TextChanged, Mode=TwoWay}"/>
             </Panel>
 
             <ComboBox Name="BuffersComboBox"
@@ -130,13 +131,13 @@
                 MaxDropDownHeight="400"
                 SelectedIndex="0"
                 AutoScrollToSelectedItem="True"
-                SelectedValue="{Binding SelectedTextBuffer}"
+                SelectedValue="{Binding Path=SelectedTextBuffer}"
                 ItemsSource="{Binding TextBuffers}">
 
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock
-                            Text="{Binding}"
+                            Text="{Binding Path=DisplayText}"
                             ToolTip.Tip="{Binding Path=Path, DataType={x:Type vm:TextBuffer}}" />
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
@@ -178,7 +179,6 @@
                 <Button
                     Margin="4"
                     Command="{Binding ClearCommand}"
-                    IsEnabled="{Binding IsDeleteButtonEnabled}"
                     ToolTip.Tip="Deletes the current (selected) text."
                     Click="CommandButtonClicked"><PathIcon Classes.ui_disabled="{Binding !IsDeleteButtonEnabled}" Classes.delete_selected="{Binding IsTextSelected}" Data="{StaticResource delete_regular}" /></Button>
                 <Button
@@ -189,7 +189,7 @@
                 <Button
                     Margin="4"
                     Command="{Binding AboutCommand}"
-                    ToolTip.Tip="Shows the about dialog."
+                    ToolTip.Tip="Shows the general info about and help for the TextBob app."
                     Click="CommandButtonClicked"><PathIcon Classes.ui_disabled="{Binding !IsUiEnabled}" Data="{StaticResource info_regular}" /></Button>
             </StackPanel>
         </Grid> 

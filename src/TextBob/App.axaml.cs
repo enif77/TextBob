@@ -1,27 +1,35 @@
+using System;
+using AvaloniaEdit.Utils;
+
+namespace TextBob;
+
+using Microsoft.Extensions.DependencyInjection;
+
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using AvaloniaEdit;
 using AvaloniaEdit.Document;
 
+using TextBob.Services;
 using TextBob.ViewModels;
 using TextBob.Views;
 
 
-namespace TextBob;
-
 public partial class App : Application
 {
+    public IServiceProvider Services { get; private set; }
+
+
     public App()
     {
         DataContext = new AppViewModel()
         {
-            Name = Defaults.AppName,
-            VersionInfo = Defaults.AppVersionInfo
+            Name = Defaults.AppName
         };
     }
 
-    
+
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
@@ -32,33 +40,35 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
+            Services = ConfigureServices();
+
+            var appService = Services.GetService<IAppService>()!;
+
             var mainWindow = new MainWindow
             {
-                Width = GetMainWindowWidth(),
-                Height = GetMainWindowHeight()
+                Width = appService.GetMainWindowWidth(),
+                Height = appService.GetMainWindowHeight()
             };
 
-            var viewModel = new MainWindowViewModel()
+            var viewModel = Services.GetService<MainWindowViewModel>()!;
+
+            viewModel.Title = Defaults.AppName;
+            viewModel.FontSize = appService.GetTextEditorFontSize();
+            viewModel.FontFamily = appService.GetTextEditorFontFamily();
+            viewModel.ShowLineNumbers = Program.Settings.TextEditorShowLineNumbers;
+            viewModel.TextEditorOptions = new TextEditorOptions()
             {
-                AppViewModel = (AppViewModel?)DataContext,
-                Title = Defaults.AppName,
-                FontSize = GetTextEditorFontSize(),
-                FontFamily = GetTextEditorFontFamily(),
-                ShowLineNumbers = Program.Settings.TextEditorShowLineNumbers,
-                TextEditorOptions = new TextEditorOptions()
-                {
-                    ConvertTabsToSpaces = Program.Settings.TextEditorConvertTabsToSpaces,
-                    EnableEmailHyperlinks = Program.Settings.TextEditorEnableEmailHyperlinks,
-                    EnableHyperlinks = Program.Settings.TextEditorEnableHyperlinks,
-                    HighlightCurrentLine = Program.Settings.TextEditorHighlightCurrentLine,
-                    IndentationSize = Program.Settings.TextEditorIndentationSize,
-                },
-                TextEditorHandler = mainWindow,
-                Document = new TextDocument()
+                ConvertTabsToSpaces = Program.Settings.TextEditorConvertTabsToSpaces,
+                EnableEmailHyperlinks = Program.Settings.TextEditorEnableEmailHyperlinks,
+                EnableHyperlinks = Program.Settings.TextEditorEnableHyperlinks,
+                HighlightCurrentLine = Program.Settings.TextEditorHighlightCurrentLine,
+                IndentationSize = Program.Settings.TextEditorIndentationSize,
             };
-            
-            // TODO: Load text buffers and assign them to the view model here. VM should not load anything.
-            
+            viewModel.TextEditorHandler = mainWindow;
+            viewModel.Document = new TextDocument();
+
+            // TODO: Load the list of text buffers and assign it here. View mode should get data, not load them from somewhere.
+
             viewModel.UpdateTextBuffersList();
             
             mainWindow.DataContext = viewModel;
@@ -67,58 +77,16 @@ public partial class App : Application
         
         base.OnFrameworkInitializationCompleted();
     }
-    
-    
-    private int GetMainWindowWidth()
-    {
-        var width = Program.Settings.MainWindowWidth;
-        width = width switch
-        {
-            < 320 => 320,
-            > 4096 => 4096,
-            _ => width
-        };
 
-        return width;
-    }
-    
-    
-    private int GetMainWindowHeight()
-    {
-        var height = Program.Settings.MainWindowHeight;
-        height = height switch
-        {
-            < 240 => 240,
-            > 4096 => 4096,
-            _ => height
-        };
 
-        return height;
-    }
-    
-    
-    private int GetTextEditorFontSize()
+    private static IServiceProvider ConfigureServices()
     {
-        var fontSize = Program.Settings.TextEditorFontSize;
-        fontSize = fontSize switch
-        {
-            < 6 => 6,
-            > 72 => 72,
-            _ => fontSize
-        };
+        var services = new ServiceCollection();
 
-        return fontSize;
-    }
-    
-    
-    private string GetTextEditorFontFamily()
-    {
-        var fontFamily = Program.Settings.TextEditorFontFamily;
-        if (string.IsNullOrWhiteSpace(fontFamily))
-        {
-            fontFamily = "Monospace";
-        }
+        services.AddSingleton<IAppService, AppService>();
 
-        return fontFamily;
+        services.AddSingleton<MainWindowViewModel>();
+
+        return services.BuildServiceProvider();
     }
 }
