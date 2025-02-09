@@ -4,7 +4,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:AvaloniaEdit="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
         xmlns:vm="using:TextBob.ViewModels"
-        xmlns:m="using:TextBob.Models"
         xmlns:local="clr-namespace:TextBob.Views"
         mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480"
         x:CompileBindings="True"

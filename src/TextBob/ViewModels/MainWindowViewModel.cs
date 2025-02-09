@@ -171,7 +171,12 @@ internal class MainWindowViewModel : ReactiveObject
             {
                 CurrentTextBuffer.IsModified = value;
             }
-
+            
+            if (value != _textChanged)
+            {
+                UpdateWindowTitle();
+            }
+            
             this.RaiseAndSetIfChanged(ref _textChanged, value);
         }
     }
@@ -413,6 +418,19 @@ internal class MainWindowViewModel : ReactiveObject
         IsDeleteButtonEnabled = false;
     }
 
+
+    private void UpdateWindowTitle()
+    {
+        if (CurrentTextBuffer == null)
+        {
+            return;
+        }
+        
+        Title = CurrentTextBuffer.IsModified
+            ? $"{Defaults.AppName} - {CurrentTextBuffer.Name} *"
+            : $"{Defaults.AppName} - {CurrentTextBuffer.Name}";
+    }
+
     /// <summary>
     /// Loads the current buffer to UI.
     /// </summary>
@@ -439,6 +457,9 @@ internal class MainWindowViewModel : ReactiveObject
         // See the TextChanged property setter.
         _textChanged = CurrentTextBuffer.IsModified;
         this.RaisePropertyChanged(nameof(TextChanged));
+        
+        // Update the window title.
+        UpdateWindowTitle();
         
         // Disable editing if the buffer is read-only.
         IsSaveButtonEnabled = CurrentTextBuffer.IsReadOnly == false;

@@ -1,7 +1,6 @@
-using System;
-using AvaloniaEdit.Utils;
-
 namespace TextBob;
+
+using System;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,15 +17,18 @@ using TextBob.Views;
 
 public partial class App : Application
 {
-    public IServiceProvider Services { get; private set; }
+    private IServiceProvider Services { get; }
 
 
     public App()
     {
-        DataContext = new AppViewModel()
-        {
-            Name = Defaults.AppName
-        };
+        Services = ConfigureServices();
+        
+        var appViewModel = Services.GetService<AppViewModel>()!;
+
+        appViewModel.Name = Defaults.AppName;
+            
+        DataContext = appViewModel;
     }
 
 
@@ -40,8 +42,6 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            Services = ConfigureServices();
-
             var appService = Services.GetService<IAppService>()!;
 
             var mainWindow = new MainWindow
@@ -50,13 +50,13 @@ public partial class App : Application
                 Height = appService.GetMainWindowHeight()
             };
 
-            var viewModel = Services.GetService<MainWindowViewModel>()!;
+            var mainWindowViewModel = Services.GetService<MainWindowViewModel>()!;
 
-            viewModel.Title = Defaults.AppName;
-            viewModel.FontSize = appService.GetTextEditorFontSize();
-            viewModel.FontFamily = appService.GetTextEditorFontFamily();
-            viewModel.ShowLineNumbers = Program.Settings.TextEditorShowLineNumbers;
-            viewModel.TextEditorOptions = new TextEditorOptions()
+            mainWindowViewModel.Title = Defaults.AppName;
+            mainWindowViewModel.FontSize = appService.GetTextEditorFontSize();
+            mainWindowViewModel.FontFamily = appService.GetTextEditorFontFamily();
+            mainWindowViewModel.ShowLineNumbers = Program.Settings.TextEditorShowLineNumbers;
+            mainWindowViewModel.TextEditorOptions = new TextEditorOptions()
             {
                 ConvertTabsToSpaces = Program.Settings.TextEditorConvertTabsToSpaces,
                 EnableEmailHyperlinks = Program.Settings.TextEditorEnableEmailHyperlinks,
@@ -64,14 +64,14 @@ public partial class App : Application
                 HighlightCurrentLine = Program.Settings.TextEditorHighlightCurrentLine,
                 IndentationSize = Program.Settings.TextEditorIndentationSize,
             };
-            viewModel.TextEditorHandler = mainWindow;
-            viewModel.Document = new TextDocument();
+            mainWindowViewModel.TextEditorHandler = mainWindow;
+            mainWindowViewModel.Document = new TextDocument();
 
             // TODO: Load the list of text buffers and assign it here. View mode should get data, not load them from somewhere.
 
-            viewModel.UpdateTextBuffersList();
+            mainWindowViewModel.UpdateTextBuffersList();
             
-            mainWindow.DataContext = viewModel;
+            mainWindow.DataContext = mainWindowViewModel;
             desktop.MainWindow = mainWindow;
         }
         
@@ -85,6 +85,7 @@ public partial class App : Application
 
         services.AddSingleton<IAppService, AppService>();
 
+        services.AddSingleton<AppViewModel>();
         services.AddSingleton<MainWindowViewModel>();
 
         return services.BuildServiceProvider();
