@@ -268,6 +268,7 @@ internal class MainWindowViewModel : ReactiveObject
     public ReactiveCommand<Unit, Unit> OpenTextBuffersListCommand { get; }
     public ReactiveCommand<Unit, Unit> OpenCommand { get; }
     public ReactiveCommand<Unit, Unit> SaveCommand { get; }
+    public ReactiveCommand<Unit, Unit> SaveAllModifiedCommand { get; }
     public ReactiveCommand<Unit, Unit> ClearCommand { get; }
     public ReactiveCommand<Unit, Unit> SettingsCommand { get; }
     public ReactiveCommand<Unit, Unit> AboutCommand { get; }
@@ -328,6 +329,8 @@ internal class MainWindowViewModel : ReactiveObject
 
         SaveCommand = ReactiveCommand.Create(SaveCurrentTextBuffer);
 
+        SaveAllModifiedCommand = ReactiveCommand.Create(SaveAllModifiedTextBuffers);
+        
         ClearCommand = ReactiveCommand.Create(() =>
             {
                 if (Document == null)
@@ -532,6 +535,37 @@ internal class MainWindowViewModel : ReactiveObject
         }
         
         TextChanged = false;
+    }
+    
+    
+    private void SaveAllModifiedTextBuffers()
+    {
+        if (TextBuffers == null)
+        {
+            return;
+        }
+        
+        var wasModified = false;
+        foreach (var textBuffer in TextBuffers)
+        {
+            if (textBuffer.IsModified == false)
+            {
+                continue;
+            }
+
+            _appService.SaveTextToSnapshot(
+                textBuffer.Path,
+                textBuffer.Text);
+            
+            textBuffer.IsModified = false;
+            
+            wasModified = true;
+        }
+        
+        if (wasModified)
+        {
+            TextChanged = false;
+        }
     }
 
     #endregion

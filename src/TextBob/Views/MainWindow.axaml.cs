@@ -31,8 +31,9 @@ public partial class MainWindow : Window, ITextEditorHandler
             UpdateInfoText();
         };
 
-        HotKeyManager.SetHotKey(OpenButton, MenuOpenGesture);
-        HotKeyManager.SetHotKey(SaveButton, MenuSaveGesture);
+        // All menu keyboard shortcuts are bound to the main window.
+        
+        //HotKeyManager.SetHotKey(OpenButton, MenuOpenGesture);
     }
 
 
@@ -45,8 +46,12 @@ public partial class MainWindow : Window, ITextEditorHandler
         : "O_pen/reload selected buffer";
 
     public static string MenuSaveHeader => RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
-        ? "Save current buffer"
-        : "S_ave current buffer";
+        ? "Save the current buffer"
+        : "S_ave the current buffer";
+    
+    public static string MenuSaveAllModifiedHeader => RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
+        ? "Save all modified buffers"
+        : "S_ave all modified buffers";
     
     public static KeyGesture MenuQuitGesture => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ?
         new KeyGesture(Key.Q, KeyModifiers.Meta) :
@@ -59,6 +64,10 @@ public partial class MainWindow : Window, ITextEditorHandler
     public static KeyGesture MenuSaveGesture => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ?
         new KeyGesture(Key.S, KeyModifiers.Meta) :
         new KeyGesture(Key.S, KeyModifiers.Control);
+    
+    public static KeyGesture MenuSaveAllModifiedGesture => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ?
+        new KeyGesture(Key.S, KeyModifiers.Shift | KeyModifiers.Meta) :
+        new KeyGesture(Key.S, KeyModifiers.Shift | KeyModifiers.Control);
 
     
     #region event handlers
