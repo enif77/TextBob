@@ -1,5 +1,6 @@
-Keyboard shortcuts
-------------------
+${version-info}
+
+Keyboard shortcuts:
 
 CTRL/CMD + C             - Copy
 CTRL/CMD + X             - Cut
