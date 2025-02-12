@@ -371,7 +371,15 @@ internal class MainWindowViewModel : ReactiveObject
     
     public void SelectionChanged()
     {
+        UpdateInfoText();
+        
         this.RaisePropertyChanged(nameof(IsTextSelected));
+    }
+    
+    
+    public void MainTextBoxCaretMoved()
+    {
+        UpdateInfoText();
     }
 
 
@@ -433,6 +441,61 @@ internal class MainWindowViewModel : ReactiveObject
             ? $"{Defaults.AppName} - {CurrentTextBuffer.Name} *"
             : $"{Defaults.AppName} - {CurrentTextBuffer.Name}";
     }
+    
+    
+    private void UpdateInfoText()
+    {
+        var textEditorHandler = TextEditorHandler;
+        if (textEditorHandler == null)
+        {
+            return;
+        }
+        
+        var document = Document;
+        if (document == null)
+        {
+            return;
+        }
+        
+        var textLength = document.TextLength;
+        
+        var charAt = (-1, "EOF");
+        if (textEditorHandler.CaretOffset < textLength)
+        {
+            var c = document.GetCharAt(textEditorHandler.CaretOffset);
+            switch (c)
+            {
+                case ' ':
+                    charAt = (c, "SPC");
+                    break;
+                
+                case '\t':
+                    charAt = (c, "TAB");
+                    break;
+                
+                case '\n':
+                    charAt = (c, "LF");
+                    break;
+                
+                case '\r':
+                    charAt = (c, "CR");
+                    break;
+                
+                default:
+                    charAt = (c, c.ToString());
+                    break;
+            }
+        }
+        
+        var selection = "Nothing selected";
+        if (IsTextSelected)
+        {
+            selection = $"{textEditorHandler.SelectionLength} chars from {textEditorHandler.SelectionStart}";
+        }
+        
+        TextInfo =
+            $"{textLength} chars, {document.LineCount} lines | {selection} | Line {textEditorHandler.CaretLine}, Column {textEditorHandler.CaretColumn}, Offset {textEditorHandler.CaretOffset}, Char '{charAt.Item2}', UTF {charAt.Item1}";
+    }
 
     /// <summary>
     /// Loads the current buffer to UI.
@@ -461,8 +524,9 @@ internal class MainWindowViewModel : ReactiveObject
         _textChanged = CurrentTextBuffer.IsModified;
         this.RaisePropertyChanged(nameof(TextChanged));
         
-        // Update the window title.
+        // Update UI.
         UpdateWindowTitle();
+        UpdateInfoText();
         
         // Disable editing if the buffer is read-only.
         IsSaveButtonEnabled = CurrentTextBuffer.IsReadOnly == false;

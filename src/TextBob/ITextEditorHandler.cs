@@ -21,4 +21,19 @@ public interface ITextEditorHandler
     /// The selected text.
     /// </summary>
     string SelectedText { get; }
+    
+    /// <summary>
+    /// Caret offset.
+    /// </summary>
+    int CaretOffset { get; }
+    
+    /// <summary>
+    /// Caret line.
+    /// </summary>
+    int CaretLine { get; }
+    
+    /// <summary>
+    /// Caret column.
+    /// </summary>
+    int CaretColumn { get; }
 }

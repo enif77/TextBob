@@ -18,7 +18,15 @@ public partial class MainWindow : Window, ITextEditorHandler
         InitializeComponent();
 
         MainTextBox.TextArea.Caret.PositionChanged += (sender, args)
-            => UpdateInfoText();
+            =>
+        {
+            if (DataContext is not MainWindowViewModel viewModel)
+            {
+                return;
+            }
+            
+            viewModel.MainTextBoxCaretMoved();
+        };
 
         MainTextBox.TextArea.SelectionChanged += (sender, args) =>
         {
@@ -28,7 +36,6 @@ public partial class MainWindow : Window, ITextEditorHandler
             }
             
             viewModel.SelectionChanged();
-            UpdateInfoText();
         };
 
         // All menu keyboard shortcuts are bound to the main window.
@@ -103,8 +110,6 @@ public partial class MainWindow : Window, ITextEditorHandler
         {
             BuffersComboBox.SelectedIndex = 0;
         }
-        
-        UpdateInfoText();
     }
     
 
@@ -117,66 +122,14 @@ public partial class MainWindow : Window, ITextEditorHandler
 
 
     #region ITextEditorHandler
-
-    /// <inheritdoc />
+    
     public int SelectionLength => MainTextBox?.SelectionLength ?? 0;
-
-    /// <inheritdoc />
     public int SelectionStart => MainTextBox?.SelectionStart ?? 0;
-
-    /// <inheritdoc />
     public string SelectedText => MainTextBox?.SelectedText ?? string.Empty;
 
+    public int CaretOffset => MainTextBox?.TextArea.Caret.Offset ?? 0;
+    public int CaretLine => MainTextBox?.TextArea.Caret.Line ?? 0;
+    public int CaretColumn => MainTextBox?.TextArea.Caret.Column ?? 0;
+    
     #endregion
-
-
-    private void UpdateInfoText()
-    {
-        var viewModel = DataContext as MainWindowViewModel;
-        if (viewModel == null)
-        {
-            return;
-        }
-
-        var document = MainTextBox.Document;
-        var caret = MainTextBox.TextArea.Caret;
-        var textLength = document.TextLength;
-        
-        var charAt = (-1, "EOF");
-        if (caret.Offset < textLength)
-        {
-            var c = document.GetCharAt(caret.Offset);
-            switch (c)
-            {
-                case ' ':
-                    charAt = (c, "SPC");
-                    break;
-                
-                case '\t':
-                    charAt = (c, "TAB");
-                    break;
-                
-                case '\n':
-                    charAt = (c, "LF");
-                    break;
-                
-                case '\r':
-                    charAt = (c, "CR");
-                    break;
-                
-                default:
-                    charAt = (c, c.ToString());
-                    break;
-            }
-        }
-        
-        var selection = "Nothing selected";
-        if (viewModel.IsTextSelected)
-        {
-            selection = $"{SelectionLength} chars from {SelectionStart}";
-        }
-        
-        viewModel.TextInfo =
-            $"{textLength} chars, {document.LineCount} lines | {selection} | Line {caret.Line}, Column {caret.Column}, Offset {caret.Offset}, Char '{charAt.Item2}', UTF {charAt.Item1}";
-    }
 }
