@@ -60,21 +60,32 @@ public partial class MainWindow : Window, ITextEditorHandler
         ? "Save all modified buffers"
         : "S_ave all modified buffers";
     
-    public static KeyGesture MenuQuitGesture => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ?
-        new KeyGesture(Key.Q, KeyModifiers.Meta) :
-        new KeyGesture(Key.F4, KeyModifiers.Alt);
+    public static KeyGesture MenuFocusTextEditorGesture => new KeyGesture(Key.F3);
+    public static KeyGesture MenuOpenTextBuffersListGesture => new KeyGesture(Key.F2);
     
-    public static KeyGesture MenuOpenGesture => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ?
-        new KeyGesture(Key.O, KeyModifiers.Meta) :
-        new KeyGesture(Key.O, KeyModifiers.Control);
+    public static KeyGesture MenuAboutGesture => RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
+        ? new KeyGesture(Key.OemQuestion, KeyModifiers.Meta)
+        : new KeyGesture(Key.F1);
+    
+    public static KeyGesture MenuSettingsGesture => RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
+        ? new KeyGesture(Key.OemComma, KeyModifiers.Meta)
+        : new KeyGesture(Key.OemComma, KeyModifiers.Control);
+    
+    public static KeyGesture MenuQuitGesture => RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
+        ? new KeyGesture(Key.Q, KeyModifiers.Meta)
+        : new KeyGesture(Key.F4, KeyModifiers.Alt);
+    
+    public static KeyGesture MenuOpenGesture => RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
+        ? new KeyGesture(Key.O, KeyModifiers.Meta)
+        : new KeyGesture(Key.O, KeyModifiers.Control);
 
-    public static KeyGesture MenuSaveGesture => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ?
-        new KeyGesture(Key.S, KeyModifiers.Meta) :
-        new KeyGesture(Key.S, KeyModifiers.Control);
+    public static KeyGesture MenuSaveGesture => RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
+        ? new KeyGesture(Key.S, KeyModifiers.Meta)
+        : new KeyGesture(Key.S, KeyModifiers.Control);
     
-    public static KeyGesture MenuSaveAllModifiedGesture => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ?
-        new KeyGesture(Key.S, KeyModifiers.Shift | KeyModifiers.Meta) :
-        new KeyGesture(Key.S, KeyModifiers.Shift | KeyModifiers.Control);
+    public static KeyGesture MenuSaveAllModifiedGesture => RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
+        ? new KeyGesture(Key.S, KeyModifiers.Shift | KeyModifiers.Meta)
+        : new KeyGesture(Key.S, KeyModifiers.Shift | KeyModifiers.Control);
 
     
     #region event handlers
@@ -87,7 +98,7 @@ public partial class MainWindow : Window, ITextEditorHandler
 
     private void MainWindow_OnLoaded(object? sender, RoutedEventArgs e)
     {
-        MainTextBox.Focus();
+        FocusTextEditor();
 
         // TODO: Figure out, how to bind to options.
 
@@ -115,7 +126,7 @@ public partial class MainWindow : Window, ITextEditorHandler
 
     private void CommandButtonClicked(object sender, RoutedEventArgs e)
     {
-        MainTextBox.Focus();
+        FocusTextEditor();
     }
 
     #endregion
@@ -130,6 +141,19 @@ public partial class MainWindow : Window, ITextEditorHandler
     public int CaretOffset => MainTextBox?.TextArea.Caret.Offset ?? 0;
     public int CaretLine => MainTextBox?.TextArea.Caret.Line ?? 0;
     public int CaretColumn => MainTextBox?.TextArea.Caret.Column ?? 0;
-    
+
+
+    public void FocusTextEditor()
+    {
+        MainTextBox.Focus();
+    }
+
+
+    public void FocusTextBuffersList()
+    {
+        BuffersComboBox.Focus();
+        BuffersComboBox.IsDropDownOpen = true;
+    }
+
     #endregion
 }

@@ -265,6 +265,7 @@ internal class MainWindowViewModel : ReactiveObject
 
     #region commands
 
+    public ReactiveCommand<Unit, Unit> FocusTextEditorCommand { get; }
     public ReactiveCommand<Unit, Unit> OpenTextBuffersListCommand { get; }
     public ReactiveCommand<Unit, Unit> OpenCommand { get; }
     public ReactiveCommand<Unit, Unit> SaveCommand { get; }
@@ -316,9 +317,14 @@ internal class MainWindowViewModel : ReactiveObject
             EnableEditing();
         });
 
+        FocusTextEditorCommand = ReactiveCommand.Create(() =>
+        {
+            TextEditorHandler?.FocusTextEditor();
+        });
+        
         OpenTextBuffersListCommand = ReactiveCommand.Create(() =>
         {
-            // TODO: Implement OpenTextBuffersListCommand.
+            TextEditorHandler?.FocusTextBuffersList();
         });
 
         OpenCommand = ReactiveCommand.Create(() =>
@@ -532,6 +538,9 @@ internal class MainWindowViewModel : ReactiveObject
         IsSaveButtonEnabled = CurrentTextBuffer.IsReadOnly == false;
         IsDeleteButtonEnabled = IsSaveButtonEnabled;
         IsTextEditorEnabled = IsSaveButtonEnabled;
+        
+        // Ensure the text editor is focused.
+        TextEditorHandler?.FocusTextEditor();
     }
 
     /// <summary>

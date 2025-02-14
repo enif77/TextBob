@@ -1,5 +1,3 @@
-
-
 namespace TextBob;
 
 /// <summary>
@@ -36,4 +34,15 @@ public interface ITextEditorHandler
     /// Caret column.
     /// </summary>
     int CaretColumn { get; }
+
+
+    /// <summary>
+    /// Sets UI focus to the text editor.
+    /// </summary>
+    void FocusTextEditor();
+    
+    /// <summary>
+    /// Sets UI focus to the text buffers list.
+    /// </summary>
+    void FocusTextBuffersList();
 }

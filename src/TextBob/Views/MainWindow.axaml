@@ -78,6 +78,10 @@
     </Window.Styles>
     
     <Window.KeyBindings>
+        <KeyBinding Gesture="{x:Static local:MainWindow.MenuFocusTextEditorGesture}" Command="{Binding FocusTextEditorCommand}" />
+        <KeyBinding Gesture="{x:Static local:MainWindow.MenuOpenTextBuffersListGesture}" Command="{Binding OpenTextBuffersListCommand}" />
+        <KeyBinding Gesture="{x:Static local:MainWindow.MenuAboutGesture}" Command="{Binding AboutCommand}" />
+        <KeyBinding Gesture="{x:Static local:MainWindow.MenuSettingsGesture}" Command="{Binding SettingsCommand}" />
         <KeyBinding Gesture="{x:Static local:MainWindow.MenuOpenGesture}" Command="{Binding OpenCommand}" />
         <KeyBinding Gesture="{x:Static local:MainWindow.MenuSaveGesture}" Command="{Binding SaveCommand}" />
         <KeyBinding Gesture="{x:Static local:MainWindow.MenuSaveAllModifiedGesture}" Command="{Binding SaveAllModifiedCommand}" />
