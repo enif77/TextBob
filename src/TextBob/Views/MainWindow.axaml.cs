@@ -145,6 +145,7 @@ public partial class MainWindow : Window, ITextEditorHandler
 
     public void FocusTextEditor()
     {
+        BuffersComboBox.IsDropDownOpen = false;
         MainTextBox.Focus();
     }
 
